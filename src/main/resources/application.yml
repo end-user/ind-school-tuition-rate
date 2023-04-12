@@ -3,12 +3,10 @@ spring:
   #  profiles.active: filtered
   datasource:
     url: @datasource.url@
-    username: @datasource.username@
-    password: @englishlanguage.datasource.password@
   jpa:
     generate-ddl: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
       # this compels hibernate to use whatever name is in the @Column
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl

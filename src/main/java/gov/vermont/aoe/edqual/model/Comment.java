@@ -17,7 +17,6 @@ public class Comment {
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "abstract_ledger_entries_id")
-    private AbstractLedgerEntry abstractLedgerEntries;
-
+    @JoinColumn(name = "entry_id")
+    private AbstractLedgerEntry entry;
 }

@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
+import java.util.Collection;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "application_entry")
+@Inheritance(strategy = InheritanceType.JOINED)
 abstract class AbstractLedgerEntry {
     @Id
     @Column(name = "id", nullable = false)
@@ -23,8 +24,7 @@ abstract class AbstractLedgerEntry {
     @JoinColumn(name = "rate_application_id")
     private RateApplication rateApplication;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "abstract_ledger_entry_id")
+    @OneToMany(mappedBy = "entry", orphanRemoval = true)
     private Set<Comment> comments;
 
 }
