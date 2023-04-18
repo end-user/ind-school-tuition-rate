@@ -6,7 +6,6 @@ import Table from "react-bootstrap/Table";
  * Provides a table view for data
  * @param columns Array of Columns
  * @param data
- * @returns {JSX.Element}
  * @constructor
  * @see <a href="https://react-table-v7.tanstack.com/docs/api/useTable#column-options">Column</a>
  */
@@ -35,7 +34,7 @@ const RateApplicationTable = ({columns, data}) => {
             ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
+            {rows.map((row) => {
                 prepareRow(row)
                 return (
                     <tr {...row.getRowProps()}>
