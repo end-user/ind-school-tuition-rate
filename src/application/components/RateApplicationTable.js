@@ -22,6 +22,7 @@ const RateApplicationTable = ({columns, data}) => {
         data,
     })
 
+
     return (
         <Table {...getTableProps()}>
             <thead>

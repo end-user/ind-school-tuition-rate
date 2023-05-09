@@ -1,84 +1,72 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React, {useMemo, useState} from "react";
+import React from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faXmark} from "@fortawesome/free-solid-svg-icons";
-import RateApplicationTable from "./RateApplicationTable";
+import RateApplicationTable from "./components/RateApplicationTable";
+import {currencyFormatter} from "../services/formatter";
 
-const StaffSalaries = () => {
-    const [salaryData, setSalaryData] = useState(
-        [
-            {
-                'id': 510,
-                'position': 'English Instructor',
-                'category': 'staff',
-                'status': 'employed',
-                'fte': true,
-                'speedu': 0,
-                'pay': '$ 60,000',
-                'actual': '$ 63,535',
-                'budget': '$ 63,535'
-            }
-        ]
-    )
+const StaffSalaries = ({data, setData}) => {
+
     const deleteRow = async (id) => {
         //todo this will be a call to the server
         console.log(`delete table row ${id}`)
-        const tmpData = [...salaryData]
+        const tmpData = [...data]
         tmpData.splice(id, 1)
-        setSalaryData(tmpData)
+        setData(tmpData)
     }
     const addRow = async (values) => {
-        const tmpData = [...salaryData]
+        const tmpData = [...data]
         tmpData.push(values)
-        setSalaryData(tmpData)
+        setData(tmpData)
     };
-    const cols = useMemo(() =>
-            [
-                {
-                    Header: 'Position/Title',
-                    accessor: 'position', // accessor is the "key" in the data
-                },
-                {
-                    Header: 'Category',
-                    accessor: 'category',
-                },
-                {
-                    Header: 'Status',
-                    accessor: 'status',
-                },
-                {
-                    Header: 'FTE',
-                    accessor: 'fte',
-                },
-                {
-                    Header: 'SpeEdu (%)',
-                    accessor: 'speedu',
-                },
-                {
-                    Header: 'Annualized Pay',
-                    accessor: 'pay',
-                },
-                {
-                    Header: 'FY22 Actual',
-                    accessor: 'actual',
-                },
-                {
-                    Header: 'FY23 Budget',
-                    accessor: 'budget',
-                }, {
-                Header: '',
-                id: 'delete',
-                accessor: 'delete',
-                Cell: (tableProps) => (
-                    <Button onClick={() => deleteRow(tableProps.row.index)}>
-                        <FontAwesomeIcon icon={faXmark}/>
-                    </Button>
-                ),
+    const cols =
+        [
+            {
+                Header: 'Position/Title',
+                accessor: 'position', // accessor is the "key" in the data
             },
-            ],
-        [deleteRow]
-    )
+            {
+                Header: 'Category',
+                accessor: 'category',
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
+            },
+            {
+                Header: 'FTE',
+                accessor: 'fte',
+            },
+            {
+                Header: 'SpeEdu (%)',
+                accessor: 'speedu',
+            },
+            {
+                Header: 'Annualized Pay',
+                accessor: 'pay',
+                Cell: ({value}) => currencyFormatter.format(value)
+            },
+            {
+                Header: 'FY22 Actual',
+                accessor: 'actual',
+                Cell: ({value}) => currencyFormatter.format(value)
+            },
+            {
+                Header: 'FY23 Budget',
+                accessor: 'budget',
+                Cell: ({value}) => currencyFormatter.format(value)
+            }, {
+            Header: '',
+            id: 'delete',
+            accessor: 'delete',
+            Cell: (tableProps) => (
+                <Button onClick={() => deleteRow(tableProps.row.index)}>
+                    <FontAwesomeIcon icon={faXmark}/>
+                </Button>
+            ),
+        }]
+
 
     return (
         <Formik enableReinitialize
@@ -89,6 +77,7 @@ const StaffSalaries = () => {
                     'status': '',
                     'speedu': 0,
                     'fte': '',
+                    'actual': 0, 'budget': 0
                 }}
         >
             {
@@ -221,7 +210,7 @@ const StaffSalaries = () => {
                                 </Card.Footer>
                             </Card>
                         </Form>
-                        <RateApplicationTable columns={cols} data={salaryData}/>
+                        <RateApplicationTable columns={cols} data={data}/>
                     </>)
             }
         </Formik>

@@ -17,8 +17,8 @@ abstract class AbstractLedgerEntry {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Float fyActual;
-    private Float fyBudget;
+    private Float actual;
+    private Float budget;
 
     @ManyToOne
     @JoinColumn(name = "rate_application_id")

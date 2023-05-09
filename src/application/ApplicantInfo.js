@@ -1,4 +1,3 @@
-import {CardBody, CardTitle} from "reactstrap";
 import {Card} from "react-bootstrap";
 import React from "react";
 

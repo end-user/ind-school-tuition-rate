@@ -6,11 +6,10 @@ type OptionsWithGroup = [{
     optionGroup: string
 }]
 
-const SelectDropdownWithOptionGroups = ({options},name,value,onChange) => {
+const SelectDropdownWithOptionGroups = ({options, name, value, handleChange}) => {
 
     // pushes to a hashmap
     const groupedOptions = {};
-    console.log(options)
     options.forEach(option => {
         if (!groupedOptions[option.optionGroup]) groupedOptions[option.optionGroup] = [];
         groupedOptions[option.optionGroup].push({
@@ -18,7 +17,6 @@ const SelectDropdownWithOptionGroups = ({options},name,value,onChange) => {
             text: option.text
         });
     });
-    console.log(groupedOptions);
 
     const renderOptions = options => {
         return options.map(option => {
@@ -29,7 +27,6 @@ const SelectDropdownWithOptionGroups = ({options},name,value,onChange) => {
             );
         });
     };
-
     /*const SelectInputRound = ({
                                   defaultOption,
                                   name,
@@ -43,13 +40,12 @@ const SelectDropdownWithOptionGroups = ({options},name,value,onChange) => {
             className="inputSelectRound form-control override-fc"
             name={name}
             value={value}
-            onChange={onChange}
+            onChange={handleChange}
         >
             {Object.keys(groupedOptions).map((group, index) => {
                 return (
-                    <optgroup key={index} label={group}>console.log("rendering {}",group);
-                        {
-                            renderOptions(groupedOptions[group])}
+                    <optgroup key={index} label={group}>
+                        {renderOptions(groupedOptions[group])}
                     </optgroup>
                 );
             })}
