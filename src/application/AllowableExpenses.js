@@ -1,4 +1,4 @@
-import {Button, Card, Form, InputGroup} from "react-bootstrap";
+import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import SelectDropdownWithOptionGroups from "./components/SelectDropdownWithOptionGroups"
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -109,28 +109,34 @@ const AllowableExpenses = ({data, setData}) => {
                         <Form onSubmit={handleSubmit}>
                             <Card>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
-                                    <Form.Group>
-                                        <Form.Label>Expense</Form.Label>
-                                        <SelectDropdownWithOptionGroups options={groupedExpenseOptions}
-                                                                        name={"expense"}
-                                                                        handleChange={handleChange}
-                                        />
-                                        <Form.Label>FY22 Actual</Form.Label>
-                                        <InputGroup>
-                                            <InputGroup.Text>$</InputGroup.Text>
-                                            <Field as={"input"}
-                                                   className={"form-control"}
-                                                   name="actual"
-                                                   type="number"/>
-                                        </InputGroup>
-                                        <Form.Label>FY23 Budget</Form.Label>
-                                        <InputGroup>
-                                            <InputGroup.Text>$</InputGroup.Text>
-                                            <Field as={"input"}
-                                                   className={"form-control"}
-                                                   name="budget"
-                                                   type="number"/>
-                                        </InputGroup>
+                                    <Form.Group as={Row}>
+                                        <Col sm={5}>
+                                            <Form.Label>Expense</Form.Label>
+                                            <SelectDropdownWithOptionGroups options={groupedExpenseOptions}
+                                                                            name={"expense"}
+                                                                            handleChange={handleChange}
+                                            />
+                                        </Col>
+                                        <Col sm={2} className={'offset-sm-3'}>
+                                            <Form.Label>FY22 Actual</Form.Label>
+                                            <InputGroup>
+                                                <InputGroup.Text>$</InputGroup.Text>
+                                                <Field as={"input"}
+                                                       className={"form-control"}
+                                                       name="actual"
+                                                       type="number"/>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col sm={2}>
+                                            <Form.Label>FY23 Budget</Form.Label>
+                                            <InputGroup>
+                                                <InputGroup.Text>$</InputGroup.Text>
+                                                <Field as={"input"}
+                                                       className={"form-control"}
+                                                       name="budget"
+                                                       type="number"/>
+                                            </InputGroup>
+                                        </Col>
                                     </Form.Group>
                                 </Card.Body>
                                 <Card.Footer>
@@ -140,8 +146,8 @@ const AllowableExpenses = ({data, setData}) => {
                         </Form>
                         <RateApplicationTable columns={cols} data={data}/>
                     </>
-                )
-            }
-        </Formik>);
+                )}
+        </Formik>
+    );
 }
 export default AllowableExpenses

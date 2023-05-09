@@ -1,4 +1,4 @@
-import {Button, Card, Col, Form, InputGroup} from "react-bootstrap";
+import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import React from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -62,27 +62,29 @@ const OffsettingRevenue = ({data, setData}) => {
                         <Form onSubmit={handleSubmit}>
                             <Card>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
-                                    <Form.Group>
-                                        <Form.Label>Revenue</Form.Label>
-                                        <Field name="revenue"
-                                               as={Form.Select}
-                                               required
-                                        >
-                                            <option hidden value=''>Choose a Revenue</option>
-                                            <option>Medicaid</option>
-                                            <option>Free & Reduced Lunch Program</option>
-                                            <option>Encumbered Donation</option>
-                                            <option>Unencumbered Private Donation</option>
-                                            <option>ESY Services</option>
-                                            <option>Transportation reimbursement from LEAs</option>
-                                            <option>Bank loan</option>
-                                            <option>Grant</option>
-                                            <option>COVID Extended Support Funding</option>
-                                            <option>Title Funding Title IA, Title II or Title IV</option>
-                                            <option>Payroll loan</option>
-                                        </Field>
-                                        <Form.Label column={true}>FY22 Actual</Form.Label>
-                                        <Col>
+                                    <Form.Group as={Row}>
+                                        <Col sm={4}>
+                                            <Form.Label>Revenue</Form.Label>
+                                            <Field name="revenue"
+                                                   as={Form.Select}
+                                                   required
+                                            >
+                                                <option hidden value=''>Choose a Revenue</option>
+                                                <option>Medicaid</option>
+                                                <option>Free & Reduced Lunch Program</option>
+                                                <option>Encumbered Donation</option>
+                                                <option>Unencumbered Private Donation</option>
+                                                <option>ESY Services</option>
+                                                <option>Transportation reimbursement from LEAs</option>
+                                                <option>Bank loan</option>
+                                                <option>Grant</option>
+                                                <option>COVID Extended Support Funding</option>
+                                                <option>Title Funding Title IA, Title II or Title IV</option>
+                                                <option>Payroll loan</option>
+                                            </Field>
+                                        </Col>
+                                        <Col sm={2} className={'offset-sm-4'}>
+                                            <Form.Label>FY22 Actual</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
                                                 <Field as={"input"}
@@ -93,8 +95,8 @@ const OffsettingRevenue = ({data, setData}) => {
                                                 />
                                             </InputGroup>
                                         </Col>
-                                        <Form.Label column={true}>FY23 Budget</Form.Label>
-                                        <Col>
+                                        <Col sm={2}>
+                                            <Form.Label>FY23 Budget</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
                                                 <Field as={"input"}
@@ -112,7 +114,10 @@ const OffsettingRevenue = ({data, setData}) => {
                                 </Card.Footer>
                             </Card>
                             <RateApplicationTable columns={cols} data={data}/>
-                        </Form></>)}</Formik>
+                        </Form>
+                    </>
+                )}
+        </Formik>
     );
 }
 export default OffsettingRevenue

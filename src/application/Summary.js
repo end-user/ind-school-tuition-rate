@@ -38,22 +38,22 @@ const Summary = ({data}) => {
                 <Table>
                     <tbody>
                     <tr>
-                        <td>{`Salaries: ${summary.salaries.count}`}</td>
+                        <td>Salaries: <small>({summary.salaries.count})</small></td>
                         <td>{currencyFormatter.format(summary.salaries.actual)}</td>
                         <td>{currencyFormatter.format(summary.salaries.budget)}</td>
                     </tr>
                     <tr>
-                        <td>{`Benefits: ${summary.benefits.count}`}</td>
+                        <td>Benefits: <small>({summary.benefits.count})</small></td>
                         <td>{currencyFormatter.format(summary.benefits.actual)}</td>
                         <td>{currencyFormatter.format(summary.benefits.budget)}</td>
                     </tr>
                     <tr>
-                        <td>{`Expenses: ${summary.expenses.count}`}</td>
+                        <td>Expenses: <small>({summary.expenses.count})</small></td>
                         <td>{currencyFormatter.format(summary.expenses.actual)}</td>
                         <td>{currencyFormatter.format(summary.expenses.budget)}</td>
                     </tr>
                     <tr>
-                        <td>{`Revenue: ${summary.revenue.count}`}</td>
+                        <td>Revenue: <small>({summary.revenue.count})</small></td>
                         <td>{currencyFormatter.format(summary.revenue.actual)}</td>
                         <td>{currencyFormatter.format(summary.revenue.budget)}</td>
                     </tr>

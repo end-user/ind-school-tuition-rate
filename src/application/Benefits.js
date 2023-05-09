@@ -49,7 +49,7 @@ const Benefits = ({data, setData}) => {
                                 <Form.Group as={Row}>
                                     <Col sm={3}>
                                         <Form.Label>Benefit</Form.Label>
-                                        <Field name="position"
+                                        <Field name="benefit"
                                                as={Form.Select}
                                                required
                                         >
@@ -67,7 +67,7 @@ const Benefits = ({data, setData}) => {
                                             <option>Other (please list below)</option>
                                         </Field>
                                     </Col>
-                                    <Col sm={2} className={'offset-sm-2'}>
+                                    <Col sm={2} className={'offset-sm-5'}>
                                         <Form.Label>FY22 Actual</Form.Label>
                                         <InputGroup>
                                             <InputGroup.Text>$</InputGroup.Text>
@@ -90,7 +90,8 @@ const Benefits = ({data, setData}) => {
                                                    required
                                             />
                                         </InputGroup>
-                                    </Col></Form.Group>
+                                    </Col>
+                                </Form.Group>
                             </Card.Body>
                             <Card.Footer>
                                 <Button type={"submit"}>Add</Button>
