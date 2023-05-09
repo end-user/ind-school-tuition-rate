@@ -1,0 +1,146 @@
+.pointer-hover:hover {
+    cursor: pointer;
+    background-color: rgb(232, 241, 232);
+}
+
+.pointer-hover::selection {
+    background-color: transparent;
+}
+
+.sticky-paginator {
+    position: sticky;
+    bottom: 0;
+    background-color: #e9ecef;
+}
+
+.paginator-buttons {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 0;
+    align-items: center;
+}
+
+a.nostyle:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a.nostyle:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+.icon-vertical-center {
+    align-self: center;
+    vertical-align: middle;
+}
+
+.compare-page {
+    font-size: 1.5rem
+}
+
+input.compare-checkbox {
+    width: 30px;
+    height: 30px;
+}
+
+input.compare-checkbox-select {
+    width: 25px;
+    height: 25px;
+}
+
+.every-other-child-color>div:nth-child(2n+1) {
+    background-color: rgba(84, 99, 104, 0.089);
+}
+
+.every-other-child-color>div:last-child {
+    background: white none;
+}
+
+.radio-size {
+    width: 20px;
+    height: 20px;
+}
+
+.light-success {
+    background-color: #d4edda;
+}
+
+.icon-cover {
+    z-index: 1000;
+}
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #0033004b;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #003300;
+}
+
+.bg-primary {
+    background-color: #00853F !important;
+}
+
+.btn-primary {
+    background-color: #00853F !important;
+    border-color: #00853F !important;
+}
+
+.btn-secondary {
+    background-color: #007BFF;
+}
+
+.bg-secondary {
+    background-color: #e9ecef !important;
+}
+
+.page-link {
+    color: #00853F !important;
+}
+
+.language-strike-through {
+    text-decoration: line-through;
+    color: red;
+}
+
+.pagination {
+    align-items: center;
+}
+
+.flex-justify-align {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+#permNumber {
+    border: none !important
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+}

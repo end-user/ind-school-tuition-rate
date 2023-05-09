@@ -1,0 +1,23 @@
+/* Footer */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1
+}
+
+.footer {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    background-color: #003300;
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    margin-top: 25px;
+}
