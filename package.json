@@ -72,5 +72,9 @@
   },
   "devDependencies": {
     "typescript": "^5.0.4"
+  },
+  "engines": {
+    "npm": ">=9.5.0 <10.0.0",
+    "node": ">=19.0.0 <20.0.0"
   }
 }
