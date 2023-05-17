@@ -9,7 +9,7 @@ import Benefits from "./Benefits";
 import OffsettingRevenue from "./OffsettingRevenue";
 import Summary from "./Summary";
 import AllowableExpenses from "./AllowableExpenses";
-import {Benefit, Revenue, StaffSalary} from "../generated-sources/data"
+// import {Benefit, Revenue, StaffSalary} from "../generated-sources/data.ts"
 
 const Application = () => {
     const schema = object()
@@ -23,7 +23,7 @@ const Application = () => {
     });
 
     const [applicantData, setApplicantData] = useState([])
-    const [salaryData: StaffSalary[], setSalaryData] = useState([{
+    const [salaryData, setSalaryData] = useState([{
         'id': 510,
         'position': 'English Instructor',
         'category': 'staff',
@@ -39,10 +39,10 @@ const Application = () => {
         'actual': '611',
         'budget': '680'
     }])
-    const [benefitData: Benefit[], setBenefitData] = useState([
+    const [benefitData, setBenefitData] = useState([
         {benefit:'FICA',actual:450,budget:500}
     ])
-    const [revenueData: Revenue[], setRevenueData] = useState([
+    const [revenueData, setRevenueData] = useState([
         {revenue:'Grant',actual:1500,budget:0}
     ])
 

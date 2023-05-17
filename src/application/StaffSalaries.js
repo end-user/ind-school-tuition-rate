@@ -43,11 +43,6 @@ const StaffSalaries = ({data, setData}) => {
                 accessor: 'speedu',
             },
             {
-                Header: 'Annualized Pay',
-                accessor: 'pay',
-                Cell: ({value}) => currencyFormatter.format(value)
-            },
-            {
                 Header: 'FY22 Actual',
                 accessor: 'actual',
                 Cell: ({value}) => currencyFormatter.format(value)
@@ -67,17 +62,18 @@ const StaffSalaries = ({data, setData}) => {
             ),
         }]
 
-
+//todo: If status == vacant only allow budget value
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
                 initialValues={{
                     'position': '',
                     'category': '',
-                    'status': '',
+                    'status': 'filled',
                     'speedu': 0,
                     'fte': '',
-                    'actual': 0, 'budget': 0
+                    'actual': 0,
+                    'budget': 0
                 }}
         >
             {
@@ -138,8 +134,8 @@ const StaffSalaries = ({data, setData}) => {
                                                    required
                                             >
                                                 <option hidden value=''>Choose a Status</option>
-                                                <option>employed</option>
-                                                <option>retired</option>
+                                                <option>filled</option>
+                                                <option>vacant</option>
                                             </Field>
 
                                         </Col>
@@ -167,7 +163,7 @@ const StaffSalaries = ({data, setData}) => {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column={true}>Pay</Form.Label>
+                                        <Form.Label column={true}>Gen Ed Instructor?</Form.Label>
                                         <Col>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>

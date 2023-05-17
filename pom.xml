@@ -139,7 +139,7 @@
                     </classPatterns>
                     <outputKind>module</outputKind>
                     <outputFileType>implementationFile</outputFileType>
-                    <outputFile>${project.basedir}/src/generated-sources/data.ts</outputFile>
+                    <outputFile>src/generated-sources/data.ts</outputFile>
                 </configuration>
             </plugin>
             <plugin>

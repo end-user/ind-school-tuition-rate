@@ -4,6 +4,9 @@ import {currencyFormatter} from "../services/formatter";
 import Table from "react-bootstrap/Table";
 
 const Summary = ({data}) => {
+    // deduct medicaid, unencumbered, transport only
+
+
     const s = {count: 0, actual: 0, budget: 0}
     let summary = {
         salaries: data.salaryData.reduce((total, n) => ({

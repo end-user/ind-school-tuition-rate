@@ -1,5 +1,5 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faXmark} from "@fortawesome/free-solid-svg-icons";
@@ -19,14 +19,36 @@ const Benefits = ({data, setData}) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
+        const tmpOptions = [...options].filter(o => {
+            return o !== values.benefit
+        })
+        console.debug(tmpOptions)
+        setOptions(tmpOptions)
     };
+    const [options, setOptions] = useState([
+        'FICA',
+        'Workers\' Compensation',
+        'Unemployment',
+        'Group Health/Dental Insurance',
+        'Group Life Insurance',
+        'Disability Insurance',
+        'Pension',
+        'Profits Sharing',
+        'Tuition',
+        'Employee Gifts/Awards/Banquets',
+    ])
 
     const cols = [{
-        Header: 'Benefit', accessor: 'benefit', // accessor is the "key" in the data
+        Header: 'Benefit',
+        accessor: 'benefit', // accessor is the "key" in the data
     }, {
-        Header: 'FY22 Actual', accessor: 'actual', Cell: ({value}) => currencyFormatter.format(value)
+        Header: 'FY22 Actual',
+        accessor: 'actual',
+        Cell: ({value}) => currencyFormatter.format(value)
     }, {
-        Header: 'FY23 Budget', accessor: 'budget', Cell: ({value}) => currencyFormatter.format(value)
+        Header: 'FY23 Budget',
+        accessor: 'budget',
+        Cell: ({value}) => currencyFormatter.format(value)
     }, {
         Header: '',
         id: 'delete',
@@ -36,11 +58,15 @@ const Benefits = ({data, setData}) => {
         </Button>),
     },]
 
+    const onSelect = (value) => {
+        console.log('onselect', value)
+    }
     return (<Formik enableReinitialize
                     onSubmit={addRow}
                     initialValues={{'benefit': '', 'actual': 0, 'budget': 0}}
         >
             {({
+                  handleChange,
                   handleSubmit,
               }) => (<>
                     <Form onSubmit={handleSubmit}>
@@ -54,17 +80,9 @@ const Benefits = ({data, setData}) => {
                                                required
                                         >
                                             <option hidden value=''>Choose a Benefit</option>
-                                            <option>FICA</option>
-                                            <option>Workers' Compensation</option>
-                                            <option>Unemployment</option>
-                                            <option>Group Health/Dental Insurance</option>
-                                            <option>Group Life Insurance</option>
-                                            <option>Disability Insurance</option>
-                                            <option>Pension</option>
-                                            <option>Profits Sharing</option>
-                                            <option>Tuition</option>
-                                            <option>Employee Gifts/Awards/Banquets</option>
-                                            <option>Other (please list below)</option>
+                                            {options.map(
+                                                o => <option key={o}>{o}</option>
+                                            )}
                                         </Field>
                                     </Col>
                                     <Col sm={2} className={'offset-sm-5'}>
