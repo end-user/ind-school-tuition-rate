@@ -156,14 +156,14 @@ const StaffSalaries = ({data, setData}) => {
                                                    as={Form.Select}
                                                    required
                                             >
-                                                <option hidden value=''>FTE?</option>
+                                                <option hidden value=''>FTE</option>
                                                 <option>yes</option>
                                                 <option>no</option>
                                             </Field>
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column={true}>Gen Ed Instructor?</Form.Label>
+                                        <Form.Label column={true}>Gen Ed Instructor</Form.Label>
                                         <Col>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
@@ -182,6 +182,7 @@ const StaffSalaries = ({data, setData}) => {
                                                 <Field as={"input"}
                                                        className={"form-control"}
                                                        name="actual"
+                                                       placeholder={0}
                                                        type="number"
                                                        required
                                                 />
@@ -194,6 +195,7 @@ const StaffSalaries = ({data, setData}) => {
                                                 <Field as={"input"}
                                                        className={"form-control"}
                                                        name="budget"
+                                                       placeholder={0}
                                                        type="number"
                                                        required
                                                 />

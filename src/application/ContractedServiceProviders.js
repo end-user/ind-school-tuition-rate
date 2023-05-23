@@ -1,13 +1,12 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React from "react";
-import {Field, Formik} from "formik";
+import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faQuestionCircle, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {Field, Formik} from "formik";
 import RateApplicationTable from "./components/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
-import {Tooltip} from "react-tippy";
 
-const OffsettingRevenue = ({data, setData}) => {
+const ContractedServiceProviders = ({data, setData}) => {
     const deleteRow = async (id) => {
         //todo this will be a call to the server
         console.debug(`delete table row ${id}`)
@@ -21,12 +20,26 @@ const OffsettingRevenue = ({data, setData}) => {
         tmpData.push(values)
         setData(tmpData)
     };
+    const [options, setOptions] = useState([
+        'Physical Therapist',
+        'Occupational Therapist',
+        'Speech Language Pathologist',
+        'Clinical Provider',
+        'Payroll Specialist',
+        'IT support contract',
+        'Janitorial Services, snow plowing and trash/recycling removal',
+        'Nurse/Medical Provider',
+    ])
 
     const cols =
         [
             {
-                Header: 'Revenue',
-                accessor: 'revenue', // accessor is the "key" in the data
+                Header: 'Service',
+                accessor: 'service', // accessor is the "key" in the data
+            },
+            {
+                Header: 'FTE%',
+                accessor: 'fte',
             },
             {
                 Header: 'FY22 Actual',
@@ -49,14 +62,14 @@ const OffsettingRevenue = ({data, setData}) => {
         },
         ]
 
-
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={{'revenue': '', 'actual': 0, 'budget': 0}}
+                initialValues={{'service': '', 'fte': '', 'actual': '', 'budget': ''}}
         >
             {
                 ({
+                     handleChange,
                      handleSubmit,
                  }) => (
                     <>
@@ -64,54 +77,38 @@ const OffsettingRevenue = ({data, setData}) => {
                             <Card>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                     <Form.Group as={Row}>
-                                        <Col sm={4}>
-                                            <Form.Label>Revenue</Form.Label>
-                                            <Tooltip
-                                                position="right"
-                                                trigger="click"
-                                                html={(
-                                                    <div className="col-8 card border-dark">
-                                                        <div className={'card-body'}>
-                                                            <p>Only the following revenues may be deducted from the
-                                                                expenses:</p>
-                                                            <ul>
-                                                                <li>Medicaid</li>
-                                                                <li>Unencumbered Private Donation</li>
-                                                                <li>Transportation reimbursement</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            > <FontAwesomeIcon icon={faQuestionCircle} className="text-success"/>
-                                            </Tooltip>
-                                            <Field name="revenue"
+                                        <Col sm={5}>
+                                            <Form.Label>Contracted Service Provider</Form.Label>
+                                            <Field name="service"
                                                    as={Form.Select}
                                                    required
                                             >
-                                                <option hidden value=''>Choose a Revenue</option>
-                                                <option>Medicaid</option>
-                                                <option>Free & Reduced Lunch Program</option>
-                                                <option>Encumbered Donation</option>
-                                                <option>Unencumbered Private Donation</option>
-                                                <option>ESY Services</option>
-                                                <option>Transportation reimbursement from LEAs</option>
-                                                <option>Bank loan</option>
-                                                <option>Grant</option>
-                                                <option>COVID Extended Support Funding</option>
-                                                <option>Title Funding Title IA, Title II or Title IV</option>
-                                                <option>Payroll loan</option>
+                                                <option hidden value=''>Choose a Service Provider</option>
+                                                {options.map(
+                                                    o => <option key={o}>{o}</option>
+                                                )}
                                             </Field>
                                         </Col>
-                                        <Col sm={2} className={'offset-sm-4'}>
+                                        <Col sm={2}>
+                                            <Form.Label>FTE</Form.Label>
+                                            <InputGroup>
+                                                <Field as={"input"}
+                                                       className={"form-control"}
+                                                       name="fte"
+                                                       placeholder={0}
+                                                       type="number"/>
+                                                <InputGroup.Text>%</InputGroup.Text>
+                                            </InputGroup>
+                                        </Col>
+                                        <Col sm={2} className={'offset-sm-1'}>
                                             <Form.Label>FY22 Actual</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
                                                 <Field as={"input"}
                                                        className={"form-control"}
                                                        name="actual"
-                                                       type="number"
-                                                       required
-                                                />
+                                                       placeholder={0}
+                                                       type="number"/>
                                             </InputGroup>
                                         </Col>
                                         <Col sm={2}>
@@ -121,9 +118,8 @@ const OffsettingRevenue = ({data, setData}) => {
                                                 <Field as={"input"}
                                                        className={"form-control"}
                                                        name="budget"
-                                                       type="number"
-                                                       required
-                                                />
+                                                       placeholder={0}
+                                                       type="number"/>
                                             </InputGroup>
                                         </Col>
                                     </Form.Group>
@@ -132,11 +128,11 @@ const OffsettingRevenue = ({data, setData}) => {
                                     <Button type={"submit"}>Add</Button>
                                 </Card.Footer>
                             </Card>
-                            <RateApplicationTable columns={cols} data={data}/>
                         </Form>
+                        <RateApplicationTable columns={cols} data={data}/>
                     </>
                 )}
         </Formik>
     );
 }
-export default OffsettingRevenue
+export default ContractedServiceProviders

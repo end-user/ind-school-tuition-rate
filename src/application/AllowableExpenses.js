@@ -9,10 +9,11 @@ import {currencyFormatter} from "../services/formatter";
 
 
 const groupedExpenseOptions = [
-    {text: 'Staff mileage reimbursements', optionGroup: "Travel"},
+    {text: 'Staff mileage reimbursements (must be transporting students)', optionGroup: "Travel"},
     {text: 'Student transportation to and from School', optionGroup: "Travel"},
     {text: 'School bus/van annual repairs & maintenance', optionGroup: "Travel"},
     {text: 'School bus/van annual inspection, gasoline & oil', optionGroup: "Travel"},
+
     {text: 'Student Educational Supplies', optionGroup: "Supplies"},
     {text: 'Curriculum Materials', optionGroup: "Supplies"},
     {text: 'Special Education Services', optionGroup: "Supplies"},
@@ -21,27 +22,18 @@ const groupedExpenseOptions = [
     {text: 'Art/music/electives', optionGroup: "Supplies"},
     {text: 'Physical Education Supplies', optionGroup: "Supplies"},
     {text: 'Community Based Academic Supplies', optionGroup: "Supplies"},
-    {text: 'Physical Therapist', optionGroup: "Contracted Service Providers"},
-    {text: 'Occupational Therapist', optionGroup: "Contracted Service Providers"},
-    {text: 'Speech Language Pathologist', optionGroup: "Contracted Service Providers"},
-    {text: 'Clinical Provider', optionGroup: "Contracted Service Providers"},
-    {text: 'Payroll Specialist', optionGroup: "Contracted Service Providers"},
-    {text: 'IT support contract', optionGroup: "Contracted Service Providers"},
-    {
-        text: 'Janitorial Services, snow plowing and trash/recycling removal',
-        optionGroup: "Contracted Service Providers"
-    },
-    {text: 'Nurse/Medical Provider', optionGroup: "Contracted Service Providers"},
+
     {text: 'Laptop replacements', optionGroup: "Equipment"},
     {text: 'iPad replacements', optionGroup: "Equipment"},
     {text: 'Auxiliary Computer Supplies Replacement', optionGroup: "Equipment"},
     {text: 'New Technology Purchases', optionGroup: "Equipment"},
     {text: 'Required Clinical Support Services Equipment', optionGroup: "Equipment"},
+
     {text: 'Bldg. Insurance', optionGroup: "Operational Costs"},
     {text: 'Bldg. Depreciation', optionGroup: "Operational Costs"},
     {text: 'Bldg. Improvements', optionGroup: "Operational Costs"},
     {text: 'Bldg. Repairs', optionGroup: "Operational Costs"},
-    {text: 'Maintenance, General', optionGroup: "Operational Costs"},
+    {text: 'Maintenance, General (cannot include FTE%)', optionGroup: "Operational Costs"},
     {text: 'Maintenance, Specific', optionGroup: "Operational Costs"},
     {text: 'Staff Recruitment', optionGroup: "Operational Costs"},
     {text: 'Postage', optionGroup: "Operational Costs"},
@@ -49,6 +41,15 @@ const groupedExpenseOptions = [
     {text: 'Rubbish/Recycling', optionGroup: "Operational Costs"},
     {text: 'Administration Fees', optionGroup: "Operational Costs"},
     {text: 'Agency Fees', optionGroup: "Operational Costs"},
+    {text: 'Utilities', optionGroup: "Operational Costs"},
+    {text: 'Business Cell Phone(only)', optionGroup: "Operational Costs"},
+    {text: 'Internet', optionGroup: "Operational Costs"},
+    {text: 'Landline', optionGroup: "Operational Costs"},
+    {text: 'Rent (school facilities only)', optionGroup: "Operational Costs"},
+    {text: 'Mortgage', optionGroup: "Operational Costs"},
+    {text: 'Property Taxes', optionGroup: "Operational Costs"},
+    {text: 'Property Liability Insurance', optionGroup: "Operational Costs"},
+
 ];
 
 

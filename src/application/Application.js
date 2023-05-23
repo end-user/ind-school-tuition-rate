@@ -9,6 +9,7 @@ import Benefits from "./Benefits";
 import OffsettingRevenue from "./OffsettingRevenue";
 import Summary from "./Summary";
 import AllowableExpenses from "./AllowableExpenses";
+import ContractedServiceProviders from "./ContractedServiceProviders";
 // import {Benefit, Revenue, StaffSalary} from "../generated-sources/data.ts"
 
 const Application = () => {
@@ -39,6 +40,7 @@ const Application = () => {
         'actual': '611',
         'budget': '680'
     }])
+    const [serviceData, setServiceData] = useState([])
     const [benefitData, setBenefitData] = useState([
         {benefit:'FICA',actual:450,budget:500}
     ])
@@ -65,10 +67,13 @@ const Application = () => {
                         <Nav.Link eventKey="four">Allowable Expenses</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="five">Offsetting Revenue</Nav.Link>
+                        <Nav.Link eventKey="five">Contracted Services</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="six">Summary</Nav.Link>
+                        <Nav.Link eventKey="six">Offsetting Revenue</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="seven">Summary</Nav.Link>
                     </Nav.Item></Nav>
             </Card.Header>
             <Card.Body>
@@ -86,14 +91,18 @@ const Application = () => {
                         <AllowableExpenses data={expenseData} setData={setExpenseData}/>
                     </Tab.Pane>
                     <Tab.Pane eventKey="five">
-                        <OffsettingRevenue data={revenueData} setData={setApplicantData}/>
+                        <ContractedServiceProviders data={serviceData} setData={setServiceData}/>
                     </Tab.Pane>
                     <Tab.Pane eventKey="six">
+                        <OffsettingRevenue data={revenueData} setData={setRevenueData}/>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="seven">
                         <Summary data={{
                             'applicantData': applicantData,
                             'salaryData': salaryData,
                             'benefitData': benefitData,
                             'expenseData': expenseData,
+                            'serviceData': serviceData,
                             'revenueData': revenueData
                         }}/>
                     </Tab.Pane>

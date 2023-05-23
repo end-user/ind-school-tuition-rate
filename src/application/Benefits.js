@@ -2,9 +2,10 @@ import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import React, {useState} from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faQuestionCircle, faXmark} from "@fortawesome/free-solid-svg-icons";
 import RateApplicationTable from "./components/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
+import {Tooltip} from "react-tippy";
 
 const Benefits = ({data, setData}) => {
     const deleteRow = async (id) => {
@@ -32,10 +33,12 @@ const Benefits = ({data, setData}) => {
         'Group Health/Dental Insurance',
         'Group Life Insurance',
         'Disability Insurance',
+        'Staff Liability Insurance',
         'Pension',
         'Profits Sharing',
-        'Tuition',
+        'Staff Professional Development (for all staff members)',
         'Employee Gifts/Awards/Banquets',
+
     ])
 
     const cols = [{
@@ -73,8 +76,20 @@ const Benefits = ({data, setData}) => {
                         <Card>
                             <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                 <Form.Group as={Row}>
-                                    <Col sm={3}>
+                                    <Col sm={4}>
                                         <Form.Label>Benefit</Form.Label>
+                                        <Tooltip
+                                            position="right"
+                                            trigger="click"
+                                            html={(
+                                                <div className="col-8 card border-dark">
+                                                    <div className={'card-body'}>
+                                                        <p>This is an example of some pop-up help text.</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        > <FontAwesomeIcon icon={faQuestionCircle} className="text-success"/>
+                                        </Tooltip>
                                         <Field name="benefit"
                                                as={Form.Select}
                                                required
@@ -84,8 +99,9 @@ const Benefits = ({data, setData}) => {
                                                 o => <option key={o}>{o}</option>
                                             )}
                                         </Field>
+
                                     </Col>
-                                    <Col sm={2} className={'offset-sm-5'}>
+                                    <Col sm={2} className={'offset-sm-4'}>
                                         <Form.Label>FY22 Actual</Form.Label>
                                         <InputGroup>
                                             <InputGroup.Text>$</InputGroup.Text>
