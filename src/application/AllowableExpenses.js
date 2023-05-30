@@ -34,7 +34,7 @@ const groupedExpenseOptions = [
     {text: 'Bldg. Improvements', optionGroup: "Operational Costs"},
     {text: 'Bldg. Repairs', optionGroup: "Operational Costs"},
     {text: 'Maintenance, General (cannot include FTE%)', optionGroup: "Operational Costs"},
-    {text: 'Maintenance, Specific', optionGroup: "Operational Costs"},
+    {text: 'Maintenance, Specific (cannot include FTE%)', optionGroup: "Operational Costs"},
     {text: 'Staff Recruitment', optionGroup: "Operational Costs"},
     {text: 'Postage', optionGroup: "Operational Costs"},
     {text: 'Snow Removal', optionGroup: "Operational Costs"},

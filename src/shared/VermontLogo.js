@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent as StateLogo } from './VT_AOE.svg'
+import { ReactComponent as StateLogo } from '../VT_AOE.svg'
 import { Link } from 'react-router-dom'
 
 export default function VermontLogo() {

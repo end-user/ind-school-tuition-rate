@@ -14,10 +14,10 @@ const Summary = ({data}) => {
     // deduct medicaid, unencumbered, transport only
     window.testData = data;
     let summary = {
-        salaries: data.salaryData.reduce(aggregateData,s),
-        benefits: data.benefitData.reduce(aggregateData,s),
-        expenses: data.expenseData.reduce(aggregateData,s),
-        services: data.serviceData.reduce(aggregateData,s),
+        salaries: data.salaryData.reduce(aggregateData, s),
+        benefits: data.benefitData.reduce(aggregateData, s),
+        expenses: data.expenseData.reduce(aggregateData, s),
+        services: data.serviceData.reduce(aggregateData, s),
         deductible: data.revenueData
             .filter(({revenue}) => revenue.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
             .reduce(aggregateData, s),

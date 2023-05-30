@@ -27,10 +27,6 @@ const StaffSalaries = ({data, setData}) => {
                 accessor: 'position', // accessor is the "key" in the data
             },
             {
-                Header: 'Category',
-                accessor: 'category',
-            },
-            {
                 Header: 'Status',
                 accessor: 'status',
             },
@@ -68,10 +64,9 @@ const StaffSalaries = ({data, setData}) => {
                 onSubmit={addRow}
                 initialValues={{
                     'position': '',
-                    'category': '',
                     'status': 'filled',
                     'speedu': 0,
-                    'fte': '',
+                    'fte': 100,
                     'actual': 0,
                     'budget': 0
                 }}
@@ -113,18 +108,6 @@ const StaffSalaries = ({data, setData}) => {
                                                 <option>Community Based Learning Instructor</option>
                                             </Field>
                                         </Col>
-                                        <Form.Label column={true} sm={'1'}
-                                                    className={"offset-sm-2"}>Category</Form.Label>
-                                        <Col sm={'3'}>
-                                            <Field name={"category"}
-                                                   as={Form.Select}
-                                                   required
-                                            >
-                                                <option hidden value=''>Choose a Category</option>
-                                                <option>staff</option>
-                                                <option>administration</option>
-                                            </Field>
-                                        </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
                                         <Form.Label column={true}>Status</Form.Label>
@@ -152,14 +135,13 @@ const StaffSalaries = ({data, setData}) => {
 
                                         <Form.Label column={true}>FTE</Form.Label>
                                         <Col>
-                                            <Field name="fte"
-                                                   as={Form.Select}
-                                                   required
-                                            >
-                                                <option hidden value=''>FTE</option>
-                                                <option>yes</option>
-                                                <option>no</option>
-                                            </Field>
+                                            <InputGroup>
+                                                <Field as={"input"}
+                                                       className={"form-control"}
+                                                       name="fte"
+                                                       type="number"/>
+                                                <InputGroup.Text>%</InputGroup.Text>
+                                            </InputGroup>
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
