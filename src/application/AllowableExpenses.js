@@ -2,9 +2,9 @@ import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import SelectDropdownWithOptionGroups from "./components/SelectDropdownWithOptionGroups"
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
-import RateApplicationTable from "./components/RateApplicationTable";
+import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
 
 
@@ -16,7 +16,7 @@ const groupedExpenseOptions = [
 
     {text: 'Student Educational Supplies', optionGroup: "Supplies"},
     {text: 'Curriculum Materials', optionGroup: "Supplies"},
-    {text: 'Special Education Services', optionGroup: "Supplies"},
+    {text: 'Special Education Supplies', optionGroup: "Supplies"},
     {text: 'Household supplies', optionGroup: "Supplies"},
     {text: 'Student Breakfast/lunch supplies', optionGroup: "Supplies"},
     {text: 'Art/music/electives', optionGroup: "Supplies"},
@@ -89,8 +89,8 @@ const AllowableExpenses = ({data, setData}) => {
             id: 'delete',
             accessor: 'delete',
             Cell: (tableProps) => (
-                <Button onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faXmark}/>
+                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                    <FontAwesomeIcon icon={faSquareXmark} />
                 </Button>
             ),
         },

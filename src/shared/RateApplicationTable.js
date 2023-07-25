@@ -1,27 +1,45 @@
-import React from "react";
-import {useTable} from "react-table";
+import React,{useState,useEffect} from "react";
+import {useReactTable} from "@tanstack/react-table";
 import Table from "react-bootstrap/Table";
 
 /**
  * Provides a table view for data
  * @param columns Array of Columns
- * @param data
+ * @param data can be either a simple array or promise
  * @constructor
  * @see <a href="https://react-table-v7.tanstack.com/docs/api/useTable#column-options">Column</a>
  */
 const RateApplicationTable = ({columns, data}) => {
-    // Use the state and functions returned from useTable to build your UI
+    const [tableData, setTableData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (Array.isArray(data)) {
+            setTableData(data);
+            setLoading(false);
+        } else if (data instanceof Promise) {
+            data.then((fetchedData) => {
+                setTableData(fetchedData);
+                setLoading(false);
+            });
+        }
+    }, [data]);
+
+
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({
+    } = useReactTable({
         columns,
-        data,
+        data:tableData,
     })
 
+    if (loading){
+        return (<div>loading...</div>)
+    }
 
     return (
         <Table {...getTableProps()}>

@@ -32,8 +32,8 @@ const Application = () => {
         'fte': true,
         'speedu': 0,
         'pay': '60000',
-        'actual': '63535',
-        'budget': '63535'
+        'actual': '53535',
+        'budget': '55690'
     }])
     const [expenseData, setExpenseData] = useState([{
         'expense': 'Postage',

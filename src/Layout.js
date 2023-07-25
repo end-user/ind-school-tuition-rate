@@ -1,15 +1,18 @@
 import React from "react";
-import {Breadcrumb, Card, Dropdown} from 'react-bootstrap'
+import {Breadcrumb, Dropdown} from 'react-bootstrap'
 import {Link, Route, Routes} from "react-router-dom"
 // import Survey from "./component/survey/Survey";
-import Application from "./application/Application";
+import Application from "./application/Application"
 import VermontLogo from './shared/VermontLogo'
-import Page404 from './Page404'
+import Home from './Home'
 // MSAL Auth
 import {SignInButton} from "./component/survey/SignInButton";
-import {AuthenticatedTemplate, UnauthenticatedTemplate, useIsAuthenticated} from "@azure/msal-react";
+import {AuthenticatedTemplate, UnauthenticatedTemplate} from "@azure/msal-react";
 import {SignOutButton} from "./component/survey/SignOutButton";
-import ProfileContent from "./component/survey/ProfileContent";
+import Reapply from "./reapply/Reapply";
+import SetCOLA from "./admin/SetCOLA";
+import ReviewApplications from "./admin/ReviewApplications";
+import AddUser from "./admin/AddUser";
 
 const Layout = () => {
     // Authentication credentials on highest level component
@@ -29,13 +32,10 @@ const Layout = () => {
                                     <Dropdown.Item as={Link} style={{textDecoration: "none"}} className="pr-3"
                                                    to={"/"}>Home</Dropdown.Item>
                                     <Dropdown.Item as={Link} style={{textDecoration: "none"}} className="pr-3"
-                                                   to={"/process"}>Review Surveys</Dropdown.Item>
-                                    <Dropdown.Item as={Link} style={{textDecoration: "none"}} className="pr-3"
-                                                   to={"/studentsearch"}>Student Search</Dropdown.Item>
-                                    <Dropdown.Item as={Link} style={{textDecoration: "none"}} className="pr-3"
-                                                   to={"/languagetable"}>ISO Languages</Dropdown.Item>
+                                                   to={"/apply"}>Apply</Dropdown.Item>
+
                                     <Dropdown.Divider/>
-                                    <ProfileContent/>
+                                    {/*<ProfileContent/>*/}
                                     <Dropdown.Divider/>
                                     <Dropdown.Item as={Link} style={{textDecoration: "none"}} className="pr-3"
                                                    to={"#"}>
@@ -52,8 +52,14 @@ const Layout = () => {
                     </Breadcrumb>
                 </div>
                 <Routes>
-
-                    <Route path="/" exact element={<Application/>}/>
+                    <Route path="/" exact element={<Home/>}/>
+                    <Route path="/apply" exact element={<Application/>}/>
+                    <Route path="/reapply/:id?" exact element={<Reapply/>}/>
+                    <Route path="/admin">
+                        <Route path="cola" exact element={<SetCOLA/>}/>
+                        <Route path="review" exact element={<ReviewApplications/>}/>
+                        <Route path="addUser" exact element={<AddUser/>}/>
+                    </Route>
                 </Routes>
                 {/*<UnauthenticatedTemplate>*/}
                 {/*    <Routes>*/}

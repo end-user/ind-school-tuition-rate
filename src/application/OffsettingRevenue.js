@@ -2,11 +2,12 @@ import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import React from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faQuestionCircle, faXmark} from "@fortawesome/free-solid-svg-icons";
-import RateApplicationTable from "./components/RateApplicationTable";
+import {faQuestionCircle, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
+import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
 import {Tooltip} from "react-tippy";
-
+//todo: add text for both donations
+//todo: add other
 const OffsettingRevenue = ({data, setData}) => {
     const deleteRow = async (id) => {
         //todo this will be a call to the server
@@ -42,8 +43,8 @@ const OffsettingRevenue = ({data, setData}) => {
             id: 'delete',
             accessor: 'delete',
             Cell: (tableProps) => (
-                <Button onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faXmark}/>
+                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                    <FontAwesomeIcon icon={faSquareXmark} />
                 </Button>
             ),
         },

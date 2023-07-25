@@ -4,9 +4,16 @@ import React from "react";
 
 const ApplicantInfo = () => {
     return (
-        <Card.Text>Test
+        <Card className={"col-4"}>
+            <Card.Body>
+                <p>John Smith</p>
+                <h4>GREENWOOD SCHOOL</h4>[6-12]
 
-        </Card.Text>
+                <address>
+                    123 Summer St<br/>
+                    Brattleboro, VT 01100
+                </address>
+            </Card.Body></Card>
     );
 }
 

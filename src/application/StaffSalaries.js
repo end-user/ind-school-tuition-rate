@@ -2,8 +2,8 @@ import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import React from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
-import RateApplicationTable from "./components/RateApplicationTable";
+import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
+import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
 
 const StaffSalaries = ({data, setData}) => {
@@ -52,8 +52,8 @@ const StaffSalaries = ({data, setData}) => {
             id: 'delete',
             accessor: 'delete',
             Cell: (tableProps) => (
-                <Button onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faXmark}/>
+                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                    <FontAwesomeIcon icon={faSquareXmark}/>
                 </Button>
             ),
         }]
@@ -145,18 +145,7 @@ const StaffSalaries = ({data, setData}) => {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column={true}>Gen Ed Instructor</Form.Label>
-                                        <Col>
-                                            <InputGroup>
-                                                <InputGroup.Text>$</InputGroup.Text>
-                                                <Field as={"input"}
-                                                       className={"form-control"}
-                                                       name="pay"
-                                                       type="number"
-                                                       required
-                                                />
-                                            </InputGroup>
-                                        </Col>
+
                                         <Form.Label column={true}>FY22 Actual</Form.Label>
                                         <Col>
                                             <InputGroup>
@@ -191,7 +180,8 @@ const StaffSalaries = ({data, setData}) => {
                             </Card>
                         </Form>
                         <RateApplicationTable columns={cols} data={data}/>
-                    </>)
+                    </>
+                )
             }
         </Formik>
     );

@@ -1,9 +1,9 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
-import RateApplicationTable from "./components/RateApplicationTable";
+import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter";
 
 const ContractedServiceProviders = ({data, setData}) => {
@@ -55,8 +55,8 @@ const ContractedServiceProviders = ({data, setData}) => {
             id: 'delete',
             accessor: 'delete',
             Cell: (tableProps) => (
-                <Button onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faXmark}/>
+                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                    <FontAwesomeIcon icon={faSquareXmark} />
                 </Button>
             ),
         },
