@@ -1,24 +1,31 @@
 import {Form} from "react-bootstrap"
+import {OptionsWithGroup} from "../model/data";
 
-type OptionsWithGroup = [{
-    value: string,
-    text: string,
-    optionGroup: string
-}]
+type option = { value: string, text: string }
 
-const SelectDropdownWithOptionGroups = ({options, name, value, handleChange}) => {
+const SelectDropdownWithOptionGroups = ({
+                                            options,
+                                            name,
+                                            value,
+                                            handleChange
+                                        }: {
+    options: OptionsWithGroup[],
+    name: string,
+    value?: string,
+    handleChange: React.ChangeEventHandler<HTMLSelectElement>
+}) => {
 
     // pushes to a hashmap
-    const groupedOptions = {};
+    const groupedOptions = new Map<string, option[]>;
     options.forEach(option => {
-        if (!groupedOptions[option.optionGroup]) groupedOptions[option.optionGroup] = [];
-        groupedOptions[option.optionGroup].push({
-            value: option.value || option.text,
+        if (!groupedOptions.get(option.optionGroup)) groupedOptions.set(option.optionGroup, []);
+        groupedOptions.get(option.optionGroup)?.push({
+            value: option.text,
             text: option.text
         });
     });
 
-    const renderOptions = options => {
+    const renderOptions = (options: option[]) => {
         return options.map(option => {
             return (
                 <option key={option.value} value={option.value}>
@@ -45,7 +52,7 @@ const SelectDropdownWithOptionGroups = ({options, name, value, handleChange}) =>
             {Object.keys(groupedOptions).map((group, index) => {
                 return (
                     <optgroup key={index} label={group}>
-                        {renderOptions(groupedOptions[group])}
+                        {renderOptions(groupedOptions.get(group) || [])}
                     </optgroup>
                 );
             })}

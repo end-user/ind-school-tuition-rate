@@ -4,72 +4,82 @@ import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import RateApplicationTable from "../shared/RateApplicationTable";
-import {currencyFormatter} from "../services/formatter";
+import {currencyFormatter} from "../services/formatter.js";
+import {createColumnHelper} from "@tanstack/react-table";
+import {StaffSalary} from "../../target/generated-sources/ts-model-data.js";
 
-const StaffSalaries = ({data, setData}) => {
-
-    const deleteRow = async (id) => {
+const StaffSalaries = ({data, setData}: {
+    data: any[],
+    setData: React.Dispatch<React.SetStateAction<any[]>>
+}) => {
+    const columnHelper = createColumnHelper<StaffSalary>()
+    const deleteRow = async (id: number) => {
         //todo this will be a call to the server
         console.log(`delete table row ${id}`)
         const tmpData = [...data]
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values) => {
+    const addRow = async (values: any[]) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
+
     const cols =
         [
-            {
-                Header: 'Position/Title',
-                accessor: 'position', // accessor is the "key" in the data
-            },
-            {
-                Header: 'Status',
-                accessor: 'status',
-            },
-            {
-                Header: 'FTE',
-                accessor: 'fte',
-            },
-            {
-                Header: 'SpeEdu (%)',
-                accessor: 'speedu',
-            },
-            {
-                Header: 'FY22 Actual',
-                accessor: 'actual',
-                Cell: ({value}) => currencyFormatter.format(value)
-            },
-            {
-                Header: 'FY23 Budget',
-                accessor: 'budget',
-                Cell: ({value}) => currencyFormatter.format(value)
-            }, {
-            Header: '',
-            id: 'delete',
-            accessor: 'delete',
-            Cell: (tableProps) => (
-                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faSquareXmark}/>
-                </Button>
-            ),
-        }]
+            columnHelper.accessor(row => row.positionTitle, {
+                id: 'positionTitle',
+                // cell: info => <i>{info.getValue()}</i>,
+                header: 'Position/Title',
+                // footer: info => info.column.id,
+            }),
+            columnHelper.accessor(row => row.status, {
+                id: 'status',
+                header: 'Status',
+            }),
+            columnHelper.accessor(row => row.fte, {
+                id: 'fte',
+                header: 'FTE',
+            }),
+            columnHelper.accessor(row => row.speEdu, {
+                id: 'speEdu',
+                header: 'SpeEdu (%)',
+            }),
+            columnHelper.accessor(row => row.actual, {
+                id: 'actual',
+                header: 'FY22 Actual',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.accessor(row => row.budget, {
+                id: 'budget',
+                header: 'FY23 Budget',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.display({
+                id: 'delete',
+                cell: (tableProps) => (
+                    <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                        <FontAwesomeIcon icon={faSquareXmark}/>
+                    </Button>
+                ),
+            })
+        ]
 
 //todo: If status == vacant only allow budget value
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={{
-                    'position': '',
-                    'status': 'filled',
-                    'speedu': 0,
+                initialValues={[{
+                    'staffCategory': '',
+                    'status': '',
                     'fte': 100,
+                    'speEdu': 0,
+                    'positionTitle': '',
+                    'payRate': 0,
                     'actual': 0,
                     'budget': 0
-                }}
+                }]}
         >
             {
                 ({
@@ -82,7 +92,7 @@ const StaffSalaries = ({data, setData}) => {
                                     <Form.Group as={Row}>
                                         <Form.Label column={true} sm={'2'}>Position/Title</Form.Label>
                                         <Col sm={'4'}>
-                                            <Field name="position"
+                                            <Field name="positionTitle"
                                                    as={Form.Select}
                                                    required
                                             >

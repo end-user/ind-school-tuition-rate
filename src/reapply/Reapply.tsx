@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card} from "react-bootstrap";
-import {currencyFormatter, percentFormatter} from "../services/formatter";
+import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
 import {Link, useParams} from "react-router-dom";
 

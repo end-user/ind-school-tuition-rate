@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authConfig";
+import { loginRequest } from "../../authConfig.js";
 import Button from "react-bootstrap/Button";
 import axios from 'axios'
 

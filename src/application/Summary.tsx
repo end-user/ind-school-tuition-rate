@@ -1,44 +1,60 @@
-import React from 'react'
 import {Card} from "react-bootstrap";
-import {currencyFormatter, percentFormatter} from "../services/formatter";
+import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
+import {
+    AllowableExpense,
+    Benefit,
+    ContractedService,
+    Revenue,
+    StaffSalary
+} from '../../target/generated-sources/ts-model-data';
 
 const s = {count: 0, actual: 0, budget: 0}
 
-const aggregateData = (total, n) => ({
+const aggregateData = (total: any, n: any) => ({
     count: total.count + 1 || 0,
     actual: parseInt(total.actual) + parseInt(n.actual),
     budget: parseInt(total.budget) + parseInt(n.budget)
 })
-const Summary = ({data}) => {
+const Summary = ({data}: {
+    data: {
+        applicantData: any[],
+        salaryData: StaffSalary[],
+        benefitData: Benefit[],
+        expenseData: AllowableExpense[],
+        serviceData: ContractedService[],
+        revenueData: Revenue[]
+    }
+}) => {
     // deduct medicaid, unencumbered, transport only
-    window.testData = data;
+    //window.testData = data;
     let summary = {
+        applicantData: data.applicantData,
         salaries: data.salaryData.reduce(aggregateData, s),
         benefits: data.benefitData.reduce(aggregateData, s),
         expenses: data.expenseData.reduce(aggregateData, s),
         services: data.serviceData.reduce(aggregateData, s),
         deductible: data.revenueData
-            .filter(({revenue}) => revenue.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
+            .filter(({revenueSource}) => revenueSource?.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
             .reduce(aggregateData, s),
         nondeductible: data.revenueData
-            .filter(({revenue}) => !revenue.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
+            .filter(({revenueSource}) => !revenueSource?.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
             .reduce(aggregateData, s),
         revenue: data.revenueData.reduce(aggregateData, s),
-        totalActualExpense:function(){
-            return parseInt(this.salaries.actual)
-            + parseInt(this.benefits.actual)
-            + parseInt(this.expenses.actual)
-            + parseInt(this.services.actual)
+        totalActualExpense: function () {
+            return this.salaries.actual
+                + this.benefits.actual
+                + this.expenses.actual
+                + this.services.actual
         },
-        totalBudgetExpense:function(){
-            return parseInt(this.salaries.budget)
-                + parseInt(this.benefits.budget)
-                + parseInt(this.expenses.budget)
-                + parseInt(this.services.budget)
+        totalBudgetExpense: function () {
+            return this.salaries.budget
+                + this.benefits.budget
+                + this.expenses.budget
+                + this.services.budget
         }
     }
-window.sumDebug=summary
+    //window.sumDebug = summary
     return (
         <Card>
             <Card.Body>
@@ -46,7 +62,7 @@ window.sumDebug=summary
                 <Table hover className={"caption-top"}>
                     <thead>
                     <tr>
-                        <th width={1}></th>
+                        <th></th>
                         <th>Expenses</th>
                         <th className={"text-end"}>Actuals</th>
                         <th className={"text-end"}>Budgeted</th>
@@ -100,7 +116,7 @@ window.sumDebug=summary
                     </tbody>
                     <thead>
                     <tr>
-                        <th width={1}></th>
+                        <th></th>
                         <th>Revenue</th>
                         <th className={"text-end"}>Actuals</th>
                         <th className={"text-end"}>Budgeted</th>
@@ -129,11 +145,11 @@ window.sumDebug=summary
                         <td>Subtotal</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             summary.totalActualExpense()
-                            - parseInt(summary.deductible.actual)
+                            - summary.deductible.actual
                         )}</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             summary.totalBudgetExpense()
-                            - parseInt(summary.deductible.budget)
+                            - summary.deductible.budget
                         )}</td>
                     </tr>
                     </tfoot>

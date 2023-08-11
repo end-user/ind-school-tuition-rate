@@ -1,5 +1,5 @@
 import {Button, Card, Col, Form, Row,} from "react-bootstrap";
-import React, {useState} from "react";
+import {useState} from "react";
 import SchoolProvider from "../services/school-provider";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
@@ -10,7 +10,7 @@ import {createColumnHelper} from "@tanstack/react-table";
 const AddUser = () => {
     const addUser = () => {
     }
-    const deleteRow = async (id) => {
+    const deleteRow = async (id:number) => {
         //todo this will be a call to the server
         console.debug(`delete table row ${id}`)
         const tmpData = [...contacts]

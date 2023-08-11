@@ -31,31 +31,24 @@ public class RateApplication {
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
     private Set<Benefit> benefits;
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
-    private Set<Travel> travels;
+    private Set<AllowableExpense> allowableExpenses;
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
     private Set<ContractedService> contractedServices;
-    @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
-    private Set<Supply> supplies;
-    @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
-    private Set<Equipment> equipment;
-    @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
-    private Set<OperationalExpense> operationalExpenses;
 
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
     private Set<Revenue> revenues;
+
     /**
      * convenience method to return all the expenses; should provide access to sum the actuals, budget
+     *
      * @return
      */
     public Set<AbstractLedgerEntry> getExpenses() {
         return Stream.of(
                         staffSalaries,
                         benefits,
-                        travels,
-                        contractedServices,
-                        supplies,
-                        equipment,
-                        operationalExpenses
+                        allowableExpenses,
+                        contractedServices
                 )
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());

@@ -1,14 +1,17 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import SelectDropdownWithOptionGroups from "./components/SelectDropdownWithOptionGroups"
-import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
-import {currencyFormatter} from "../services/formatter";
+import {currencyFormatter} from "../services/formatter.js";
+import {createColumnHelper} from "@tanstack/react-table";
+import {AllowableExpense} from "../../target/generated-sources/ts-model-data.ts";
+import {OptionsWithGroup} from "./model/data.ts"
+import React from "react";
 
 
-const groupedExpenseOptions = [
+const groupedExpenseOptions: OptionsWithGroup[] = [
     {text: 'Staff mileage reimbursements (must be transporting students)', optionGroup: "Travel"},
     {text: 'Student transportation to and from School', optionGroup: "Travel"},
     {text: 'School bus/van annual repairs & maintenance', optionGroup: "Travel"},
@@ -52,54 +55,56 @@ const groupedExpenseOptions = [
 
 ];
 
-
 // if this were TS, could use the types <ColourOption | FlavourOption> in <Select>
-const AllowableExpenses = ({data, setData}) => {
-    const deleteRow = async (id) => {
+const AllowableExpenses = ({data, setData}: {
+    data: any[],
+    setData: React.Dispatch<React.SetStateAction<any[]>>
+}) => {
+    const columnHelper = createColumnHelper<AllowableExpense>()
+    const deleteRow = async (id: number) => {
         //todo this will be a call to the server
-        console.debug(`delete table row ${id}`)
+        console.log(`delete table row ${id}`)
         const tmpData = [...data]
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values) => {
-        console.debug('got: ', values)
+    const addRow = async (values: any[]) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
 
+
     const cols =
         [
-            {
-                Header: 'Expense',
-                accessor: 'expense', // accessor is the "key" in the data
-            },
-            {
-                Header: 'FY22 Actual',
-                accessor: 'actual',
-                Cell: ({value}) => currencyFormatter.format(value)
-            },
-            {
-                Header: 'FY23 Budget',
-                accessor: 'budget',
-                Cell: ({value}) => currencyFormatter.format(value)
-            }, {
-            Header: '',
-            id: 'delete',
-            accessor: 'delete',
-            Cell: (tableProps) => (
-                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faSquareXmark} />
-                </Button>
-            ),
-        },
+            columnHelper.accessor(row => row.expense, {
+                id: 'expense',
+                header: 'Expense',
+            }),
+            columnHelper.accessor(row => row.actual, {
+                id: 'actual',
+                header: 'FY22 Actual',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.accessor(row => row.budget, {
+                id: 'budget',
+                header: 'FY23 Budget',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.display({
+                id: 'delete',
+                cell: (tableProps) => (
+                    <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                        <FontAwesomeIcon icon={faSquareXmark}/>
+                    </Button>
+                ),
+            })
         ]
 
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={{'expense': '', 'actual': 0, 'budget': 0}}
+                initialValues={[{'expense': '', 'actual': 0, 'budget': 0}]}
         >
             {
                 ({

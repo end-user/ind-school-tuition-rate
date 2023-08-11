@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +24,6 @@ abstract class AbstractLedgerEntry {
     private RateApplication rateApplication;
 
     @OneToMany(mappedBy = "entry", orphanRemoval = true)
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
 }

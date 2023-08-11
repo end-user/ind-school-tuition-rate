@@ -1,26 +1,33 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React, {useState} from "react";
+import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
-import {currencyFormatter} from "../services/formatter";
+import {currencyFormatter} from "../services/formatter.js";
+import {createColumnHelper} from "@tanstack/react-table";
+import {ContractedService} from "../../target/generated-sources/ts-model-data.js";
 
-const ContractedServiceProviders = ({data, setData}) => {
-    const deleteRow = async (id) => {
+const ContractedServiceProviders = ({data, setData}: {
+    data: any[],
+    setData: React.Dispatch<React.SetStateAction<any[]>>
+}) => {
+    const columnHelper = createColumnHelper<ContractedService>()
+    const deleteRow = async (id: number) => {
         //todo this will be a call to the server
-        console.debug(`delete table row ${id}`)
+        console.log(`delete table row ${id}`)
         const tmpData = [...data]
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values) => {
-        console.debug('got: ', values)
+    const addRow = async (values: any[]) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-    const [options, setOptions] = useState([
+
+
+    const serviceOptions: string[] = [
         'Physical Therapist',
         'Occupational Therapist',
         'Speech Language Pathologist',
@@ -29,47 +36,41 @@ const ContractedServiceProviders = ({data, setData}) => {
         'IT support contract',
         'Janitorial Services, snow plowing and trash/recycling removal',
         'Nurse/Medical Provider',
-    ])
+    ]
 
     const cols =
         [
-            {
-                Header: 'Service',
-                accessor: 'service', // accessor is the "key" in the data
-            },
-            {
-                Header: 'FTE%',
-                accessor: 'fte',
-            },
-            {
-                Header: 'FY22 Actual',
-                accessor: 'actual',
-                Cell: ({value}) => currencyFormatter.format(value)
-            },
-            {
-                Header: 'FY23 Budget',
-                accessor: 'budget',
-                Cell: ({value}) => currencyFormatter.format(value)
-            }, {
-            Header: '',
-            id: 'delete',
-            accessor: 'delete',
-            Cell: (tableProps) => (
-                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faSquareXmark} />
-                </Button>
-            ),
-        },
+            columnHelper.accessor(row => row.service, {
+                id: 'service',
+                header: 'Service',
+            }),
+            columnHelper.accessor(row => row.actual, {
+                id: 'actual',
+                header: 'FY22 Actual',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.accessor(row => row.budget, {
+                id: 'budget',
+                header: 'FY23 Budget',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.display({
+                id: 'delete',
+                cell: (tableProps) => (
+                    <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                        <FontAwesomeIcon icon={faSquareXmark}/>
+                    </Button>
+                ),
+            })
         ]
 
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={{'service': '', 'fte': '', 'actual': '', 'budget': ''}}
+                initialValues={[{'service': '', 'actual': '', 'budget': ''}]}
         >
             {
                 ({
-                     handleChange,
                      handleSubmit,
                  }) => (
                     <>
@@ -84,12 +85,12 @@ const ContractedServiceProviders = ({data, setData}) => {
                                                    required
                                             >
                                                 <option hidden value=''>Choose a Service Provider</option>
-                                                {options.map(
+                                                {serviceOptions.map(
                                                     o => <option key={o}>{o}</option>
                                                 )}
                                             </Field>
                                         </Col>
-                                        <Col sm={2}>
+                                        {/* <Col sm={2}>
                                             <Form.Label>FTE</Form.Label>
                                             <InputGroup>
                                                 <Field as={"input"}
@@ -99,7 +100,7 @@ const ContractedServiceProviders = ({data, setData}) => {
                                                        type="number"/>
                                                 <InputGroup.Text>%</InputGroup.Text>
                                             </InputGroup>
-                                        </Col>
+                                        </Col>*/}
                                         <Col sm={2} className={'offset-sm-1'}>
                                             <Form.Label>FY22 Actual</Form.Label>
                                             <InputGroup>

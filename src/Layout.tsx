@@ -1,4 +1,3 @@
-import React from "react";
 import {Breadcrumb, Dropdown} from 'react-bootstrap'
 import {Link, Route, Routes} from "react-router-dom"
 // import Survey from "./component/survey/Survey";
@@ -9,16 +8,16 @@ import Home from './Home'
 import {SignInButton} from "./component/survey/SignInButton";
 import {AuthenticatedTemplate, UnauthenticatedTemplate} from "@azure/msal-react";
 import {SignOutButton} from "./component/survey/SignOutButton";
-import Reapply from "./reapply/Reapply";
-import SetCOLA from "./admin/SetCOLA";
-import ReviewApplications from "./admin/ReviewApplications";
-import AddUser from "./admin/AddUser";
+import Reapply from "./reapply/Reapply.tsx";
+import SetCOLA from "./admin/SetCOLA.tsx";
+import ReviewApplications from "./admin/ReviewApplications.tsx";
+import AddUser from "./admin/AddUser.tsx";
 
 const Layout = () => {
     // Authentication credentials on highest level component
     //const isAuthenticated = useIsAuthenticated()
     return (
-        <div>
+        <div>top
             <div className="container">
                 <div className="row">
                     <Breadcrumb>
@@ -52,13 +51,13 @@ const Layout = () => {
                     </Breadcrumb>
                 </div>
                 <Routes>
-                    <Route path="/" exact element={<Home/>}/>
-                    <Route path="/apply" exact element={<Application/>}/>
-                    <Route path="/reapply/:id?" exact element={<Reapply/>}/>
+                    <Route path="/"  element={<Home/>}/>
+                    <Route path="/apply" element={<Application/>}/>
+                    <Route path="/reapply/:id?" element={<Reapply/>}/>
                     <Route path="/admin">
-                        <Route path="cola" exact element={<SetCOLA/>}/>
-                        <Route path="review" exact element={<ReviewApplications/>}/>
-                        <Route path="addUser" exact element={<AddUser/>}/>
+                        <Route path="cola" element={<SetCOLA/>}/>
+                        <Route path="review" element={<ReviewApplications/>}/>
+                        <Route path="addUser" element={<AddUser/>}/>
                     </Route>
                 </Routes>
                 {/*<UnauthenticatedTemplate>*/}

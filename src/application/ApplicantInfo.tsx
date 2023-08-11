@@ -1,8 +1,9 @@
 import {Card} from "react-bootstrap";
-import React from "react";
 
 
-const ApplicantInfo = () => {
+const ApplicantInfo = ({data, setData}: { data: any[], setData: React.Dispatch<React.SetStateAction<any[]>> }) => {
+    if (data != null) {/*got data*/
+    }
     return (
         <Card className={"col-4"}>
             <Card.Body>

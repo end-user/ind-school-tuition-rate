@@ -1,7 +1,4 @@
-import React, {useState} from 'react'
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {number, object, string} from 'yup';
+import {useState} from 'react'
 import {Card, Nav, Tab} from "react-bootstrap";
 import ApplicantInfo from "./ApplicantInfo";
 import StaffSalaries from "./StaffSalaries";
@@ -10,42 +7,52 @@ import OffsettingRevenue from "./OffsettingRevenue";
 import Summary from "./Summary";
 import AllowableExpenses from "./AllowableExpenses";
 import ContractedServiceProviders from "./ContractedServiceProviders";
-// import {Benefit, Revenue, StaffSalary} from "../generated-sources/data.ts"
+import {
+    AllowableExpense,
+    Benefit,
+    ContractedService,
+    Revenue,
+    StaffSalary
+} from '../../target/generated-sources/ts-model-data';
 
 const Application = () => {
-    const schema = object()
+    /*const schema = object()
         .shape({
             name: string().required(), age: number().required(),
         })
         .required();
 
-    const {formState: {errors}, register, handleSubmit} = useForm({
+    const {
+        formState: {errors},
+        register,
+        handleSubmit
+    } = useForm({
         resolver: yupResolver(schema),
-    });
+    });*/
 
-    const [applicantData, setApplicantData] = useState([])
-    const [salaryData, setSalaryData] = useState([{
-        'id': 510,
-        'position': 'English Instructor',
-        'category': 'staff',
-        'status': 'employed',
-        'fte': true,
-        'speedu': 0,
-        'pay': '60000',
-        'actual': '53535',
-        'budget': '55690'
+    const [applicantData, setApplicantData] = useState<any[]>([])
+    const [salaryData, setSalaryData] = useState<StaffSalary[]>([{
+        id: 510,
+        staffCategory: 'staff',
+        status: 'employed',
+        fte: 1,
+        speEdu: 0,
+        positionTitle: 'English Instructor',
+        payRate: 60000,
+        actual: 53535,
+        budget: 55690
     }])
-    const [expenseData, setExpenseData] = useState([{
-        'expense': 'Postage',
-        'actual': '611',
-        'budget': '680'
+    const [expenseData, setExpenseData] = useState<AllowableExpense[]>([{
+        expense: 'Postage',
+        actual: 611,
+        budget: 680
     }])
-    const [serviceData, setServiceData] = useState([])
-    const [benefitData, setBenefitData] = useState([
-        {benefit:'FICA',actual:450,budget:500}
+    const [serviceData, setServiceData] = useState<ContractedService[]>([])
+    const [benefitData, setBenefitData] = useState<Benefit[]>([
+        {benefit: 'FICA', actual: 450, budget: 500}
     ])
-    const [revenueData, setRevenueData] = useState([
-        {revenue:'Grant',actual:1500,budget:0}
+    const [revenueData, setRevenueData] = useState<Revenue[]>([
+        {revenueSource: 'Grant', actual: 1500, budget: 0}
     ])
 
 

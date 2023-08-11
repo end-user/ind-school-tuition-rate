@@ -17,6 +17,8 @@
     <properties>
         <java.version>17</java.version>
         <hibernate.version>6.1.7.Final</hibernate.version>
+        <!-- override 1.33 that contains vulnerabilities-->
+        <snakeyaml.version>2.0</snakeyaml.version>
     </properties>
     <profiles>
         <profile>
@@ -88,6 +90,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -96,7 +103,7 @@
                 <!--captures revision info for display on the application-->
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
-                <version>5.0.0</version>
+                <version>6.0.0</version>
                 <executions>
                     <execution>
                         <id>get-the-git-infos</id>
@@ -120,6 +127,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- https://www.habarta.cz/typescript-generator/maven/typescript-generator-maven-plugin/generate-mojo.html-->
                 <groupId>cz.habarta.typescript-generator</groupId>
                 <artifactId>typescript-generator-maven-plugin</artifactId>
                 <version>3.2.1263</version>
@@ -129,6 +137,7 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
+                        <!-- 'process-classes' is after compile; the plugin needs to find the class files-->
                         <phase>process-classes</phase>
                     </execution>
                 </executions>
@@ -137,9 +146,11 @@
                     <classPatterns>
                         <pattern>gov.vermont.aoe.edqual.model.**</pattern>
                     </classPatterns>
+                    <optionalProperties>useLibraryDefinition</optionalProperties>
                     <outputKind>module</outputKind>
+                    <nullabilityDefinition>nullAndUndefinedInlineUnion</nullabilityDefinition>
                     <outputFileType>implementationFile</outputFileType>
-                    <outputFile>src/generated-sources/data.ts</outputFile>
+                    <outputFile>target/generated-sources/ts-model-data.ts</outputFile>
                 </configuration>
             </plugin>
             <plugin>

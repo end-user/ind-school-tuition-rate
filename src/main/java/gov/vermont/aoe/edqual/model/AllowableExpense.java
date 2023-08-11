@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "contracted_service")
-public class ContractedService extends AbstractLedgerEntry {
-    private String service;
-    private Float fte;
+@Table(name = "Expenses")
+public class AllowableExpense extends AbstractLedgerEntry{
+    private String expense;
+    private String type;
 }

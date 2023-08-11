@@ -4,57 +4,61 @@ import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import RateApplicationTable from "../shared/RateApplicationTable";
-import {currencyFormatter} from "../services/formatter";
+import {currencyFormatter} from "../services/formatter.js";
+import {createColumnHelper} from "@tanstack/react-table";
+import {Revenue} from "../../target/generated-sources/ts-model-data.js";
 import {Tooltip} from "react-tippy";
-//todo: add text for both donations
-//todo: add other
-const OffsettingRevenue = ({data, setData}) => {
-    const deleteRow = async (id) => {
+
+const OffsettingRevenue = ({data, setData}: {
+    data: any[],
+    setData: React.Dispatch<React.SetStateAction<any[]>>
+}) => {
+    const columnHelper = createColumnHelper<Revenue>()
+    const deleteRow = async (id: number) => {
         //todo this will be a call to the server
-        console.debug(`delete table row ${id}`)
+        console.log(`delete table row ${id}`)
         const tmpData = [...data]
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values) => {
-        console.debug('got: ', values)
+    const addRow = async (values: any[]) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
 
+
     const cols =
         [
-            {
-                Header: 'Revenue',
-                accessor: 'revenue', // accessor is the "key" in the data
-            },
-            {
-                Header: 'FY22 Actual',
-                accessor: 'actual',
-                Cell: ({value}) => currencyFormatter.format(value)
-            },
-            {
-                Header: 'FY23 Budget',
-                accessor: 'budget',
-                Cell: ({value}) => currencyFormatter.format(value)
-            }, {
-            Header: '',
-            id: 'delete',
-            accessor: 'delete',
-            Cell: (tableProps) => (
-                <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
-                    <FontAwesomeIcon icon={faSquareXmark} />
-                </Button>
-            ),
-        },
+            columnHelper.accessor(row => row.revenueSource, {
+                id: 'revenueSource',
+                header: 'Revenue Source',
+            }),
+            columnHelper.accessor(row => row.actual, {
+                id: 'actual',
+                header: 'FY22 Actual',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.accessor(row => row.budget, {
+                id: 'budget',
+                header: 'FY23 Budget',
+                cell: value => currencyFormatter.format(value.getValue() || 0)
+            }),
+            columnHelper.display({
+                id: 'delete',
+                cell: (tableProps) => (
+                    <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
+                        <FontAwesomeIcon icon={faSquareXmark}/>
+                    </Button>
+                ),
+            })
         ]
 
 
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={{'revenue': '', 'actual': 0, 'budget': 0}}
+                initialValues={[{'revenueSource': '', 'actual': 0, 'budget': 0}]}
         >
             {
                 ({
@@ -85,7 +89,7 @@ const OffsettingRevenue = ({data, setData}) => {
                                                 )}
                                             > <FontAwesomeIcon icon={faQuestionCircle} className="text-success"/>
                                             </Tooltip>
-                                            <Field name="revenue"
+                                            <Field name="revenueSource"
                                                    as={Form.Select}
                                                    required
                                             >

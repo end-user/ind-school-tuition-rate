@@ -1,4 +1,4 @@
-import React from 'react'
+// @ts-ignore
 import { ReactComponent as StateLogo } from '../VT_AOE.svg'
 import { Link } from 'react-router-dom'
 
