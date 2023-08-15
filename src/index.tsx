@@ -13,7 +13,6 @@ axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
 if (localStorage.getItem("msalIdToken") != null) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("msalIdToken")}`
 }
-console.log('found ',document.getElementById('content'))
 ReactDOM.createRoot(document.getElementById('content')!).render(
     <MsalProvider instance={msalInstance}>
         <BrowserRouter>

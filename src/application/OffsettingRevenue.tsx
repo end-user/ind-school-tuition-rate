@@ -8,7 +8,7 @@ import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {Revenue} from "../../target/generated-sources/ts-model-data.js";
 import {Tooltip} from "react-tippy";
-
+import type {LedgerEntry} from "./model/data.d.ts"
 const OffsettingRevenue = ({data, setData}: {
     data: any[],
     setData: React.Dispatch<React.SetStateAction<any[]>>
@@ -21,12 +21,15 @@ const OffsettingRevenue = ({data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: any[]) => {
+    const addRow = async (values: Values) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-
+    type Values = LedgerEntry & {
+        revenueSource: string
+    }
+    const initialValues: Values = {revenueSource: '', actual: 0, budget: 0}
 
     const cols =
         [
@@ -58,7 +61,7 @@ const OffsettingRevenue = ({data, setData}: {
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={[{'revenueSource': '', 'actual': 0, 'budget': 0}]}
+                initialValues={initialValues}
         >
             {
                 ({

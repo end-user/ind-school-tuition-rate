@@ -7,7 +7,7 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {ContractedService} from "../../target/generated-sources/ts-model-data.js";
-
+import type {LedgerEntry} from "./model/data.d.ts"
 const ContractedServiceProviders = ({data, setData}: {
     data: any[],
     setData: React.Dispatch<React.SetStateAction<any[]>>
@@ -20,12 +20,15 @@ const ContractedServiceProviders = ({data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: any[]) => {
+    const addRow = async (values: Values) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-
+    type Values = LedgerEntry & {
+        service: string
+    }
+    const initialValues: Values = {service: '', actual: 0, budget: 0}
 
     const serviceOptions: string[] = [
         'Physical Therapist',
@@ -67,7 +70,7 @@ const ContractedServiceProviders = ({data, setData}: {
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={[{'service': '', 'actual': '', 'budget': ''}]}
+                initialValues={initialValues}
         >
             {
                 ({
@@ -76,6 +79,7 @@ const ContractedServiceProviders = ({data, setData}: {
                     <>
                         <Form onSubmit={handleSubmit}>
                             <Card>
+                                <Card.Header>Rule 2232 (1) (B)(C)</Card.Header>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                     <Form.Group as={Row}>
                                         <Col sm={5}>

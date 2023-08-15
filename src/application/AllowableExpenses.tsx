@@ -7,51 +7,59 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {AllowableExpense} from "../../target/generated-sources/ts-model-data.ts";
-import {OptionsWithGroup} from "./model/data.ts"
+import type {LedgerEntry, OptionsWithGroup} from "./model/data.d.ts"
 import React from "react";
 
 
+const groupLabel: {
+    [key: string]: string
+} = {
+    'travel': "Travel - Rule 2232 (1) (F)",
+    'supplies': "Supplies - Rule 2232 (1) (E)",
+    'equipment': "Equipment - Rule 2232 (1) (E)",
+    'operational': "Operational Costs - Rule 2232 (1) (D)(G)(H)(I)(J)"
+}
 const groupedExpenseOptions: OptionsWithGroup[] = [
-    {text: 'Staff mileage reimbursements (must be transporting students)', optionGroup: "Travel"},
-    {text: 'Student transportation to and from School', optionGroup: "Travel"},
-    {text: 'School bus/van annual repairs & maintenance', optionGroup: "Travel"},
-    {text: 'School bus/van annual inspection, gasoline & oil', optionGroup: "Travel"},
+    {text: 'Staff mileage reimbursements (must be transporting students)', optionGroup: groupLabel['travel']},
+    {text: 'Student transportation to and from School', optionGroup: groupLabel['travel']},
+    {text: 'School bus/van annual repairs & maintenance', optionGroup: groupLabel['travel']},
+    {text: 'School bus/van annual inspection, gasoline & oil', optionGroup: groupLabel['travel']},
 
-    {text: 'Student Educational Supplies', optionGroup: "Supplies"},
-    {text: 'Curriculum Materials', optionGroup: "Supplies"},
-    {text: 'Special Education Supplies', optionGroup: "Supplies"},
-    {text: 'Household supplies', optionGroup: "Supplies"},
-    {text: 'Student Breakfast/lunch supplies', optionGroup: "Supplies"},
-    {text: 'Art/music/electives', optionGroup: "Supplies"},
-    {text: 'Physical Education Supplies', optionGroup: "Supplies"},
-    {text: 'Community Based Academic Supplies', optionGroup: "Supplies"},
+    {text: 'Student Educational Supplies', optionGroup: groupLabel['supplies']},
+    {text: 'Curriculum Materials', optionGroup: groupLabel['supplies']},
+    {text: 'Special Education Supplies', optionGroup: groupLabel['supplies']},
+    {text: 'Household supplies', optionGroup: groupLabel['supplies']},
+    {text: 'Student Breakfast/lunch supplies', optionGroup: groupLabel['supplies']},
+    {text: 'Art/music/electives', optionGroup: groupLabel['supplies']},
+    {text: 'Physical Education Supplies', optionGroup: groupLabel['supplies']},
+    {text: 'Community Based Academic Supplies', optionGroup: groupLabel['supplies']},
 
-    {text: 'Laptop replacements', optionGroup: "Equipment"},
-    {text: 'iPad replacements', optionGroup: "Equipment"},
-    {text: 'Auxiliary Computer Supplies Replacement', optionGroup: "Equipment"},
-    {text: 'New Technology Purchases', optionGroup: "Equipment"},
-    {text: 'Required Clinical Support Services Equipment', optionGroup: "Equipment"},
+    {text: 'Laptop replacements', optionGroup: groupLabel['equipment']},
+    {text: 'iPad replacements', optionGroup: groupLabel['equipment']},
+    {text: 'Auxiliary Computer Supplies Replacement', optionGroup: groupLabel['equipment']},
+    {text: 'New Technology Purchases', optionGroup: groupLabel['equipment']},
+    {text: 'Required Clinical Support Services Equipment', optionGroup: groupLabel['equipment']},
 
-    {text: 'Bldg. Insurance', optionGroup: "Operational Costs"},
-    {text: 'Bldg. Depreciation', optionGroup: "Operational Costs"},
-    {text: 'Bldg. Improvements', optionGroup: "Operational Costs"},
-    {text: 'Bldg. Repairs', optionGroup: "Operational Costs"},
-    {text: 'Maintenance, General (cannot include FTE%)', optionGroup: "Operational Costs"},
-    {text: 'Maintenance, Specific (cannot include FTE%)', optionGroup: "Operational Costs"},
-    {text: 'Staff Recruitment', optionGroup: "Operational Costs"},
-    {text: 'Postage', optionGroup: "Operational Costs"},
-    {text: 'Snow Removal', optionGroup: "Operational Costs"},
-    {text: 'Rubbish/Recycling', optionGroup: "Operational Costs"},
-    {text: 'Administration Fees', optionGroup: "Operational Costs"},
-    {text: 'Agency Fees', optionGroup: "Operational Costs"},
-    {text: 'Utilities', optionGroup: "Operational Costs"},
-    {text: 'Business Cell Phone(only)', optionGroup: "Operational Costs"},
-    {text: 'Internet', optionGroup: "Operational Costs"},
-    {text: 'Landline', optionGroup: "Operational Costs"},
-    {text: 'Rent (school facilities only)', optionGroup: "Operational Costs"},
-    {text: 'Mortgage', optionGroup: "Operational Costs"},
-    {text: 'Property Taxes', optionGroup: "Operational Costs"},
-    {text: 'Property Liability Insurance', optionGroup: "Operational Costs"},
+    {text: 'Bldg. Insurance', optionGroup: groupLabel['operational']},
+    {text: 'Bldg. Depreciation', optionGroup: groupLabel['operational']},
+    {text: 'Bldg. Improvements', optionGroup: groupLabel['operational']},
+    {text: 'Bldg. Repairs', optionGroup: groupLabel['operational']},
+    {text: 'Maintenance, General (cannot include FTE%)', optionGroup: groupLabel['operational']},
+    {text: 'Maintenance, Specific (cannot include FTE%)', optionGroup: groupLabel['operational']},
+    {text: 'Staff Recruitment', optionGroup: groupLabel['operational']},
+    {text: 'Postage', optionGroup: groupLabel['operational']},
+    {text: 'Snow Removal', optionGroup: groupLabel['operational']},
+    {text: 'Rubbish/Recycling', optionGroup: groupLabel['operational']},
+    {text: 'Administration Fees', optionGroup: groupLabel['operational']},
+    {text: 'Agency Fees', optionGroup: groupLabel['operational']},
+    {text: 'Utilities', optionGroup: groupLabel['operational']},
+    {text: 'Business Cell Phone(only)', optionGroup: groupLabel['operational']},
+    {text: 'Internet', optionGroup: groupLabel['operational']},
+    {text: 'Landline', optionGroup: groupLabel['operational']},
+    {text: 'Rent (school facilities only)', optionGroup: groupLabel['operational']},
+    {text: 'Mortgage', optionGroup: groupLabel['operational']},
+    {text: 'Property Taxes', optionGroup: groupLabel['operational']},
+    {text: 'Property Liability Insurance', optionGroup: groupLabel['operational']},
 
 ];
 
@@ -68,7 +76,7 @@ const AllowableExpenses = ({data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: any[]) => {
+    const addRow = async (values: Values) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
@@ -100,11 +108,14 @@ const AllowableExpenses = ({data, setData}: {
                 ),
             })
         ]
-
+    type Values = LedgerEntry & {
+        expense: string
+    }
+    const initialValues: Values = {expense: '', actual: 0, budget: 0}
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={[{'expense': '', 'actual': 0, 'budget': 0}]}
+                initialValues={initialValues}
         >
             {
                 ({

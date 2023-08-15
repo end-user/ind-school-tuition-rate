@@ -14,6 +14,7 @@ import {
     Revenue,
     StaffSalary
 } from '../../target/generated-sources/ts-model-data';
+import Assurances from "./Assurances.tsx";
 
 const Application = () => {
     /*const schema = object()
@@ -30,7 +31,7 @@ const Application = () => {
         resolver: yupResolver(schema),
     });*/
 
-    const [applicantData, setApplicantData] = useState<any[]>([])
+    const [applicantData] = useState<any[]>([])
     const [salaryData, setSalaryData] = useState<StaffSalary[]>([{
         id: 510,
         staffCategory: 'staff',
@@ -56,54 +57,61 @@ const Application = () => {
     ])
 
 
-    return (<Tab.Container defaultActiveKey={'first'}>
+    return (<Tab.Container defaultActiveKey={'applicantInfo'}>
         <Card>
             <Card.Header>
                 <Card.Title>Tuition Rate Application</Card.Title>
                 <Nav variant={'tabs'}>
                     <Nav.Item>
-                        <Nav.Link eventKey="first">Applicant Info</Nav.Link>
+                        <Nav.Link eventKey="applicantInfo">Applicant Info</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="second">Staff Salaries</Nav.Link>
+                        <Nav.Link eventKey="assurances">Assurances</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="third">Benefits</Nav.Link>
+                        <Nav.Link eventKey="staffSalaries">Staff Salaries</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="four">Allowable Expenses</Nav.Link>
+                        <Nav.Link eventKey="benefits">Benefits</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="five">Contracted Services</Nav.Link>
+                        <Nav.Link eventKey="allowableExpenses">Allowable Expenses</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="six">Offsetting Revenue</Nav.Link>
+                        <Nav.Link eventKey="contractedServices">Contracted Services</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="seven">Summary</Nav.Link>
-                    </Nav.Item></Nav>
+                        <Nav.Link eventKey="offsettingRevenue">Offsetting Revenue</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="summary">Summary</Nav.Link>
+                    </Nav.Item>
+                </Nav>
             </Card.Header>
             <Card.Body>
                 <Tab.Content>
-                    <Tab.Pane eventKey="first">
-                        <ApplicantInfo data={applicantData} setData={setApplicantData}/>
+                    <Tab.Pane eventKey="applicantInfo">
+                        <ApplicantInfo data={applicantData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="second">
+                    <Tab.Pane eventKey="assurances">
+                        <Assurances/>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="staffSalaries">
                         <StaffSalaries data={salaryData} setData={setSalaryData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="third">
+                    <Tab.Pane eventKey="benefits">
                         <Benefits data={benefitData} setData={setBenefitData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="four">
+                    <Tab.Pane eventKey="allowableExpenses">
                         <AllowableExpenses data={expenseData} setData={setExpenseData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="five">
+                    <Tab.Pane eventKey="contractedServices">
                         <ContractedServiceProviders data={serviceData} setData={setServiceData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="six">
+                    <Tab.Pane eventKey="offsettingRevenue">
                         <OffsettingRevenue data={revenueData} setData={setRevenueData}/>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="seven">
+                    <Tab.Pane eventKey="summary">
                         <Summary data={{
                             'applicantData': applicantData,
                             'salaryData': salaryData,

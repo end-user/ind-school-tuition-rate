@@ -7,6 +7,7 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {StaffSalary} from "../../target/generated-sources/ts-model-data.js";
+import type {LedgerEntry} from "./model/data.d.ts"
 
 const StaffSalaries = ({data, setData}: {
     data: any[],
@@ -20,12 +21,29 @@ const StaffSalaries = ({data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: any[]) => {
+    const addRow = async (values: Values) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-
+    type Values = LedgerEntry & {
+        staffCategory: string
+        status: string
+        fte: number
+        speEdu: number
+        positionTitle: string
+        payRate: number
+    }
+    const initialValues: Values = {
+        staffCategory: '',
+        status: '',
+        fte: 100,
+        speEdu: 0,
+        positionTitle: '',
+        payRate: 0,
+        actual: 0,
+        budget: 0
+    }
     const cols =
         [
             columnHelper.accessor(row => row.positionTitle, {
@@ -70,16 +88,7 @@ const StaffSalaries = ({data, setData}: {
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
-                initialValues={[{
-                    'staffCategory': '',
-                    'status': '',
-                    'fte': 100,
-                    'speEdu': 0,
-                    'positionTitle': '',
-                    'payRate': 0,
-                    'actual': 0,
-                    'budget': 0
-                }]}
+                initialValues={initialValues}
         >
             {
                 ({
@@ -88,6 +97,7 @@ const StaffSalaries = ({data, setData}: {
                     <>
                         <Form onSubmit={handleSubmit}>
                             <Card>
+                                <Card.Header>Rule 2232 (1)(A)</Card.Header>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                     <Form.Group as={Row}>
                                         <Form.Label column={true} sm={'2'}>Position/Title</Form.Label>

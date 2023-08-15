@@ -1,4 +1,3 @@
-import React from 'react'
 import {Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
@@ -47,7 +46,7 @@ const Reapply = ({data = sample}) => {
             <Card>
                 <Card.Body>
                     <Card.Title>Application <small>For school [...]</small></Card.Title>
-                    <Card.Text><h3><i>ineligible</i></h3>: [...] has reapplied for continued tuition rate with COLA
+                    <Card.Text><i>ineligible</i>: [...] has reapplied for continued tuition rate with COLA
                         increase for 3 of 3 years. A new tuition rate application must be made this year. Please
                         <Link to="/apply"> continue -&gt;</Link>
                     </Card.Text>

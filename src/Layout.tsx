@@ -17,7 +17,7 @@ const Layout = () => {
     // Authentication credentials on highest level component
     //const isAuthenticated = useIsAuthenticated()
     return (
-        <div>top
+        <div>
             <div className="container">
                 <div className="row">
                     <Breadcrumb>

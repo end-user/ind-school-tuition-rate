@@ -3,6 +3,10 @@ import {OptionsWithGroup} from "../model/data";
 
 type option = { value: string, text: string }
 
+interface groupedOptions {
+    [key: string]: option[]
+}
+
 const SelectDropdownWithOptionGroups = ({
                                             options,
                                             name,
@@ -12,17 +16,20 @@ const SelectDropdownWithOptionGroups = ({
     options: OptionsWithGroup[],
     name: string,
     value?: string,
-    handleChange: React.ChangeEventHandler<HTMLSelectElement>
+    handleChange: any
 }) => {
 
     // pushes to a hashmap
-    const groupedOptions = new Map<string, option[]>;
+    const groupedOptions: groupedOptions = {};
     options.forEach(option => {
-        if (!groupedOptions.get(option.optionGroup)) groupedOptions.set(option.optionGroup, []);
-        groupedOptions.get(option.optionGroup)?.push({
-            value: option.text,
-            text: option.text
-        });
+        if (!groupedOptions[option.optionGroup]) {
+            groupedOptions[option.optionGroup] = []
+        } else {
+            groupedOptions[option.optionGroup]?.push({
+                value: option.text,
+                text: option.text
+            })
+        }
     });
 
     const renderOptions = (options: option[]) => {
@@ -34,25 +41,20 @@ const SelectDropdownWithOptionGroups = ({
             );
         });
     };
-    /*const SelectInputRound = ({
-                                  defaultOption,
-                                  name,
-                                  value,
-                                  onChange,
-                                  groupedOptions
-                              }) => {*/
+
     return (
         <Form.Select
             id={name}
             className="inputSelectRound form-control override-fc"
             name={name}
             value={value}
+
             onChange={handleChange}
         >
             {Object.keys(groupedOptions).map((group, index) => {
                 return (
                     <optgroup key={index} label={group}>
-                        {renderOptions(groupedOptions.get(group) || [])}
+                        {renderOptions(groupedOptions[group])}
                     </optgroup>
                 );
             })}

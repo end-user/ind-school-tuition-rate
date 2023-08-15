@@ -8,6 +8,7 @@ import {currencyFormatter} from "../services/formatter.js";
 import {Tooltip} from "react-tippy";
 import {createColumnHelper} from "@tanstack/react-table";
 import {Benefit} from "../../target/generated-sources/ts-model-data.js";
+import type {LedgerEntry} from "./model/data.d.ts"
 
 const Benefits = ({data, setData}: {
     data: any[],
@@ -21,12 +22,15 @@ const Benefits = ({data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: any[]) => {
+    const addRow = async (values: Values) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-
+    type Values = LedgerEntry & {
+        benefit: string
+    }
+    const initialValues: Values = {benefit: '', actual: 0, budget: 0}
     const benefitOptions: string[] = [
         'FICA',
         'Workers\' Compensation',
@@ -68,13 +72,14 @@ const Benefits = ({data, setData}: {
 
     return (<Formik enableReinitialize
                     onSubmit={addRow}
-                    initialValues={[{'benefit': '', 'actual': 0, 'budget': 0}]}
+                    initialValues={initialValues}
         >
             {({
                   handleSubmit,
               }) => (<>
                     <Form onSubmit={handleSubmit}>
                         <Card>
+                            <Card.Header>Rule 2232 (1) (K)</Card.Header>
                             <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                 <Form.Group as={Row}>
                                     <Col sm={4}>
