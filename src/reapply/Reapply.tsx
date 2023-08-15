@@ -75,10 +75,10 @@ const Reapply = ({data = sample}) => {
                 + parseInt(this.services.actual)
         },
         totalBudgetExpense: function () {
-            return parseInt(this.salaries.budget)
-                + parseInt(this.benefits.budget)
-                + parseInt(this.expenses.budget)
-                + parseInt(this.services.budget)
+            return this.salaries.budget
+                + this.benefits.budget
+                + this.expenses.budget
+                + this.services.budget
         }
     }
 
