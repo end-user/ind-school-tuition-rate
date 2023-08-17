@@ -6,7 +6,7 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {createColumnHelper} from "@tanstack/react-table";
-import {SchoolHead} from "../../target/generated-sources/ts-model-data";
+import {SchoolHead} from "../shared/ts-model-data.ts";
 
 const AddUser = () => {
     const addUser = () => {

@@ -6,7 +6,7 @@ import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
-import {ContractedService} from "../../target/generated-sources/ts-model-data.js";
+import {ContractedService} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
 const ContractedServiceProviders = ({data, setData}: {
     data: any[],

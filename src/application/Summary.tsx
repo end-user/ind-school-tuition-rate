@@ -7,7 +7,7 @@ import {
     ContractedService,
     Revenue,
     StaffSalary
-} from '../../target/generated-sources/ts-model-data';
+} from '../shared/ts-model-data.ts';
 
 const s = {count: 0, actual: 0, budget: 0}
 

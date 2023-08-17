@@ -6,7 +6,7 @@ import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
-import {AllowableExpense} from "../../target/generated-sources/ts-model-data.ts";
+import {AllowableExpense} from "../shared/ts-model-data.ts";
 import type {LedgerEntry, OptionsWithGroup} from "./model/data.d.ts"
 import React from "react";
 

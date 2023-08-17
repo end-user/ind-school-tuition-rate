@@ -6,7 +6,7 @@ import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
-import {StaffSalary} from "../../target/generated-sources/ts-model-data.js";
+import {StaffSalary} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
 
 const StaffSalaries = ({data, setData}: {

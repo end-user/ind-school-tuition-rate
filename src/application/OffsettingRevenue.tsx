@@ -6,7 +6,7 @@ import {faQuestionCircle, faSquareXmark} from "@fortawesome/free-solid-svg-icons
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
-import {Revenue} from "../../target/generated-sources/ts-model-data.js";
+import {Revenue} from "../shared/ts-model-data.ts";
 import {Tooltip} from "react-tippy";
 import type {LedgerEntry} from "./model/data.d.ts"
 const OffsettingRevenue = ({data, setData}: {

@@ -152,7 +152,7 @@
                     <outputKind>module</outputKind>
                     <nullabilityDefinition>nullAndUndefinedInlineUnion</nullabilityDefinition>
                     <outputFileType>implementationFile</outputFileType>
-                    <outputFile>target/generated-sources/ts-model-data.ts</outputFile>
+                    <outputFile>src/shared/ts-model-data.ts</outputFile>
                 </configuration>
             </plugin>
             <plugin>

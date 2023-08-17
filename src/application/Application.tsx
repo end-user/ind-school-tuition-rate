@@ -13,7 +13,7 @@ import {
     ContractedService,
     Revenue,
     StaffSalary
-} from '../../target/generated-sources/ts-model-data';
+} from '../shared/ts-model-data.ts';
 import Assurances from "./Assurances.tsx";
 
 const Application = () => {

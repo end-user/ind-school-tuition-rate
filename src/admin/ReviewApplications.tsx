@@ -4,7 +4,7 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {createColumnHelper} from "@tanstack/react-table";
-import {RateApplication} from '../../target/generated-sources/ts-model-data';
+import {RateApplication} from '../shared/ts-model-data.ts';
 
 
 const ReviewApplications = () => {

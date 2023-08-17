@@ -7,7 +7,7 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {Tooltip} from "react-tippy";
 import {createColumnHelper} from "@tanstack/react-table";
-import {Benefit} from "../../target/generated-sources/ts-model-data.js";
+import {Benefit} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
 
 const Benefits = ({data, setData}: {
