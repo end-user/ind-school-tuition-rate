@@ -1,5 +1,4 @@
 import {Button, Card, Col, Form, InputGroup} from "react-bootstrap";
-import React from "react";
 import {Field, Formik} from "formik";
 
 const addRow = () => {

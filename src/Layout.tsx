@@ -5,13 +5,13 @@ import Application from "./application/Application"
 import VermontLogo from './shared/VermontLogo'
 import Home from './Home'
 // MSAL Auth
-import {SignInButton} from "./component/survey/SignInButton";
 import {AuthenticatedTemplate, UnauthenticatedTemplate} from "@azure/msal-react";
-import {SignOutButton} from "./component/survey/SignOutButton";
 import Reapply from "./reapply/Reapply.tsx";
 import SetCOLA from "./admin/SetCOLA.tsx";
 import ReviewApplications from "./admin/ReviewApplications.tsx";
 import AddUser from "./admin/AddUser.tsx";
+import {SignInButton} from "./shared/SignInButton.tsx";
+import {SignOutButton} from "./shared/SignOutButton.tsx";
 
 const Layout = () => {
     // Authentication credentials on highest level component

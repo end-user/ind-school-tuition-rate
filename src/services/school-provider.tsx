@@ -1,7 +1,26 @@
 import axios from "axios";
 
+export type School = {
+    serverId: number,
+    name: string,
+    orgID: string,
+    operatedBy: string,
+    grades: string    [],
+    latitude: string,
+    longitude: string,
+    mailingAddress: string,
+    mailingCity: string,
+    mailingZip: string,
+    mailingState: string,
+    website: string,
+    phone: string,
+    orgType: string
+}
+
 class SchoolProvider {
-    schools;
+    private static instance: SchoolProvider;
+
+    schools: School[] = [];
 
     constructor() {
         if (!SchoolProvider.instance) {
@@ -11,9 +30,9 @@ class SchoolProvider {
     }
 
     async getSchools() {
-        if (this.schools == null) {
+        if (this.schools === undefined || this.schools.length == 0) {
             try {
-                const response = await axios.get('/api/organizations').then(
+                await axios.get('/api/organizations').then(
                     (resp) => {
                         if (Array.isArray(resp.data)) {
 

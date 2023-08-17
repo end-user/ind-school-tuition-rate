@@ -19,6 +19,10 @@ public class SchoolHead {
     private String phone;
     private String email;
 
+    @OneToOne
+    @JoinColumn(name = "school_id")
+    private SchoolProfile school;
+
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Set<RateApplication> rateApplications;
 

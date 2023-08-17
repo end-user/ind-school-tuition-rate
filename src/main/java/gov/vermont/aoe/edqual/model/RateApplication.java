@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class RateApplication {
     @ManyToOne
     @JoinColumn(name = "school_id")
     private SchoolHead school;
+    private LocalDateTime submittedDate;
 
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
     private Set<StaffSalary> staffSalaries;

@@ -30,7 +30,7 @@ const sample = {
         {revenue: 'Grant', actual: 1500, budget: 0}
     ]
 }
-const aggregateData = (total, n) => ({
+const aggregateData = (total: any, n: any) => ({
     count: total.count + 1 || 0,
     actual: parseInt(total.actual) + parseInt(n.actual),
     budget: parseInt(total.budget) + parseInt(n.budget)
@@ -69,10 +69,10 @@ const Reapply = ({data = sample}) => {
             .reduce(aggregateData, s),
         revenue: data.revenueData.reduce(aggregateData, s),
         totalActualExpense: function () {
-            return parseInt(this.salaries.actual)
-                + parseInt(this.benefits.actual)
-                + parseInt(this.expenses.actual)
-                + parseInt(this.services.actual)
+            return this.salaries.actual
+                + this.benefits.actual
+                + this.expenses.actual
+                + this.services.actual
         },
         totalBudgetExpense: function () {
             return this.salaries.budget
@@ -93,7 +93,7 @@ const Reapply = ({data = sample}) => {
                 <Table hover className={"caption-top"}>
                     <thead>
                     <tr>
-                        <th width={1}></th>
+                        <th></th>
                         <th>Expenses</th>
                         <th className={"text-end"}>Prior Year</th>
                         <th className={"text-end"}>Updated</th>
@@ -140,7 +140,7 @@ const Reapply = ({data = sample}) => {
                     </tbody>
                     <thead>
                     <tr>
-                        <th width={1}></th>
+                        <th></th>
                         <th>Revenue</th>
                         <th className={"text-end"}>Prior Year</th>
                         <th className={"text-end"}>Updated</th>
@@ -166,12 +166,12 @@ const Reapply = ({data = sample}) => {
                         <td>Subtotal</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             summary.totalActualExpense()
-                            - parseInt(summary.deductible.actual)
+                            - summary.deductible.actual
                         )}</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             (
                                 summary.totalActualExpense()
-                                - parseInt(summary.deductible.actual)
+                                - summary.deductible.actual
                             ) * COLA
                         )}</td>
                     </tr>

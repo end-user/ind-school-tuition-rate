@@ -1,16 +1,17 @@
 import {Button, Card, Col, Form, Row,} from "react-bootstrap";
 import {useState} from "react";
-import SchoolProvider from "../services/school-provider";
+import SchoolProvider, {School} from "../services/school-provider";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {createColumnHelper} from "@tanstack/react-table";
+import {SchoolHead} from "../../target/generated-sources/ts-model-data";
 
 const AddUser = () => {
     const addUser = () => {
     }
-    const deleteRow = async (id:number) => {
+    const deleteRow = async (id: number) => {
         //todo this will be a call to the server
         console.debug(`delete table row ${id}`)
         const tmpData = [...contacts]
@@ -25,37 +26,36 @@ const AddUser = () => {
         {name: 'Eric', email: 'B', school: 'PUTNEY SCHOOL'},
         {name: 'William', email: 'B', school: 'ST PAULS ELEMENTARY SCHOOL'},
     ])
-    const [schools, setSchools] = useState([])
+    const [schools, setSchools] = useState<School[]>()
     SchoolProvider.getSchools().then((_schools) => {
         setSchools(_schools)
     })
-    const columnHelper=createColumnHelper()
+    const columnHelper = createColumnHelper<SchoolHead>()
     const cols =
         [
-            {
-                Header: 'School',
-                accessor: 'school',
-            },
             columnHelper.accessor(row => row.name, {
                 id: 'name',
-                cell: info => <i>{info.getValue()}</i>,
-                header: () => 'Name',
-                footer: info => info.column.id,
+                header: 'Name',
             }),
-            {
-                Header: 'Name',
-                accessor: 'name',
-                Cell: ({row, getValue}) => (<a href={`mailto:${row.original.email}`}>{console.log(getValue)}</a>)
-            },
-            {
-                Header: '',
+            columnHelper.accessor(row => row.email, {
+                id: 'email',
+                header: 'Email',
+                cell: (table) => {
+                    console.log(table)
+                }
+            }),
+            columnHelper.accessor(row => row.school?.name, {
+                id: 'school',
+                header: 'School',
+            }),
+            columnHelper.display({
                 id: 'delete',
-                Cell: (tableProps) => (
+                cell: (tableProps) => (
                     <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
                         <FontAwesomeIcon icon={faSquareXmark}/>
                     </Button>
-                )
-            }
+                ),
+            })
         ]
     return (
         <Formik onSubmit={addUser}
@@ -90,8 +90,8 @@ const AddUser = () => {
                                                    required
                                             >
                                                 <option hidden value=''>Choose a School</option>
-                                                {schools.map(
-                                                    o => <option key={o.Name}>{o.Name}</option>
+                                                {schools?.map(
+                                                    o => <option key={o.name}>{o.name}</option>
                                                 )}
                                             </Field>
                                         </Col>
