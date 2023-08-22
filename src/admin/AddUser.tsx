@@ -9,7 +9,12 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {SchoolHead} from "../shared/ts-model-data.ts";
 
 const AddUser = () => {
-    const addUser = () => {
+    const addUser = (values: SchoolHead) => {
+        console.log(values)
+        const tmpData = [...contacts]
+        tmpData.push(values)
+        setContact(tmpData)
+
     }
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
@@ -18,18 +23,20 @@ const AddUser = () => {
         tmpData.splice(id, 1)
         setContact(tmpData)
     }
-    const [contacts, setContact] = useState([
-        {name: 'Joseph', email: 'B', school: 'CENTERPOINT'},
-        {name: 'Mary', email: 'B', school: 'CENTERPOINT'},
-        {name: 'Patricia', email: 'B', school: 'ORCHARD VALLEY WALDORF SCHOOL'},
-        {name: 'Elizabeth', email: 'B', school: 'PACEM SCHOOL'},
-        {name: 'Eric', email: 'B', school: 'PUTNEY SCHOOL'},
-        {name: 'William', email: 'B', school: 'ST PAULS ELEMENTARY SCHOOL'},
+    const [contacts, setContact] = useState<SchoolHead[]>([
+        {name: 'Joseph', email: 'B1', school: {name: 'CENTERPOINT'}},
+        {name: 'Mary', email: 'B2', school: {name: 'CENTERPOINT'}},
+        {name: 'Patricia', email: 'B3', school: {name: 'ORCHARD VALLEY WALDORF SCHOOL'}},
+        {name: 'Elizabeth', email: 'B4', school: {name: 'PACEM SCHOOL'}},
+        {name: 'Eric', email: 'B5', school: {name: 'PUTNEY SCHOOL'}},
+        {name: 'William', email: 'B6', school: {name: 'ST PAULS ELEMENTARY SCHOOL'}},
     ])
     const [schools, setSchools] = useState<School[]>()
-    SchoolProvider.getSchools().then((_schools) => {
-        setSchools(_schools)
-    })
+    if (schools === undefined || schools.length == 0) {
+        SchoolProvider.getSchools().then((_schools) => {
+            setSchools(_schools)
+        })
+    }
     const columnHelper = createColumnHelper<SchoolHead>()
     const cols =
         [
@@ -40,9 +47,8 @@ const AddUser = () => {
             columnHelper.accessor(row => row.email, {
                 id: 'email',
                 header: 'Email',
-                cell: (table) => {
-                    console.log(table)
-                }
+                cell: (tableProps) =>
+                    (<a href={`mailto:${tableProps.row.original.email}`}>{tableProps.row.original.email}</a>)
             }),
             columnHelper.accessor(row => row.school?.name, {
                 id: 'school',
@@ -60,9 +66,9 @@ const AddUser = () => {
     return (
         <Formik onSubmit={addUser}
                 initialValues={{
-                    'name': '',
-                    'email': '',
-                    'school': ''
+                    name: '',
+                    email: '',
+                    school: {name: ""}
                 }}
         >
             {
@@ -85,13 +91,13 @@ const AddUser = () => {
                                         </Col>
                                         <Col sm={4}>
                                             <Form.Label>Schools</Form.Label>
-                                            <Field name="school"
+                                            <Field name="school.name"
                                                    as={Form.Select}
                                                    required
                                             >
                                                 <option hidden value=''>Choose a School</option>
                                                 {schools?.map(
-                                                    o => <option key={o.name}>{o.name}</option>
+                                                    o => (<option key={o.Name}>{o.Name}</option>)
                                                 )}
                                             </Field>
                                         </Col>
@@ -108,7 +114,7 @@ const AddUser = () => {
                                     </Form.Group>
                                 </Card.Body>
                                 <Card.Footer>
-                                    <Button type={"submit"}>Change</Button>
+                                    <Button type={"submit"}>Add</Button>
                                 </Card.Footer>
                             </Card>
                             <RateApplicationTable columns={cols} data={contacts}/>
@@ -119,12 +125,5 @@ const AddUser = () => {
         </Formik>
     );
 }
-/*
-
-
-    <Card>
-
-    </Card>
-*/
 
 export default AddUser

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export type School = {
     serverId: number,
-    name: string,
+    Name: string,
     orgID: string,
     operatedBy: string,
     grades: string    [],
@@ -42,7 +42,6 @@ class SchoolProvider {
                         }
                     }
                 )
-                console.log(this.schools)
             } catch (error) {
                 console.error(error);
             }
