@@ -5,15 +5,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {createColumnHelper} from "@tanstack/react-table";
 import {RateApplication} from '../shared/ts-model-data.ts';
+import { rateApplications } from '../shared/mock-data.ts';
 
 
 const ReviewApplications = () => {
     const columnHelper = createColumnHelper<RateApplication>()
-    const [data, setData] = useState([
-        {school: 'GREENWOOD SCHOOL', date: '5/28/2023'},
-        {school: 'PRIORITY PLACEMENTS INC', date: '5/31/2023'},
-        {school: 'DAVIS COMMUNITY SCHOOL', date: '6/4/2023'}
-    ])
+    const [data, setData] = useState<RateApplication[]>(rateApplications)
     const approveRow = async (id: number) => {
         //todo this will be a call to the server
         console.debug(`delete table row ${id}`)
@@ -23,13 +20,15 @@ const ReviewApplications = () => {
     }
     const cols =
         [
-            columnHelper.accessor(row => row.school, {
-                id: 'school',
+            columnHelper.accessor(row => row.schoolHead?.schoolProfile?.name, {
                 header: 'School',
+                cell:(props)=>(
+                    <a href={`/apply/${props.row.original.id}`}>{props.getValue()}</a>
+                )
             }),
             columnHelper.accessor(row => row.submittedDate, {
-                id: 'submittedDate',
                 header: 'Submitted Date',
+                cell:props=>props.getValue()?.toLocaleDateString()
             }),
             columnHelper.display({
                 id: 'approve',

@@ -8,8 +8,10 @@ import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {StaffSalary} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
+import FY from "../shared/FY.tsx";
 
-const StaffSalaries = ({data, setData}: {
+const StaffSalaries = ({fy, data, setData}: {
+    fy:FY,
     data: any[],
     setData: React.Dispatch<React.SetStateAction<any[]>>
 }) => {
@@ -58,7 +60,7 @@ const StaffSalaries = ({data, setData}: {
             }),
             columnHelper.accessor(row => row.fte, {
                 id: 'fte',
-                header: 'FTE',
+                header: 'GenEd',
             }),
             columnHelper.accessor(row => row.speEdu, {
                 id: 'speEdu',
@@ -66,12 +68,12 @@ const StaffSalaries = ({data, setData}: {
             }),
             columnHelper.accessor(row => row.actual, {
                 id: 'actual',
-                header: 'FY22 Actual',
+                header: `FY${fy.this()} Actual`,
                 cell: value => currencyFormatter.format(value.getValue() || 0)
             }),
             columnHelper.accessor(row => row.budget, {
                 id: 'budget',
-                header: 'FY23 Budget',
+                header: `FY${fy.next()} Budget`,
                 cell: value => currencyFormatter.format(value.getValue() || 0)
             }),
             columnHelper.display({
@@ -153,7 +155,7 @@ const StaffSalaries = ({data, setData}: {
                                             </InputGroup>
                                         </Col>
 
-                                        <Form.Label column={true}>FTE</Form.Label>
+                                        <Form.Label column={true}>GenEd</Form.Label>
                                         <Col>
                                             <InputGroup>
                                                 <Field as={"input"}
@@ -166,7 +168,7 @@ const StaffSalaries = ({data, setData}: {
                                     </Form.Group>
                                     <Form.Group as={Row}>
 
-                                        <Form.Label column={true}>FY22 Actual</Form.Label>
+                                        <Form.Label column={true}>FY{fy.this()} Actual</Form.Label>
                                         <Col>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
@@ -179,7 +181,7 @@ const StaffSalaries = ({data, setData}: {
                                                 />
                                             </InputGroup>
                                         </Col>
-                                        <Form.Label column={true}>FY23 Budget</Form.Label>
+                                        <Form.Label column={true}>FY{fy.next()} Budget</Form.Label>
                                         <Col>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>

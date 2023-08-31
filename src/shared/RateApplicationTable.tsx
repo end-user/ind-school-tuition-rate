@@ -63,6 +63,7 @@ const RateApplicationTable = ({columns, data}: { columns: ColumnDef<any, any>[],
                         </td>
                     ))}
                 </tr>
+
             ))}
             </tbody>
         </Table>

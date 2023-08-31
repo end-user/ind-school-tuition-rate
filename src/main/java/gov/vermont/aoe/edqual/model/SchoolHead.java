@@ -21,9 +21,9 @@ public class SchoolHead {
 
     @OneToOne
     @JoinColumn(name = "school_id")
-    private SchoolProfile school;
+    private SchoolProfile schoolProfile;
 
-    @OneToMany(mappedBy = "school", orphanRemoval = true)
+    @OneToMany(mappedBy = "Head", orphanRemoval = true)
     private Set<RateApplication> rateApplications;
 
 }

@@ -9,10 +9,12 @@ import {Tooltip} from "react-tippy";
 import {createColumnHelper} from "@tanstack/react-table";
 import {Benefit} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
+import FY from "../shared/FY.tsx";
 
-const Benefits = ({data, setData}: {
-    data: any[],
-    setData: React.Dispatch<React.SetStateAction<any[]>>
+const Benefits = ({fy, data, setData}: {
+    fy:FY,
+    data: Benefit[],
+    setData: React.Dispatch<React.SetStateAction<Benefit[]>>
 }) => {
     const columnHelper = createColumnHelper<Benefit>()
     const deleteRow = async (id: number) => {
@@ -52,12 +54,12 @@ const Benefits = ({data, setData}: {
         }),
         columnHelper.accessor(row => row.actual, {
             id: 'actual',
-            header: 'FY22 Actual',
+            header: `FY${fy.this()} Actual`,
             cell: value => currencyFormatter.format(value.getValue() || 0)
         }),
         columnHelper.accessor(row => row.budget, {
             id: 'budget',
-            header: 'FY23 Budget',
+            header: `FY${fy.next()} Budget`,
             cell: value => currencyFormatter.format(value.getValue() || 0)
         }),
         columnHelper.display({
@@ -108,7 +110,7 @@ const Benefits = ({data, setData}: {
 
                                     </Col>
                                     <Col sm={2} className={'offset-sm-4'}>
-                                        <Form.Label>FY22 Actual</Form.Label>
+                                        <Form.Label>FY{fy.this()} Actual</Form.Label>
                                         <InputGroup>
                                             <InputGroup.Text>$</InputGroup.Text>
                                             <Field as={"input"}
@@ -120,7 +122,7 @@ const Benefits = ({data, setData}: {
                                         </InputGroup>
                                     </Col>
                                     <Col sm={2}>
-                                        <Form.Label>FY23 Budget</Form.Label>
+                                        <Form.Label>FY{fy.next()} Budget</Form.Label>
                                         <InputGroup>
                                             <InputGroup.Text>$</InputGroup.Text>
                                             <Field as={"input"}

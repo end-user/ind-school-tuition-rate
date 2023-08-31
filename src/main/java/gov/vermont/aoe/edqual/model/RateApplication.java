@@ -25,8 +25,18 @@ public class RateApplication {
     private String schoolYear;
     @ManyToOne
     @JoinColumn(name = "school_id")
-    private SchoolHead school;
+    private SchoolHead schoolHead;
+    /**
+     * date the school head completed application
+     */
     private LocalDateTime submittedDate;
+    /**
+     * date AOE accepted the application
+     */
+    private LocalDateTime approvedDate;
+
+    @OneToOne
+    private NetProgramCosts netProgramCosts;
 
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)
     private Set<StaffSalary> staffSalaries;

@@ -1,4 +1,4 @@
-import {Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
 import {
@@ -8,6 +8,7 @@ import {
     Revenue,
     StaffSalary
 } from '../shared/ts-model-data.ts';
+import FY from "../shared/FY.tsx";
 
 const s = {count: 0, actual: 0, budget: 0}
 
@@ -16,9 +17,9 @@ const aggregateData = (total: any, n: any) => ({
     actual: parseInt(total.actual) + parseInt(n.actual),
     budget: parseInt(total.budget) + parseInt(n.budget)
 })
-const Summary = ({data}: {
+const Summary = ({fy, data}: {
+    fy:FY,
     data: {
-        applicantData: any[],
         salaryData: StaffSalary[],
         benefitData: Benefit[],
         expenseData: AllowableExpense[],
@@ -28,8 +29,7 @@ const Summary = ({data}: {
 }) => {
     // deduct medicaid, unencumbered, transport only
     //window.testData = data;
-    let summary = {
-        applicantData: data.applicantData,
+    const summary = {
         salaries: data.salaryData.reduce(aggregateData, s),
         benefits: data.benefitData.reduce(aggregateData, s),
         expenses: data.expenseData.reduce(aggregateData, s),
@@ -154,7 +154,9 @@ const Summary = ({data}: {
                     </tr>
                     </tfoot>
                 </Table>
-                <Card.Text>(more text)</Card.Text>
+                <Card.Text>I assert this is all good <Button type={"submit"}>Submit Application</Button>
+                </Card.Text>
+                <Card.Text className={"text-danger-emphasis bg-danger-subtle"}>you didn't check the box. Please go back to <i>Assurances</i> and confirm you've read and understand</Card.Text>
             </Card.Body>
         </Card>
 

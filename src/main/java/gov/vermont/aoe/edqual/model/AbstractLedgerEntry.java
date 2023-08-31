@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Currency;
 import java.util.List;
 
 @Getter
@@ -16,8 +17,8 @@ abstract class AbstractLedgerEntry {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Float actual;
-    private Float budget;
+    private Currency actual;
+    private Currency budget;
 
     @ManyToOne
     @JoinColumn(name = "rate_application_id")

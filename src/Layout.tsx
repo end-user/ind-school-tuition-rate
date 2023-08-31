@@ -52,8 +52,8 @@ const Layout = () => {
                 </div>
                 <Routes>
                     <Route path="/"  element={<Home/>}/>
-                    <Route path="/apply" element={<Application/>}/>
-                    <Route path="/reapply/:id?" element={<Reapply/>}/>
+                    <Route path="/apply/:appId?" element={<Application/>}/>
+                    <Route path="/reapply/:appId?" element={<Reapply/>}/>
                     <Route path="/admin">
                         <Route path="cola" element={<SetCOLA/>}/>
                         <Route path="review" element={<ReviewApplications/>}/>

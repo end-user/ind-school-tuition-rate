@@ -1,9 +1,34 @@
 import {Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import {Field, Formik} from "formik";
 import {currencyFormatter} from "../services/formatter.js";
+import FY from "../shared/FY.tsx";
+import {NetProgramCosts, SchoolHead} from "../shared/ts-model-data.ts";
+import React from "react";
 
-const ApplicantInfo = ({data}: { data: any[] }) => {
-    if (data != null) {/*got data*/
+const ApplicantInfo = ({fy, schoolHead, netCosts, setNetCosts}: {
+    fy: FY,
+    schoolHead: SchoolHead | undefined,
+    netCosts: NetProgramCosts,
+    setNetCosts: React.Dispatch<React.SetStateAction<NetProgramCosts>>
+}) => {
+    const initialValues={...{
+            salaryActuals: 0,
+            salaryNet: 0,
+            benefitActuals: 0,
+            benefitNet: 0,
+            expenseActuals: 0,
+            expenseNet: 0,
+            serviceActuals: 0,
+            serviceNet: 0,
+            revenueActuals: 0,
+            revenueNet: 0
+        },...netCosts}
+    const handleChange=(e:React.ChangeEvent<HTMLInputElement>) =>{
+        const { name, value } = e.target;
+        console.log(`msg from ${name}, needs to set ${value}`)
+        setNetCosts({ ...netCosts, [name]: value });
+    }
+    const submit = () => {
     }
     return (
         <div className={"row"}>
@@ -11,30 +36,20 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                 <Card>
                     <Card.Header>Rule 2232 (2)</Card.Header>
                     <Card.Body>
-                        <p>John Smith</p>
-                        <h4>GREENWOOD SCHOOL</h4>[6-12]
-
+                        <p>{schoolHead?.name}</p>
+                        <span>{schoolHead?.schoolProfile?.name}</span>
+                        <span>[{schoolHead?.schoolProfile?.gradeRange}]</span>
                         <address>
-                            123 Summer St<br/>
-                            Brattleboro, VT 01100
+                            {schoolHead?.schoolProfile?.address}<br/>
+                            {schoolHead?.schoolProfile?.cityStateZip}
                         </address>
                     </Card.Body>
                 </Card>
             </div>
             <div className={"col-8"}>
                 <Formik enableReinitialize
-                        initialValues={{
-                            salaryActual: 100,
-                            salaryNet: 0,
-                            benefitActual: 0,
-                            benefitNet: 0,
-                            expenseActual: 0,
-                            expenseNet: 0,
-                            serviceActual: 0,
-                            serviceNet: 0,
-                            revenueActual: 0,
-                            revenueNet: 0
-                        }}
+                        onSubmit={submit}
+                        initialValues={initialValues}
                 >
                     {({
                           values,
@@ -42,14 +57,14 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                       }) => (<>
                             <Form onSubmit={handleSubmit}>
                                 <Card>
-                                    <Card.Header>FY24 Tuition Rate- Net Program Costs</Card.Header>
+                                    <Card.Header>FY{fy.next()} Tuition Rate - Net Program Costs</Card.Header>
                                     <Card.Body>
                                         <Form.Group as={Row}>
                                             <Col className={'offset-5 col-3'}>
-                                                <Form.Label>FY23 Actuals</Form.Label>
+                                                <Form.Label>FY{fy.this()} Actuals</Form.Label>
                                             </Col>
                                             <Col className={'col-3'}>
-                                                <Form.Label>FY24 Net Program Costs</Form.Label>
+                                                <Form.Label>FY{fy.next()} Net Program Costs</Form.Label>
                                             </Col>
                                         </Form.Group>
                                         <Form.Group as={Row}>
@@ -61,8 +76,9 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                     <InputGroup.Text>$</InputGroup.Text>
                                                     <Field as={"input"}
                                                            className={"form-control"}
-                                                           name="salaryActual"
+                                                           name="salaryActuals"
                                                            type="number"
+                                                           onChange={(e:React.ChangeEvent<HTMLInputElement>)=>handleChange(e)}
                                                            required
                                                     />
                                                 </InputGroup>
@@ -88,7 +104,7 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                     <InputGroup.Text>$</InputGroup.Text>
                                                     <Field as={"input"}
                                                            className={"form-control"}
-                                                           name="benefitActual"
+                                                           name="benefitActuals"
                                                            type="number"
                                                            required
                                                     />
@@ -115,7 +131,7 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                     <InputGroup.Text>$</InputGroup.Text>
                                                     <Field as={"input"}
                                                            className={"form-control"}
-                                                           name="expenseActual"
+                                                           name="expenseActuals"
                                                            type="number"
                                                            required
                                                     />
@@ -142,7 +158,7 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                     <InputGroup.Text>$</InputGroup.Text>
                                                     <Field as={"input"}
                                                            className={"form-control"}
-                                                           name="serviceActual"
+                                                           name="serviceActuals"
                                                            type="number"
                                                            required
                                                     />
@@ -169,7 +185,7 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                     <InputGroup.Text>$</InputGroup.Text>
                                                     <Field as={"input"}
                                                            className={"form-control"}
-                                                           name="revenueActual"
+                                                           name="revenueActuals"
                                                            type="number"
                                                            required
                                                     />
@@ -192,8 +208,8 @@ const ApplicantInfo = ({data}: { data: any[] }) => {
                                                 <div
                                                     className={"bg-info bg-opacity-10 border rounded text-end p-2 my-2"}>
                                                     {currencyFormatter.format(
-                                                        values.salaryActual + values.benefitActual + values.expenseActual
-                                                        + values.serviceActual - values.revenueActual
+                                                        values.salaryActuals + values.benefitActuals + values.expenseActuals
+                                                        + values.serviceActuals - values.revenueActuals
                                                     )}
                                                 </div>
                                             </div>

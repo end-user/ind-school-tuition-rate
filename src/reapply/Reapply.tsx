@@ -12,7 +12,7 @@ const sample = {
         'category': 'staff',
         'status': 'employed',
         'fte': true,
-        'speedu': 0,
+        'speEdu': 0,
         'pay': '60000',
         'actual': '53535',
         'budget': '55690'

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-08-17 11:14:07.
+// Generated using typescript-generator version 3.2.1263 on 2023-08-31 16:59:59.
 
 export interface AbstractLedgerEntry {
     id?: number;
@@ -30,11 +30,27 @@ export interface ContractedService extends AbstractLedgerEntry {
     fte?: number;
 }
 
+export interface NetProgramCosts {
+    id?: number;
+    salaryActuals?: number;
+    salaryNet?: number;
+    benefitActuals?: number;
+    benefitNet?: number;
+    expenseActuals?: number;
+    expenseNet?: number;
+    serviceActuals?: number;
+    serviceNet?: number;
+    revenueActuals?: number;
+    revenueNet?: number;
+}
+
 export interface RateApplication {
     id?: number;
     schoolYear?: string;
-    school?: SchoolHead;
+    schoolHead?: SchoolHead;
     submittedDate?: Date;
+    approvedDate?: Date;
+    netProgramCosts?: NetProgramCosts;
     staffSalaries?: StaffSalary[];
     benefits?: Benefit[];
     allowableExpenses?: AllowableExpense[];
@@ -52,15 +68,18 @@ export interface SchoolHead {
     name?: string;
     phone?: string;
     email?: string;
-    school?: SchoolProfile;
+    schoolProfile?: SchoolProfile;
     rateApplications?: RateApplication[];
 }
 
 export interface SchoolProfile {
     id?: number;
+    orgId?: string;
     name?: string;
+    gradeRange?: string;
     address?: string;
-    head?: SchoolHead;
+    cityStateZip?: string;
+    schoolHead?: SchoolHead;
     approvedCapacity?: number;
     priorYearEnrollment?: number;
     expectedEnrollment?: number;

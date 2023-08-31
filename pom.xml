@@ -148,6 +148,9 @@
                     <classPatterns>
                         <pattern>gov.vermont.aoe.edqual.model.**</pattern>
                     </classPatterns>
+                    <customTypeMappings>
+                        <mapping>java.util.Currency:number</mapping>
+                    </customTypeMappings>
                     <optionalProperties>useLibraryDefinition</optionalProperties>
                     <outputKind>module</outputKind>
                     <nullabilityDefinition>nullAndUndefinedInlineUnion</nullabilityDefinition>

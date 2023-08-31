@@ -7,7 +7,7 @@ const Home = () => {
             <Card.Body>
                 <Card.Title>User paths</Card.Title>
                 <ul>
-                    <li><a href={"/apply"}>John Smith wants to start a new application</a></li>
+                    <li><a href={"/apply"}>John Smith from Long Trail School wants to start a new application</a></li>
                     <li><a href={"/reapply/1"}>Emily Parker is going to reapply with COLA</a> (school is eligible)</li>
                     <li><a href={"/reapply/2"}>Dean Peterson is going to reapply with COLA</a> (school is NOT eligible)</li>
                 </ul>
