@@ -42,7 +42,7 @@ const Application = () => {
     });*/
 
     const fy = new FY(rateApplication ? Number(rateApplication.schoolYear) : new Date().getFullYear())
-    const schoolHead: SchoolHead = rateApplication?.schoolHead ? rateApplication?.schoolHead : mockSchoolHead;
+    const schoolHead: SchoolHead = rateApplication?.schoolHead ? rateApplication?.schoolHead : mockSchoolHead[1];
 
     const [netCosts, setNetCosts] = useState<NetProgramCosts>(rateApplication?.netProgramCosts || {})
     const [salaryData, setSalaryData] = useState<StaffSalary[]>(rateApplication?.staffSalaries || [])

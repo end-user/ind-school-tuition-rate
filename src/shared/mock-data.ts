@@ -1,7 +1,7 @@
 import {RateApplication, SchoolHead} from "./ts-model-data.ts";
 
-export const mockSchoolHead: SchoolHead =
-    {
+export const mockSchoolHead: SchoolHead[] =
+    [{
         id: 83,
         name: 'John Smith',
         email: 'jsmith@example.com',
@@ -12,8 +12,15 @@ export const mockSchoolHead: SchoolHead =
             address: '1045 KIRBY HOLLOW RD',
             cityStateZip: 'DORSET, VT 05251'
         }
+    },
+        {id: 94, name: 'Joseph Morrison', email: 'morrison@school.edu', schoolProfile: {name: 'CENTERPOINT'}},
+        {id: 113, name: 'Mary', email: 'B2', schoolProfile: {name: 'CENTERPOINT'}},
+        {id: 118, name: 'Patricia', email: 'B3', schoolProfile: {name: 'ORCHARD VALLEY WALDORF SCHOOL'}},
+        {id: 120, name: 'Elizabeth', email: 'B4', schoolProfile: {name: 'PACEM SCHOOL'}},
+        {id: 129, name: 'Eric', email: 'B5', schoolProfile: {name: 'PUTNEY SCHOOL'}},
+        {id: 137, name: 'William', email: 'B6', schoolProfile: {name: 'ST PAULS ELEMENTARY SCHOOL'}},
 
-    }
+]
 export const rateApplications: RateApplication[] =
     [
         {
@@ -33,9 +40,9 @@ export const rateApplications: RateApplication[] =
                 }
             },
             submittedDate: new Date('5/28/2023'),
-            netProgramCosts:{
-                salaryActuals:35000,
-                salaryNet:36000,
+            netProgramCosts: {
+                salaryActuals: 35000,
+                salaryNet: 36000,
 
             },
             staffSalaries: [{

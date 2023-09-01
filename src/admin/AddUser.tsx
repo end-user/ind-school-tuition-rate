@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {createColumnHelper} from "@tanstack/react-table";
 import {SchoolHead} from "../shared/ts-model-data.ts";
+import {mockSchoolHead} from "../shared/mock-data.ts";
 
 const AddUser = () => {
     const addUser = (values: SchoolHead) => {
@@ -23,14 +24,7 @@ const AddUser = () => {
         tmpData.splice(id, 1)
         setContact(tmpData)
     }
-    const [contacts, setContact] = useState<SchoolHead[]>([
-        {name: 'Joseph', email: 'B1', school: {name: 'CENTERPOINT'}},
-        {name: 'Mary', email: 'B2', school: {name: 'CENTERPOINT'}},
-        {name: 'Patricia', email: 'B3', school: {name: 'ORCHARD VALLEY WALDORF SCHOOL'}},
-        {name: 'Elizabeth', email: 'B4', school: {name: 'PACEM SCHOOL'}},
-        {name: 'Eric', email: 'B5', school: {name: 'PUTNEY SCHOOL'}},
-        {name: 'William', email: 'B6', school: {name: 'ST PAULS ELEMENTARY SCHOOL'}},
-    ])
+    const [contacts, setContact] = useState<SchoolHead[]>(mockSchoolHead || [])
     const [schools, setSchools] = useState<School[]>()
     if (schools === undefined || schools.length == 0) {
         SchoolProvider.getSchools().then((_schools) => {
@@ -50,7 +44,7 @@ const AddUser = () => {
                 cell: (tableProps) =>
                     (<a href={`mailto:${tableProps.row.original.email}`}>{tableProps.row.original.email}</a>)
             }),
-            columnHelper.accessor(row => row.school?.name, {
+            columnHelper.accessor(row => row.schoolProfile?.name, {
                 id: 'school',
                 header: 'School',
             }),
