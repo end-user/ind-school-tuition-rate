@@ -1,24 +1,25 @@
 import {Button, Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
-import {
-    AllowableExpense,
-    Benefit,
-    ContractedService,
-    Revenue,
-    StaffSalary
-} from '../shared/ts-model-data.ts';
+import {AllowableExpense, Benefit, ContractedService, Revenue, StaffSalary} from '../shared/ts-model-data.ts';
 import FY from "../shared/FY.tsx";
 
-const s = {count: 0, actual: 0, budget: 0}
 
-const aggregateData = (total: any, n: any) => ({
-    count: total.count + 1 || 0,
-    actual: parseInt(total.actual) + parseInt(n.actual),
-    budget: parseInt(total.budget) + parseInt(n.budget)
+interface S {
+    count: number;
+    actual: number;
+    budget: number;
+}
+
+const s: S = {count: 0, actual: 0, budget: 0}
+
+const aggregateData = (accumulator: S, currentValue: StaffSalary | Benefit | AllowableExpense | ContractedService | Revenue) => ({
+    count: accumulator.count + 1 || 0,
+    actual: accumulator.actual + (currentValue.actual || 0),
+    budget: accumulator.budget + (currentValue.budget || 0)
 })
 const Summary = ({fy, data}: {
-    fy:FY,
+    fy: FY,
     data: {
         salaryData: StaffSalary[],
         benefitData: Benefit[],
@@ -28,19 +29,18 @@ const Summary = ({fy, data}: {
     }
 }) => {
     // deduct medicaid, unencumbered, transport only
-    //window.testData = data;
     const summary = {
-        salaries: data.salaryData.reduce(aggregateData, s),
-        benefits: data.benefitData.reduce(aggregateData, s),
-        expenses: data.expenseData.reduce(aggregateData, s),
-        services: data.serviceData.reduce(aggregateData, s),
+        salaries: data.salaryData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
+        benefits: data.benefitData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
+        expenses: data.expenseData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
+        services: data.serviceData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
         deductible: data.revenueData
             .filter(({revenueSource}) => revenueSource?.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
-            .reduce(aggregateData, s),
+            .reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
         nondeductible: data.revenueData
             .filter(({revenueSource}) => !revenueSource?.match('Medicaid|Unencumbered Private Donation|Transportation reimbursement from LEAs'))
             .reduce(aggregateData, s),
-        revenue: data.revenueData.reduce(aggregateData, s),
+        revenue: data.revenueData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
         totalActualExpense: function () {
             return this.salaries.actual
                 + this.benefits.actual
@@ -54,11 +54,11 @@ const Summary = ({fy, data}: {
                 + this.services.budget
         }
     }
-    //window.sumDebug = summary
+
     return (
         <Card>
             <Card.Body>
-                <Card.Title>Application <small>For school [...]</small></Card.Title>
+                <Card.Title>Application <small>For school [...] for {fy.thisFull()}</small></Card.Title>
                 <Table hover className={"caption-top"}>
                     <thead>
                     <tr>
@@ -99,10 +99,10 @@ const Summary = ({fy, data}: {
                         <td className={"text-end"}>{percentFormatter.format((summary.services.budget - summary.services.actual) / summary.services.actual || 0)}</td>
                     </tr>
                     <tr className={"bg-secondary"}>
-                        <td>{parseInt(summary.salaries.count)
-                            + parseInt(summary.benefits.count)
-                            + parseInt(summary.expenses.count)
-                            + parseInt(summary.services.count)}</td>
+                        <td>{summary.salaries.count
+                            + summary.benefits.count
+                            + summary.expenses.count
+                            + summary.services.count}</td>
                         <td>Subtotal</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             summary.totalActualExpense()
@@ -156,7 +156,8 @@ const Summary = ({fy, data}: {
                 </Table>
                 <Card.Text>I assert this is all good <Button type={"submit"}>Submit Application</Button>
                 </Card.Text>
-                <Card.Text className={"text-danger-emphasis bg-danger-subtle"}>you didn't check the box. Please go back to <i>Assurances</i> and confirm you've read and understand</Card.Text>
+                <Card.Text className={"text-danger-emphasis bg-danger-subtle"}>you didn't check the box. Please go back
+                    to <i>Assurances</i> and confirm you've read and understand</Card.Text>
             </Card.Body>
         </Card>
 
