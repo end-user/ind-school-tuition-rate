@@ -9,13 +9,14 @@ import {AuthenticatedTemplate, UnauthenticatedTemplate} from "@azure/msal-react"
 import Reapply from "./reapply/Reapply.tsx";
 import SetCOLA from "./admin/SetCOLA.tsx";
 import ReviewApplications from "./admin/ReviewApplications.tsx";
-import AddUser from "./admin/AddUser.tsx";
+import Users from "./admin/Users.tsx";
 import {SignInButton} from "./shared/SignInButton.tsx";
 import {SignOutButton} from "./shared/SignOutButton.tsx";
+import Schools from "./admin/Schools.tsx";
 
 const Layout = () => {
     // Authentication credentials on highest level component
-    //const isAuthenticated = useIsAuthenticated()
+
     return (
         <div>
             <div className="container">
@@ -51,13 +52,14 @@ const Layout = () => {
                     </Breadcrumb>
                 </div>
                 <Routes>
-                    <Route path="/"  element={<Home/>}/>
+                    <Route path="/" element={<Home/>}/>
                     <Route path="/apply/:appId?" element={<Application/>}/>
                     <Route path="/reapply/:appId?" element={<Reapply/>}/>
                     <Route path="/admin">
                         <Route path="cola" element={<SetCOLA/>}/>
                         <Route path="review" element={<ReviewApplications/>}/>
-                        <Route path="addUser" element={<AddUser/>}/>
+                        <Route path="schools/:appId?" element={<Schools/>}/>
+                        <Route path="users" element={<Users/>}/>
                     </Route>
                 </Routes>
                 {/*<UnauthenticatedTemplate>*/}

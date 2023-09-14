@@ -11,7 +11,8 @@ import FY from "../shared/FY"
 import {
     AllowableExpense,
     Benefit,
-    ContractedService, NetProgramCosts,
+    ContractedService,
+    NetProgramCosts,
     RateApplication,
     Revenue,
     SchoolHead,
@@ -42,6 +43,7 @@ const Application = () => {
     });*/
 
     const fy = new FY(rateApplication ? Number(rateApplication.schoolYear) : new Date().getFullYear())
+    const enrollment = rateApplication?.enrollment||0;
     const schoolHead: SchoolHead = rateApplication?.schoolHead ? rateApplication?.schoolHead : mockSchoolHead[1];
 
     const [netCosts, setNetCosts] = useState<NetProgramCosts>(rateApplication?.netProgramCosts || {})
@@ -84,7 +86,7 @@ const Application = () => {
             <Card.Body>
                 <Tab.Content>
                     <Tab.Pane eventKey="applicantInfo">
-                        <ApplicantInfo fy={fy} schoolHead={schoolHead} netCosts={netCosts} setNetCosts={setNetCosts}/>
+                        <ApplicantInfo fy={fy} enrollment={enrollment} schoolHead={schoolHead} netCosts={netCosts} setNetCosts={setNetCosts}/>
                     </Tab.Pane>
                     <Tab.Pane eventKey="assurances">
                         <Assurances/>
@@ -105,13 +107,16 @@ const Application = () => {
                         <OffsettingRevenue fy={fy} data={revenueData} setData={setRevenueData}/>
                     </Tab.Pane>
                     <Tab.Pane eventKey="summary">
-                        <Summary fy={fy} data={{
-                            'salaryData': salaryData,
-                            'benefitData': benefitData,
-                            'expenseData': expenseData,
-                            'serviceData': serviceData,
-                            'revenueData': revenueData
-                        }}/>
+                        <Summary fy={fy}
+                                 enrollment={enrollment}
+                                 school={schoolHead.schoolProfile}
+                                 data={{
+                                     'salaryData': salaryData,
+                                     'benefitData': benefitData,
+                                     'expenseData': expenseData,
+                                     'serviceData': serviceData,
+                                     'revenueData': revenueData
+                                 }}/>
                     </Tab.Pane>
                 </Tab.Content>
             </Card.Body>

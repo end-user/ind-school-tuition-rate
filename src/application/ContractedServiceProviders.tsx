@@ -9,8 +9,9 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {ContractedService} from "../shared/ts-model-data.ts";
 import type {LedgerEntry} from "./model/data.d.ts"
 import FY from "../shared/FY.tsx";
+
 const ContractedServiceProviders = ({fy, data, setData}: {
-    fy:FY,
+    fy: FY,
     data: any[],
     setData: React.Dispatch<React.SetStateAction<any[]>>
 }) => {
@@ -96,18 +97,7 @@ const ContractedServiceProviders = ({fy, data, setData}: {
                                                 )}
                                             </Field>
                                         </Col>
-                                        {/* <Col sm={2}>
-                                            <Form.Label>FTE</Form.Label>
-                                            <InputGroup>
-                                                <Field as={"input"}
-                                                       className={"form-control"}
-                                                       name="fte"
-                                                       placeholder={0}
-                                                       type="number"/>
-                                                <InputGroup.Text>%</InputGroup.Text>
-                                            </InputGroup>
-                                        </Col>*/}
-                                        <Col sm={2} className={'offset-sm-1'}>
+                                        <Col sm={2} className={'offset-sm-3'}>
                                             <Form.Label>FY{fy.this()} Actual</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>

@@ -35,6 +35,12 @@ public class RateApplication {
      */
     private LocalDateTime approvedDate;
 
+    /**
+     * Number of currently enrolled students; this is provided during application and is used to calculate the final
+     * tuition rate. This number needs to match or fall below the SchoolProfile's capacity value.
+     */
+    private Integer enrollment;
+
     @OneToOne
     private NetProgramCosts netProgramCosts;
 

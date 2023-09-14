@@ -5,13 +5,16 @@ import FY from "../shared/FY.tsx";
 import {NetProgramCosts, SchoolHead} from "../shared/ts-model-data.ts";
 import React from "react";
 
-const ApplicantInfo = ({fy, schoolHead, netCosts, setNetCosts}: {
+const ApplicantInfo = ({fy, enrollment, schoolHead, netCosts, setNetCosts}: {
     fy: FY,
+    enrollment: number,
     schoolHead: SchoolHead | undefined,
     netCosts: NetProgramCosts,
     setNetCosts: React.Dispatch<React.SetStateAction<NetProgramCosts>>
 }) => {
-    const initialValues={...{
+    const initialValues = {
+        ...{
+            enrollment: enrollment,
             salaryActuals: 0,
             salaryNet: 0,
             benefitActuals: 0,
@@ -22,40 +25,52 @@ const ApplicantInfo = ({fy, schoolHead, netCosts, setNetCosts}: {
             serviceNet: 0,
             revenueActuals: 0,
             revenueNet: 0
-        },...netCosts}
-    const handleChange=(e:React.ChangeEvent<HTMLInputElement>) =>{
-        const { name, value } = e.target;
+        }, ...netCosts
+    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
         console.log(`msg from ${name}, needs to set ${value}`)
-        setNetCosts({ ...netCosts, [name]: value });
+        setNetCosts({...netCosts, [name]: value});
     }
     const submit = () => {
     }
     return (
-        <div className={"row"}>
-            <div className={"col-4"}>
-                <Card>
-                    <Card.Header>Rule 2232 (2)</Card.Header>
-                    <Card.Body>
-                        <p>{schoolHead?.name}</p>
-                        <span>{schoolHead?.schoolProfile?.name}</span>
-                        <span>[{schoolHead?.schoolProfile?.gradeRange}]</span>
-                        <address>
-                            {schoolHead?.schoolProfile?.address}<br/>
-                            {schoolHead?.schoolProfile?.cityStateZip}
-                        </address>
-                    </Card.Body>
-                </Card>
-            </div>
-            <div className={"col-8"}>
-                <Formik enableReinitialize
-                        onSubmit={submit}
-                        initialValues={initialValues}
-                >
-                    {({
-                          values,
-                          handleSubmit,
-                      }) => (<>
-                            <Form onSubmit={handleSubmit}>
+        <Formik enableReinitialize
+                onSubmit={submit}
+                initialValues={initialValues}
+        >
+            {({
+                  values,
+                  handleSubmit,
+              }) => (<>
+                    <Form onSubmit={handleSubmit}>
+                        <div className={"row"}>
+
+                            <div className={"col-4"}>
+                                <Card>
+                                    <Card.Header>Rule 2232 (2)</Card.Header>
+                                    <Card.Body>
+                                        <p>{schoolHead?.name}</p>
+                                        <span>{schoolHead?.schoolProfile?.name}</span>
+                                        <span> (grades {schoolHead?.schoolProfile?.gradeRange})</span>
+                                        <address>
+                                            {schoolHead?.schoolProfile?.address}<br/>
+                                            {schoolHead?.schoolProfile?.cityStateZip}
+                                        </address>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column={true}>current enrolled students</Form.Label>
+                                            <Col sm={5}><Field as={"input"}
+                                                               className={"form-control"}
+                                                               name="enrollment"
+                                                               type="number"
+                                                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                                                               required
+                                            /></Col>
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                            <div className={"col-8"}>
                                 <Card>
                                     <Card.Header>FY{fy.next()} Tuition Rate - Net Program Costs</Card.Header>
                                     <Card.Body>
@@ -78,7 +93,7 @@ const ApplicantInfo = ({fy, schoolHead, netCosts, setNetCosts}: {
                                                            className={"form-control"}
                                                            name="salaryActuals"
                                                            type="number"
-                                                           onChange={(e:React.ChangeEvent<HTMLInputElement>)=>handleChange(e)}
+                                                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
                                                            required
                                                     />
                                                 </InputGroup>
@@ -225,12 +240,12 @@ const ApplicantInfo = ({fy, schoolHead, netCosts, setNetCosts}: {
                                         </div>
                                     </Card.Body>
                                 </Card>
-                            </Form>
-                        </>
-                    )}
-                </Formik>
-            </div>
-        </div>
+                            </div>
+                        </div>
+                    </Form>
+                </>
+            )}
+        </Formik>
     );
 }
 

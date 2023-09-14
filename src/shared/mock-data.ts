@@ -1,5 +1,12 @@
-import {RateApplication, SchoolHead} from "./ts-model-data.ts";
+import {RateApplication, SchoolHead, SchoolProfile} from "./ts-model-data.ts";
 
+export const mockSchoolList: SchoolProfile[] = [
+    {name: 'CENTERPOINT',approvedCapacity:13,orgId:'IS999'},
+    {name: 'ORCHARD VALLEY WALDORF SCHOOL',approvedCapacity:36,orgId:'IS109'},
+    {name: 'PACEM SCHOOL',approvedCapacity:24,orgId:'IS252'},
+    {name: 'PUTNEY SCHOOL',approvedCapacity:58,orgId:'IS062'},
+    {name: 'ST PAULS ELEMENTARY SCHOOL',approvedCapacity:65,orgId:'IS077'}
+]
 export const mockSchoolHead: SchoolHead[] =
     [{
         id: 83,
@@ -9,6 +16,7 @@ export const mockSchoolHead: SchoolHead[] =
             orgId: 'IS044',
             name: 'LONG TRAIL SCHOOL',
             gradeRange: '6-12',
+            approvedCapacity: 25,
             address: '1045 KIRBY HOLLOW RD',
             cityStateZip: 'DORSET, VT 05251'
         }
@@ -20,12 +28,13 @@ export const mockSchoolHead: SchoolHead[] =
         {id: 129, name: 'Eric', email: 'B5', schoolProfile: {name: 'PUTNEY SCHOOL'}},
         {id: 137, name: 'William', email: 'B6', schoolProfile: {name: 'ST PAULS ELEMENTARY SCHOOL'}},
 
-]
+    ]
 export const rateApplications: RateApplication[] =
     [
         {
             id: 1,
             schoolYear: '2022',
+            enrollment: 36,
             schoolHead: {
                 id: 322,
                 name: 'John Smith',
@@ -34,6 +43,7 @@ export const rateApplications: RateApplication[] =
                     orgId: 'IS295',
                     name: 'BRIGHTALITY',
                     gradeRange: '6-12',
+                    approvedCapacity: 38,
                     address: '448 Swanton Road, Suite 300',
                     cityStateZip: 'St Albans, VT 05478'
 
@@ -47,12 +57,10 @@ export const rateApplications: RateApplication[] =
             },
             staffSalaries: [{
                 id: 510,
-                staffCategory: 'staff',
                 status: 'employed',
-                fte: 1,
-                speEdu: 0,
+                genEdu: 50,
+                speEdu: 50,
                 positionTitle: 'English Instructor',
-                payRate: 60000,
                 actual: 53535,
                 budget: 55690
             }],
@@ -63,7 +71,7 @@ export const rateApplications: RateApplication[] =
             }],
             benefits: [
                 {benefit: 'FICA', actual: 450, budget: 500},
-                {benefit: 'M', actual: 150, budget: 230, comments: [{comment: 'not a valid benefit'}]}
+                {benefit: 'M', actual: 150, budget: 230, comment: 'not a valid benefit'}
             ],
             revenues: [
                 {revenueSource: 'Grant', actual: 1500, budget: 0}

@@ -7,13 +7,12 @@ import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {StaffSalary} from "../shared/ts-model-data.ts";
-import type {LedgerEntry} from "./model/data.d.ts"
 import FY from "../shared/FY.tsx";
 
 const StaffSalaries = ({fy, data, setData}: {
-    fy:FY,
-    data: any[],
-    setData: React.Dispatch<React.SetStateAction<any[]>>
+    fy: FY,
+    data: StaffSalary[],
+    setData: React.Dispatch<React.SetStateAction<StaffSalary[]>>
 }) => {
     const columnHelper = createColumnHelper<StaffSalary>()
     const deleteRow = async (id: number) => {
@@ -23,56 +22,41 @@ const StaffSalaries = ({fy, data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: Values) => {
+    const addRow = async (values: StaffSalary) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-    type Values = LedgerEntry & {
-        staffCategory: string
-        status: string
-        fte: number
-        speEdu: number
-        positionTitle: string
-        payRate: number
-    }
-    const initialValues: Values = {
-        staffCategory: '',
-        status: '',
-        fte: 100,
-        speEdu: 0,
+
+    const initialValues: StaffSalary = {
         positionTitle: '',
-        payRate: 0,
+        status: '',
+        genEdu: 100,
+        speEdu: 0,
         actual: 0,
         budget: 0
     }
     const cols =
         [
             columnHelper.accessor(row => row.positionTitle, {
-                id: 'positionTitle',
                 // cell: info => <i>{info.getValue()}</i>,
                 header: 'Position/Title',
                 // footer: info => info.column.id,
             }),
             columnHelper.accessor(row => row.status, {
-                id: 'status',
                 header: 'Status',
             }),
-            columnHelper.accessor(row => row.fte, {
-                id: 'fte',
-                header: 'GenEd',
-            }),
             columnHelper.accessor(row => row.speEdu, {
-                id: 'speEdu',
                 header: 'SpeEdu (%)',
             }),
+            columnHelper.accessor(row => row.genEdu, {
+                header: 'GenEd (%)',
+            }),
             columnHelper.accessor(row => row.actual, {
-                id: 'actual',
                 header: `FY${fy.this()} Actual`,
                 cell: value => currencyFormatter.format(value.getValue() || 0)
             }),
             columnHelper.accessor(row => row.budget, {
-                id: 'budget',
                 header: `FY${fy.next()} Budget`,
                 cell: value => currencyFormatter.format(value.getValue() || 0)
             }),
@@ -102,8 +86,8 @@ const StaffSalaries = ({fy, data, setData}: {
                                 <Card.Header>Rule 2232 (1)(A)</Card.Header>
                                 <Card.Body className={'bg-info text-dark bg-opacity-10'}>
                                     <Form.Group as={Row}>
-                                        <Form.Label column={true} sm={'2'}>Position/Title</Form.Label>
-                                        <Col sm={'4'}>
+                                        <Col sm={3}>
+                                            <Form.Label>Position/Title</Form.Label>
                                             <Field name="positionTitle"
                                                    as={Form.Select}
                                                    required
@@ -130,10 +114,8 @@ const StaffSalaries = ({fy, data, setData}: {
                                                 <option>Community Based Learning Instructor</option>
                                             </Field>
                                         </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row}>
-                                        <Form.Label column={true}>Status</Form.Label>
-                                        <Col>
+                                        <Col sm={2}>
+                                            <Form.Label>Status</Form.Label>
                                             <Field name="status"
                                                    as={Form.Select}
                                                    required
@@ -144,32 +126,32 @@ const StaffSalaries = ({fy, data, setData}: {
                                             </Field>
 
                                         </Col>
-                                        <Form.Label column={true}>SpeEdu</Form.Label>
-                                        <Col>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Col sm={2}>
+                                            <Form.Label>SpeEdu</Form.Label>
                                             <InputGroup>
                                                 <Field as={"input"}
                                                        className={"form-control"}
-                                                       name="speedu"
+                                                       name="speEdu"
                                                        type="number"/>
                                                 <InputGroup.Text>%</InputGroup.Text>
                                             </InputGroup>
                                         </Col>
-
-                                        <Form.Label column={true}>GenEd</Form.Label>
-                                        <Col>
+                                        <Col sm={2}>
+                                            <Form.Label>GenEd</Form.Label>
                                             <InputGroup>
                                                 <Field as={"input"}
                                                        className={"form-control"}
-                                                       name="fte"
+                                                       name="genEdu"
                                                        type="number"/>
                                                 <InputGroup.Text>%</InputGroup.Text>
                                             </InputGroup>
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-
-                                        <Form.Label column={true}>FY{fy.this()} Actual</Form.Label>
-                                        <Col>
+                                        <Col sm={2}>
+                                            <Form.Label>FY{fy.this()} Actual</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
                                                 <Field as={"input"}
@@ -181,8 +163,8 @@ const StaffSalaries = ({fy, data, setData}: {
                                                 />
                                             </InputGroup>
                                         </Col>
-                                        <Form.Label column={true}>FY{fy.next()} Budget</Form.Label>
-                                        <Col>
+                                        <Col sm={2}>
+                                            <Form.Label>FY{fy.next()} Budget</Form.Label>
                                             <InputGroup>
                                                 <InputGroup.Text>$</InputGroup.Text>
                                                 <Field as={"input"}

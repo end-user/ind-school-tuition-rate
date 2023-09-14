@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import Table from "react-bootstrap/Table";
+
 
 /**
  * Provides a table view for data
@@ -10,7 +10,11 @@ import Table from "react-bootstrap/Table";
  * @see <a href="https://react-table-v7.tanstack.com/docs/api/useTable#column-options">Column</a>
  */
 
-const RateApplicationTable = ({columns, data}: { columns: ColumnDef<any, any>[], data: any[] | Promise<any> }) => {
+
+const RateApplicationTable = ({columns, data}: {
+    columns: ColumnDef<any, any>[],
+    data: any[] | Promise<any>
+}) => {
     const [tableData, setTableData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,7 +31,6 @@ const RateApplicationTable = ({columns, data}: { columns: ColumnDef<any, any>[],
         }
     }, [data]);
 
-
     const table = useReactTable({
         columns,
         data: tableData,
@@ -38,35 +41,44 @@ const RateApplicationTable = ({columns, data}: { columns: ColumnDef<any, any>[],
         return (<div>loading...</div>)
     }
 
-    return (
-        <Table>
-            <thead>
-            {table.getHeaderGroups()?.map(headerGroup => (
-                <tr key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                        <th key={header.id}>{header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                            )}</th>
-                    ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody>
-            {table.getRowModel().rows.map(row => (
-                <tr key={row.id}>
-                    {row.getVisibleCells().map(cell => (
-                        <td key={cell.id}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
-                    ))}
-                </tr>
+    const doComment = (comment:string) => {
+        if (comment)  return (
+            <div className={'row'}>
+                <div className={'offset-3 col-3'}>{comment}</div>
+            </div>)
+    }
 
-            ))}
-            </tbody>
-        </Table>
+
+    return (
+        <div className={'table '}>
+            <div className={'thead border-bottom'}>
+                {table.getHeaderGroups()?.map(headerGroup => (
+                    <div className={'row'} key={headerGroup.id}>
+                        {headerGroup.headers.map(header => (
+                            <div className={'col'} key={header.id}>
+                                {header.isPlaceholder
+                                    ? null
+                                    : flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}</div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <div className={'tbody'}>
+                {table.getRowModel().rows.map(row => (
+                    <div className={'border-bottom'} key={`${row.id}-details`}>
+                        <div className={'row'}>
+                            {row.getVisibleCells().map(cell => <div className={'col'} key={cell.id}>
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </div>)}
+                        </div>
+                        {doComment(row.original.comment)}
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

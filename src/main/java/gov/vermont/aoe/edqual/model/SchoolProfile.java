@@ -19,15 +19,17 @@ public class SchoolProfile {
 
     private String name;
     private String gradeRange;
+
+    /**
+     * School Board approved capacity for the institution. This value is entered by {Deb} and cannot be retrieved from
+     * the data API
+     */
+    private Integer approvedCapacity;
     private String address;
     private String cityStateZip;
-
 
     @OneToOne
     @JoinColumn(name = "head_id")
     private SchoolHead schoolHead;
-    private Integer approvedCapacity;
-    private Integer priorYearEnrollment;
-    private Integer expectedEnrollment;
 
 }

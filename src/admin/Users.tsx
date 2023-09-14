@@ -9,7 +9,7 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {SchoolHead} from "../shared/ts-model-data.ts";
 import {mockSchoolHead} from "../shared/mock-data.ts";
 
-const AddUser = () => {
+const Users = () => {
     const addUser = (values: SchoolHead) => {
         console.log(values)
         const tmpData = [...contacts]
@@ -120,4 +120,4 @@ const AddUser = () => {
     );
 }
 
-export default AddUser
+export default Users

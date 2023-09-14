@@ -1,20 +1,20 @@
 import axios from "axios";
 
 export type School = {
-    serverId: number,
+    ServerId: number,
     Name: string,
-    orgID: string,
-    operatedBy: string,
-    grades: string    [],
-    latitude: string,
-    longitude: string,
-    mailingAddress: string,
-    mailingCity: string,
-    mailingZip: string,
-    mailingState: string,
-    website: string,
-    phone: string,
-    orgType: string
+    OrgID: string,
+    OperatedBy: string,
+    Grades: string    [],
+    Latitude: string,
+    Longitude: string,
+    MailingAddress: string,
+    MailingCity: string,
+    MailingZip: string,
+    MailingState: string,
+    Website: string,
+    Phone: string,
+    OrgType: string
 }
 
 class SchoolProvider {

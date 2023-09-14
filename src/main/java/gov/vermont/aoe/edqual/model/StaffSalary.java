@@ -1,6 +1,7 @@
 package gov.vermont.aoe.edqual.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,21 +9,18 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "staff_salary")
-public class StaffSalary  extends AbstractLedgerEntry {
+public class StaffSalary extends AbstractLedgerEntry {
     private String positionTitle;
-    private String staffCategory;
+    /**
+     * Will indicate either Filled or Vacant
+     */
     private String status;
     /**
-     * Describes how much time the employee participates.  Should be a max of 1?
-     * <p>
-     * From instructions: A full-time equivalent, 1.0 FTE, is one person working an entire work day, each week for the
-     * duration of the school year. Express any partial FTEs in decimals. For example a teacher working one day per week
-     * for the duration of the school year would be reflected as 0.2 FTE.
+     * Describes percentage of time devoted to general education
      */
-    private Float fte;
+    private Float genEdu;
     /**
      * Percentage of time performing special education work
      */
     private Short speEdu;
-    private Float payRate;
 }

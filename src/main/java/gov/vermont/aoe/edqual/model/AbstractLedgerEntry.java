@@ -24,7 +24,7 @@ abstract class AbstractLedgerEntry {
     @JoinColumn(name = "rate_application_id")
     private RateApplication rateApplication;
 
-    @OneToMany(mappedBy = "entry", orphanRemoval = true)
-    private List<Comment> comments;
+    @Lob
+    private String comment;
 
 }

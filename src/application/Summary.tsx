@@ -1,7 +1,14 @@
 import {Button, Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
-import {AllowableExpense, Benefit, ContractedService, Revenue, StaffSalary} from '../shared/ts-model-data.ts';
+import {
+    AllowableExpense,
+    Benefit,
+    ContractedService,
+    Revenue,
+    SchoolProfile,
+    StaffSalary
+} from '../shared/ts-model-data.ts';
 import FY from "../shared/FY.tsx";
 
 
@@ -18,8 +25,10 @@ const aggregateData = (accumulator: S, currentValue: StaffSalary | Benefit | All
     actual: accumulator.actual + (currentValue.actual || 0),
     budget: accumulator.budget + (currentValue.budget || 0)
 })
-const Summary = ({fy, data}: {
+const Summary = ({fy, enrollment, school, data}: {
     fy: FY,
+    enrollment: number,
+    school: SchoolProfile | undefined,
     data: {
         salaryData: StaffSalary[],
         benefitData: Benefit[],
@@ -62,8 +71,7 @@ const Summary = ({fy, data}: {
                 <Table hover className={"caption-top"}>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>Expenses</th>
+                        <th colSpan={2}>Expenses</th>
                         <th className={"text-end"}>Actuals</th>
                         <th className={"text-end"}>Budgeted</th>
                         <th className={"text-end"}>yoy</th>
@@ -116,8 +124,7 @@ const Summary = ({fy, data}: {
                     </tbody>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>Revenue</th>
+                        <th colSpan={2}>Revenue</th>
                         <th className={"text-end"}>Actuals</th>
                         <th className={"text-end"}>Budgeted</th>
                         <th className={"text-end"}>yoy</th>
@@ -139,10 +146,9 @@ const Summary = ({fy, data}: {
                         <td className={"text-end"}>{percentFormatter.format((summary.nondeductible.budget - summary.nondeductible.actual) / summary.nondeductible.actual || 0)}</td>
                     </tr>
                     </tbody>
-                    <tfoot>
+                    <tbody>
                     <tr className={"bg-secondary"}>
-                        <td/>
-                        <td>Subtotal</td>
+                        <td colSpan={2}>Subtotal</td>
                         <td className={"text-end"}>{currencyFormatter.format(
                             summary.totalActualExpense()
                             - summary.deductible.actual
@@ -151,8 +157,27 @@ const Summary = ({fy, data}: {
                             summary.totalBudgetExpense()
                             - summary.deductible.budget
                         )}</td>
+                        <td/>
                     </tr>
-                    </tfoot>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td colSpan={2}>Enrollment (SBE approved capacity {school?.approvedCapacity})</td>
+                        <td colSpan={2}>{enrollment}</td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td colSpan={3}>Rate Request</td>
+
+                        <td className={"text-end"}>{currencyFormatter.format(
+                            (
+                                summary.totalBudgetExpense()
+                                - summary.deductible.budget
+                            ) / (enrollment || 1)
+                        )}</td>
+                    </tr>
+                    </tbody>
                 </Table>
                 <Card.Text>I assert this is all good <Button type={"submit"}>Submit Application</Button>
                 </Card.Text>
