@@ -1,7 +1,7 @@
 import {Button, Card, Col, Form, Row,} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import SchoolProvider, {School} from "../services/school-provider";
-import {Field, Formik} from "formik";
+import {Field, Formik, FormikHelpers} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
@@ -11,83 +11,88 @@ import {mockSchoolList} from "../shared/mock-data.ts";
 
 type SchoolProfileStatus = SchoolProfile & { closed?: boolean }
 const Schools = () => {
-
-    const crossMatch = ([sourceSchools, listedSchools]: [School[], SchoolProfileStatus[]]) => {
-
-        console.log("called crossMatch", (sourceSchools === undefined || sourceSchools.length == 0), (listedSchools === undefined || listedSchools.length == 0))
-        //
-        return
-        if ((sourceSchools === undefined || sourceSchools.length == 0) || (listedSchools === undefined || listedSchools.length == 0)) return
-        const _srcIds = sourceSchools.map(({OrgID}) => OrgID)
-        const _listIds = listedSchools.map(({orgId}) => orgId)
-        setSourceSchools(sourceSchools.filter(({OrgID}) => !_listIds.includes(OrgID)))
-
-        listedSchools
-            .filter(({orgId}) => !_srcIds.includes(orgId || ''))
-            .forEach(s => s.closed = true)
-        setListedSchools(listedSchools)
-        console.log("source schools", _srcIds)
-        console.log("listed schools", _listIds)
+    const [sourceSchools, setSourceSchools] = useState<School[]>([])
+    const loadSourceSchools = async () => {
+        setSourceSchools(await SchoolProvider.getSchools())
     }
-    const addSchool = (values: SchoolProfile) => {
-        console.log(values)
-        const tmpData = [...listedSchools]
-        tmpData.push(values)
-        setListedSchools(tmpData)
+    // from the application
+    const [recordedSchools, setRecordedSchools] = useState<SchoolProfileStatus[]>([])
+    const loadRecordedSchools = async () => {
+        // todo: this is a mock promise.  This will get replaced with a service call
+        setRecordedSchools(await
+            (async () => mockSchoolList)()
+                .then((selected) => {
+                    //console.log("got list", selected)
+                    return selected
+                })
+        )
+    }
+    // used to populate the dropdown
+    const [schoolChoices, setSchoolChoices] = useState<(School)[]>([])
+    const markedClosedSchools = useRef(false);
+
+    const addSchool = (values: SchoolProfileStatus, helpers: FormikHelpers<SchoolProfileStatus>) => {
+        helpers.resetForm()
+        console.log(`add ${values.orgId} to ${recordedSchools.map(({orgId}) => orgId)}`)
+        const dataRecord = schoolChoices.find(({OrgID}) => OrgID === values.orgId)
+        if (dataRecord == undefined) {
+            console.log(`unable to find school ${values.orgId}`)
+            return
+        }
+        const tmpData = [...recordedSchools]
+        tmpData.push({
+            orgId: values.orgId,
+            name: dataRecord.Name,
+            address: dataRecord.MailingAddress,
+            cityStateZip: dataRecord.MailingCity + ' ' + dataRecord.MailingState + ', ' + dataRecord.MailingZip,
+            gradeRange: dataRecord.Grades.toString(),
+            approvedCapacity: values.approvedCapacity
+        })
+        console.log(`listed school contains? ${recordedSchools.some(i => i.orgId === 'IS003')}`)
+        setRecordedSchools(tmpData)
+        console.log(`listed school contains? ${recordedSchools.some(i => i.orgId === 'IS003')}`)
+        // pruneSource()
     }
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
         console.debug(`delete table row ${id}`)
-        const tmpData = [...listedSchools]
+        const tmpData = [...recordedSchools]
         tmpData.splice(id, 1)
-        setListedSchools(tmpData)
+        setRecordedSchools(tmpData)
     }
-    // from the application
-    const [listedSchools, setListedSchools] =
-        useState<(SchoolProfile & { closed?: boolean })[]>([])
 
-    // from the API
-    const [sourceSchools, setSourceSchools] =
-        useState<(School)[]>([])
-    // if (sourceSchools === undefined || sourceSchools.length == 0) {
-    //     SchoolProvider.getSchools()
-    //         .then((_schools) => setSourceSchools(_schools))
-    // }
     useEffect(() => {
-        // setSourceSchools([])
-        Promise.allSettled([
-            SchoolProvider.getSchools()
-                .then((schools) => {
-                    console.log("got source", schools)
-                    return schools
-                    // setSourceSchools(_schools)
-                }),
-            (async () => mockSchoolList)()
-                .then((selected) => {
-                    console.log("got list", selected)
-                    return selected
-                    // setListedSchools(_list)
-                })
+        // calling async functions to handle promises
+        // populate the authoritative list of schools
+        loadSourceSchools()
+        loadRecordedSchools()
+    }, []);
 
-        ]).then((values) => {
-            const fulfilledValues = (values as PromiseFulfilledResult<School | SchoolProfileStatus>[])
-                .filter(res => res.status === 'fulfilled')
-                .map(res => res.value);
-
-            crossMatch(fulfilledValues as [School[], SchoolProfileStatus[]])
-        })
-    }, [sourceSchools,listedSchools]);
-
+    useEffect(() => {
+        if (sourceSchools.length == 0 || recordedSchools.length == 0) return;
+        if (!markedClosedSchools.current) {
+            console.log("marking any schools not in the source as closed")
+            const srcIds = sourceSchools.map(({OrgID}) => OrgID)
+            recordedSchools
+                .filter(({orgId}) => !srcIds.includes(orgId || ''))
+                .forEach(s => s.closed = true)
+            markedClosedSchools.current = true;
+        }
+        const listedIds = recordedSchools.map(({orgId}) => orgId)
+        setSchoolChoices(sourceSchools.filter(({OrgID}) => !listedIds.includes(OrgID)))
+    }, [sourceSchools, recordedSchools]);
     const columnHelper = createColumnHelper<SchoolProfileStatus>()
     const cols =
         [
             columnHelper.accessor(row => row.name, {
                 header: 'Name',
                 cell: props => {
-
                     return (<span
                         className={props.row.original.closed ? 'text-decoration-line-through' : ''}>{props.row.original.closed}{`${props.row.original.orgId} ${props.getValue()}`}</span>)
                 }
+            }),
+            columnHelper.accessor(row => row.approvedCapacity, {
+                header: 'Approved Capacity',
             }),
             columnHelper.display({
                 id: 'delete',
@@ -98,11 +103,18 @@ const Schools = () => {
                 ),
             })
         ]
-
+    const renderOptions = () => {
+        console.log(`rendered ${schoolChoices.length} options`)
+        if (schoolChoices.length == 0) return <option>loading...</option>
+        return schoolChoices.map(o =>
+            <option value={o.OrgID} key={o.OrgID}>{o.Name}</option>
+        );
+    }
     return (
         <Formik onSubmit={addSchool}
                 initialValues={{
-                    name: ''
+                    orgId: '',
+                    approvedCapacity: 0
                 }}
         >
             {
@@ -116,15 +128,23 @@ const Schools = () => {
                                     <Form.Group as={Row}>
                                         <Col sm={4}>
                                             <Form.Label>Schools</Form.Label>
-                                            <Field name="name"
+                                            <Field name="orgId"
                                                    as={Form.Select}
                                                    required
                                             >
                                                 <option hidden value=''>Choose a School</option>
-                                                {sourceSchools?.map(
-                                                    o => (<option key={o.Name}>{o.Name}</option>)
-                                                )}
+                                                {renderOptions()}
                                             </Field>
+                                        </Col>
+                                        <Col sm={2}>
+                                            <Form.Label>Approved Capacity</Form.Label>
+                                            <Field as={"input"}
+                                                   className={"form-control"}
+                                                   name="approvedCapacity"
+                                                   placeholder={0}
+                                                   type="number"
+                                                   required
+                                            />
                                         </Col>
                                     </Form.Group>
                                 </Card.Body>
@@ -132,7 +152,7 @@ const Schools = () => {
                                     <Button type={"submit"}>Add</Button>
                                 </Card.Footer>
                             </Card>
-                            <RateApplicationTable columns={cols} data={listedSchools}/>
+                            <RateApplicationTable columns={cols} data={recordedSchools}/>
                         </Form>
                     </>
                 )
