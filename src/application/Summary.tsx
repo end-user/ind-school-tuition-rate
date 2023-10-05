@@ -1,4 +1,4 @@
-import {Alert, Button, Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
 import {
@@ -27,13 +27,13 @@ const aggregateData = (accumulator: S, currentValue: StaffSalary | Benefit | All
     actual: accumulator.actual + (currentValue.actual || 0),
     budget: accumulator.budget + (currentValue.budget || 0)
 })
-const Summary = ({fy, enrollment, school, assurancesConfirm, applicationCompleted,submitApp,data}: {
+const Summary = ({fy, enrollment, school, submitApp, data}: {
     fy: FY,
     enrollment: number,
     school: SchoolProfile | undefined,
     assurancesConfirm: React.MutableRefObject<boolean>,
     applicationCompleted: React.MutableRefObject<boolean>,
-    submitApp:()=>void,
+    submitApp: () => void,
     data: {
         salaryData: StaffSalary[],
         benefitData: Benefit[],
