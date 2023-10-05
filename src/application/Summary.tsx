@@ -1,4 +1,4 @@
-import {Button, Card} from "react-bootstrap";
+import {Alert, Button, Card} from "react-bootstrap";
 import {currencyFormatter, percentFormatter} from "../services/formatter.js";
 import Table from "react-bootstrap/Table";
 import {
@@ -10,6 +10,8 @@ import {
     StaffSalary
 } from '../shared/ts-model-data.ts';
 import FY from "../shared/FY.tsx";
+import {Form, Formik} from "formik";
+import React from "react";
 
 
 interface S {
@@ -25,10 +27,13 @@ const aggregateData = (accumulator: S, currentValue: StaffSalary | Benefit | All
     actual: accumulator.actual + (currentValue.actual || 0),
     budget: accumulator.budget + (currentValue.budget || 0)
 })
-const Summary = ({fy, enrollment, school, data}: {
+const Summary = ({fy, enrollment, school, assurancesConfirm, applicationCompleted,submitApp,data}: {
     fy: FY,
     enrollment: number,
     school: SchoolProfile | undefined,
+    assurancesConfirm: React.MutableRefObject<boolean>,
+    applicationCompleted: React.MutableRefObject<boolean>,
+    submitApp:()=>void,
     data: {
         salaryData: StaffSalary[],
         benefitData: Benefit[],
@@ -37,6 +42,15 @@ const Summary = ({fy, enrollment, school, data}: {
         revenueData: Revenue[]
     }
 }) => {
+
+    // const verifyAndSumbit = (v,help) => {
+    //     console.log(v,help)
+    //     if (!assurancesConfirm.current) {
+    //         console.log("display error")
+    //         applicationCompleted.current = true
+    //     }
+    //
+    // }
     // deduct medicaid, unencumbered, transport only
     const summary = {
         salaries: data.salaryData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
@@ -179,13 +193,23 @@ const Summary = ({fy, enrollment, school, data}: {
                     </tr>
                     </tbody>
                 </Table>
-                <Card.Text>I assert this is all good <Button type={"submit"}>Submit Application</Button>
-                </Card.Text>
-                <Card.Text className={"text-danger-emphasis bg-danger-subtle"}>you didn't check the box. Please go back
-                    to <i>Assurances</i> and confirm you've read and understand</Card.Text>
+                <Formik enableReinitialize
+                        onSubmit={submitApp}
+                        initialValues={{}}
+                >
+                    {
+                        ({handleSubmit}) => (
+                            <>
+                                <Form onSubmit={handleSubmit}>
+                                    <Card.Text>I assert this is all good <Button type={"submit"}>Submit
+                                        Application</Button>
+                                    </Card.Text>
+                                </Form>
+                            </>
+                        )}
+                </Formik>
             </Card.Body>
         </Card>
-
     );
 }
 export default Summary

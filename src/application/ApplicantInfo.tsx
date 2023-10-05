@@ -32,18 +32,16 @@ const ApplicantInfo = ({fy, enrollment, schoolHead, netCosts, setNetCosts}: {
         console.log(`msg from ${name}, needs to set ${value}`)
         setNetCosts({...netCosts, [name]: value});
     }
-    const submit = () => {
-    }
+
     return (
         <Formik enableReinitialize
-                onSubmit={submit}
+                onSubmit={()=>{}}
                 initialValues={initialValues}
         >
             {({
                   values,
-                  handleSubmit,
               }) => (<>
-                    <Form onSubmit={handleSubmit}>
+                    <Form>
                         <div className={"row"}>
 
                             <div className={"col-4"}>

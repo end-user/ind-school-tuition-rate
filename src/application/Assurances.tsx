@@ -1,8 +1,14 @@
-import {Card, Form} from "react-bootstrap";
+import {Alert, Card, Form} from "react-bootstrap";
 import {Formik} from "formik";
+import React from "react";
 
-const Assurances = () => {
-
+const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefObject<boolean> }) => {
+    const initialValues = {assured: assurancesConfirm.current}
+    const setAssure = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {value} = e.target
+        console.log(`new value ${value}`)
+        assurancesConfirm.current = !assurancesConfirm.current
+    }
     return (
         <Card>
             <Card.Header>Tuition Rate Assurances</Card.Header>
@@ -46,23 +52,33 @@ const Assurances = () => {
                 <Formik enableReinitialize
                         onSubmit={() => {
                         }}
-                        initialValues={() => {
-                        }}
+                        initialValues={initialValues}
                 >
                     {
-                        ({
-                             handleSubmit,
-                         }) => (
+                        ({handleChange}) => (
                             <>
-                                <Form onSubmit={handleSubmit}>
+                                <Form>
                                     <div className={'card col-5 offset-4 alert alert-primary'}>
                                         <div className={'card-body'}>
-                                        <Form.Check type={'checkbox'} id={'assurances-confirm'}>
-                                            <Form.Check.Input type={'checkbox'}/>
-                                            <Form.Check.Label>I have read and understand these
-                                                assurances.</Form.Check.Label>
-                                        </Form.Check>
-                                    </div></div>
+                                            <Form.Check type={'checkbox'}
+                                                        name={'assured'}
+                                                        value={0}
+                                                        id={'assurancesConfirm'}>
+                                                <Form.Check.Input  onChange={e=> {
+                                                    handleChange(e)
+                                                    setAssure(e)
+                                                }} type={'checkbox'}/>
+                                                <Form.Check.Label>I have read and understand these
+                                                    assurances.</Form.Check.Label>
+                                            </Form.Check>
+                                            <Alert variant={"danger"} show={assurancesConfirm.current}  className={"col-4"}>
+                                                <Alert.Heading>Incomplete</Alert.Heading>
+                                                you didn't check the
+                                                box. Please go back
+                                                to <i>Assurances</i> and confirm you've read and understand
+                                            </Alert>
+                                        </div>
+                                    </div>
                                 </Form>
                             </>
                         )}

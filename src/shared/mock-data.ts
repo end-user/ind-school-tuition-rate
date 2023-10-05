@@ -1,11 +1,11 @@
 import {RateApplication, SchoolHead, SchoolProfile} from "./ts-model-data.ts";
 
 export const mockSchoolList: SchoolProfile[] = [
-    {name: 'CENTERPOINT',approvedCapacity:13,orgId:'IS999'},
-    {name: 'ORCHARD VALLEY WALDORF SCHOOL',approvedCapacity:36,orgId:'IS109'},
-    {name: 'PACEM SCHOOL',approvedCapacity:24,orgId:'IS252'},
-    {name: 'PUTNEY SCHOOL',approvedCapacity:58,orgId:'IS062'},
-    {name: 'ST PAULS ELEMENTARY SCHOOL',approvedCapacity:65,orgId:'IS077'}
+    {name: 'CENTERPOINT', approvedCapacity: 13, orgId: 'IS999'},
+    {name: 'ORCHARD VALLEY WALDORF SCHOOL', approvedCapacity: 36, orgId: 'IS109'},
+    {name: 'PACEM SCHOOL', approvedCapacity: 24, orgId: 'IS252'},
+    {name: 'PUTNEY SCHOOL', approvedCapacity: 58, orgId: 'IS062'},
+    {name: 'ST PAULS ELEMENTARY SCHOOL', approvedCapacity: 65, orgId: 'IS077'}
 ]
 export const mockSchoolHead: SchoolHead[] =
     [{
@@ -29,8 +29,9 @@ export const mockSchoolHead: SchoolHead[] =
         {id: 137, name: 'William', email: 'B6', schoolProfile: {name: 'ST PAULS ELEMENTARY SCHOOL'}},
 
     ]
-export const rateApplications: RateApplication[] =
+export const mockRateApplications: RateApplication[] =
     [
+
         {
             id: 1,
             schoolYear: '2022',
@@ -57,7 +58,7 @@ export const rateApplications: RateApplication[] =
             },
             staffSalaries: [{
                 id: 510,
-                status: 'employed',
+                status: 'filled',
                 genEdu: 50,
                 speEdu: 50,
                 positionTitle: 'English Instructor',
@@ -77,8 +78,6 @@ export const rateApplications: RateApplication[] =
                 {revenueSource: 'Grant', actual: 1500, budget: 0}
             ]
         },
-
-
         {
             id: 15,
             schoolYear: '2023',
@@ -113,4 +112,5 @@ export const rateApplications: RateApplication[] =
                 }
             },
             submittedDate: new Date('6/4/2023')
-        }]
+        }
+    ]
