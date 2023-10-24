@@ -26,7 +26,7 @@ const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefOb
                 </p>
                 <p><strong>2229 Approval to Receive Public Tuition</strong>
                 </p>
-                <p><strong>Special Education Approval. 2229.1</strong> --Enrollment
+                <p><strong>Special Education Approval. 2229.1 </strong> --Enrollment
                     Requirements for Approved Independent Schools, Students, and LEAs. a) Each approved
                     independent school shall publish, maintain and follow a written enrollment policy which, at minimum,
                     shall provide the following: 1) That the student or the parent of a student seeking to attend the
@@ -37,7 +37,7 @@ const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefOb
                     disability, or the student’s socioeconomic status; 3) The school’s process for making
                     enrollment decisions when the number of applicants exceeds capacity.
                 </p>
-                <p><strong>2232 Tuition Rate Applications</strong>
+                <p><strong>2232 Tuition Rate Applications </strong>
                     Heads of School confirm that all “reported costs shall be only those that are net of other
                     available restricted revenue sources.”
                     There is no duplication of costs, in any cost category, on the tuition rate application

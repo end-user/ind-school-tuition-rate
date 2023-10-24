@@ -1,5 +1,5 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Field, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
@@ -10,11 +10,26 @@ import {Revenue} from "../shared/ts-model-data.ts";
 import {Tooltip} from "react-tippy";
 import type {LedgerEntry} from "./model/data.d.ts"
 import FY from "../shared/FY.tsx";
+
 const OffsettingRevenue = ({fy, data, setData}: {
-    fy:FY,
-    data: any[],
-    setData: React.Dispatch<React.SetStateAction<any[]>>
+    fy: FY,
+    data: Revenue[],
+    setData: React.Dispatch<React.SetStateAction<Revenue[]>>
 }) => {
+    const initOptions: string[] = [
+        'Medicaid',//s
+        'Free & Reduced Lunch Program',//s
+        'Encumbered Donation',//m
+        'Unencumbered Private Donation',//m
+        'ESY Services',//s
+        'Transportation reimbursement from LEAs',//s
+        'Bank loan',//m
+        'Grant',//m
+        'COVID Extended Support Funding',//s
+        'Title Funding Title IA, Title II or Title IV',//m
+        'Payroll loan',//m
+    ]
+    const [revenueOptions, setRevenueOptions] = useState<string[]>([])
     const columnHelper = createColumnHelper<Revenue>()
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
@@ -27,6 +42,8 @@ const OffsettingRevenue = ({fy, data, setData}: {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
+        if (values.revenueSource === "Other") return
+        setRevenueOptions(revenueOptions.filter(o => o !== values.revenueSource))
     };
     type Values = LedgerEntry & {
         revenueSource: string
@@ -58,7 +75,15 @@ const OffsettingRevenue = ({fy, data, setData}: {
                 ),
             })
         ]
-
+    useEffect(() => {
+        const usedOptions: (string | undefined)[] = data.map(b => {
+            if (b.revenueSource !== "Other") return b.revenueSource
+        })
+        // const filteredOptions=
+        setRevenueOptions(initOptions.filter(o => {
+            if (!usedOptions.includes(o)) return o
+        }))
+    }, [data]);
 
     return (
         <Formik enableReinitialize
@@ -99,17 +124,7 @@ const OffsettingRevenue = ({fy, data, setData}: {
                                                    required
                                             >
                                                 <option hidden value=''>Choose a Revenue</option>
-                                                <option>Medicaid</option>
-                                                <option>Free & Reduced Lunch Program</option>
-                                                <option>Encumbered Donation</option>
-                                                <option>Unencumbered Private Donation</option>
-                                                <option>ESY Services</option>
-                                                <option>Transportation reimbursement from LEAs</option>
-                                                <option>Bank loan</option>
-                                                <option>Grant</option>
-                                                <option>COVID Extended Support Funding</option>
-                                                <option>Title Funding Title IA, Title II or Title IV</option>
-                                                <option>Payroll loan</option>
+                                                {revenueOptions.map(o => <option key={o}>{o}</option>)}
                                             </Field>
                                         </Col>
                                         <Col sm={2} className={'offset-sm-4'}>

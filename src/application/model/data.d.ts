@@ -4,6 +4,7 @@ export type OptionsWithGroup = {
 }
 
 export type LedgerEntry = {
+
     actual: number;
     budget: number;
 }

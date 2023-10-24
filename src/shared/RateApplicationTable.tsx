@@ -1,5 +1,15 @@
-import {useEffect, useState} from "react";
-import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import React, {useEffect, useState} from "react";
+import {ColumnDef, flexRender, getCoreRowModel, Row, useReactTable} from "@tanstack/react-table";
+import {Button, Col} from "react-bootstrap";
+import {Field, useFormikContext} from "formik";
+import {
+    AbstractLedgerEntry,
+    AllowableExpense,
+    Benefit,
+    ContractedService,
+    Revenue,
+    StaffSalary
+} from "./ts-model-data.ts";
 
 
 /**
@@ -9,23 +19,31 @@ import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/r
  * @constructor
  * @see <a href="https://react-table-v7.tanstack.com/docs/api/useTable#column-options">Column</a>
  */
-
-
-const RateApplicationTable = ({columns, data}: {
-    columns: ColumnDef<any, any>[],
-    data: any[] | Promise<any>
-}) => {
-    const [tableData, setTableData] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
+type CommentHandlers = {
+    editCommentRowId: number | undefined,
+    setCommentRowId: React.Dispatch<React.SetStateAction<number | undefined>>
+};
+const RateApplicationTable = <TData, >(
+    {columns, data, commentHandlers}: {
+        columns: ColumnDef<TData, undefined>[],
+        data: TData[] | Promise<TData>,
+        commentHandlers?: CommentHandlers
+    }) => {
+    const {editCommentRowId, setCommentRowId} = commentHandlers ||
+    {
+        editCommentRowId: undefined, setCommentRowId: () => {
+        }
+    };
+    const [tableData, setTableData] = useState<TData[]>([])
+    const [loading, setLoading] = useState(true)
+    const formikContext = useFormikContext<StaffSalary | Benefit | AllowableExpense | ContractedService | Revenue>();
     useEffect(() => {
-
         if (Array.isArray(data)) {
             setTableData(data);
             setLoading(false);
         } else if (data instanceof Promise) {
             data.then((fetchedData) => {
-                setTableData(fetchedData);
+                setTableData(fetchedData as TData[]);
                 setLoading(false);
             });
         }
@@ -41,11 +59,43 @@ const RateApplicationTable = ({columns, data}: {
         return (<div>loading...</div>)
     }
 
-    const doComment = (comment:string) => {
-        if (comment)  return (
+    const doComment = (row: Row<TData>) => {
+        const id = row.index
+        const comment = (row.original as AbstractLedgerEntry).comment
+        // if there is text to display, but there's no edit row id
+        if (comment && editCommentRowId === undefined) return (
             <div className={'row'}>
                 <div className={'offset-3 col-3'}>{comment}</div>
             </div>)
+        // when edit row id is set, regardless of whether there's data.
+        console.log(`id: ${id}, edit: ${editCommentRowId}`)
+        if (id === editCommentRowId) {
+            formikContext.initialValues.comment = comment
+            return (
+                <div className={'row'}>
+                    <Col sm={8} className={'offset-2'}>
+                        <Field as={"textarea"}
+                               className={"form-control"}
+                               name="comment"
+                               rows={1}
+                               placeholder={"comments..."}
+                               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                   formikContext.handleChange(e)
+                               }}
+                        /><br/>
+                        <Button type={"button"}
+                                onClick={() => {
+                                    const tempData: AbstractLedgerEntry[] = tableData as AbstractLedgerEntry[]
+                                    tempData[id].comment = formikContext.values.comment
+                                    setTableData(tempData as never[])
+                                    setCommentRowId(undefined)
+                                }}>
+                            Save
+                        </Button>
+                    </Col>
+                </div>
+            )
+        }
     }
 
 
@@ -61,7 +111,8 @@ const RateApplicationTable = ({columns, data}: {
                                     : flexRender(
                                         header.column.columnDef.header,
                                         header.getContext()
-                                    )}</div>
+                                    )}
+                            </div>
                         ))}
                     </div>
                 ))}
@@ -74,10 +125,11 @@ const RateApplicationTable = ({columns, data}: {
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </div>)}
                         </div>
-                        {doComment(row.original.comment)}
+                        {(row.original as AbstractLedgerEntry).comment !== undefined && doComment(row)}
                     </div>
                 ))}
             </div>
+
         </div>
     )
 }

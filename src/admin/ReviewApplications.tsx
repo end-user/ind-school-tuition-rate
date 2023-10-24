@@ -43,7 +43,7 @@ const ReviewApplications = () => {
 
     return (
         <Card>
-            <RateApplicationTable columns={cols} data={data}/>
+            <RateApplicationTable<RateApplication> columns={cols} data={data}/>
         </Card>
     );
 }

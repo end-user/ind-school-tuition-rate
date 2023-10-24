@@ -9,7 +9,6 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {StaffSalary} from "../shared/ts-model-data.ts";
 import FY from "../shared/FY.tsx";
 import {number, object, string} from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
 
 const validationSchema = object()
     .shape({
@@ -37,14 +36,6 @@ const validationSchema = object()
         actual: number().required(),
         budget: number()
     });
-yupResolver(validationSchema)
-/*const {
-    formState: {errors},
-    register,
-    handleSubmit
-} = useForm({
-    resolver: yupResolver(validationSchema),
-});*/
 
 const StaffSalaries = ({fy, data, setData}: {
     fy: FY,
