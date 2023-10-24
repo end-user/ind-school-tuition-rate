@@ -9,7 +9,6 @@ import {Tooltip} from "react-tippy";
 import {createColumnHelper} from "@tanstack/react-table";
 import {Benefit} from "../shared/ts-model-data.ts";
 import FY from "../shared/FY.tsx";
-import GetUserPrincipal from "../shared/AuthorizationProvider.tsx";
 
 const Benefits = ({fy, data, setData}: {
     fy: FY,
@@ -55,7 +54,8 @@ const Benefits = ({fy, data, setData}: {
     const editComment = (id: number) => {
         setCommentRowId(id)
     }
-    const user = GetUserPrincipal()
+    //const user = GetUserPrincipal()
+    const user = {isStateEmployee: true}
 
     const initialValues: Benefit = {benefit: '', description: '', comment: '', actual: 0, budget: 0}
     const cols = [
@@ -181,7 +181,7 @@ const Benefits = ({fy, data, setData}: {
                             </Card.Footer>
                         </Card>
                         <RateApplicationTable<Benefit> columns={cols} data={data}
-                                              commentHandlers={{editCommentRowId, setCommentRowId}}
+                                                       commentHandlers={{editCommentRowId, setCommentRowId}}
                         />
                     </Form>
                 </>
