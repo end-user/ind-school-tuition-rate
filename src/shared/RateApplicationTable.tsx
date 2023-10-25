@@ -68,7 +68,6 @@ const RateApplicationTable = <TData, >(
                 <div className={'offset-3 col-3'}>{comment}</div>
             </div>)
         // when edit row id is set, regardless of whether there's data.
-        console.log(`id: ${id}, edit: ${editCommentRowId}`)
         if (id === editCommentRowId) {
             formikContext.initialValues.comment = comment
             return (

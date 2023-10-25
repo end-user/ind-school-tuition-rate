@@ -1,20 +1,31 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
+import {faComments, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {ContractedService} from "../shared/ts-model-data.ts";
-import type {LedgerEntry} from "./model/data.d.ts"
 import FY from "../shared/FY.tsx";
 
+const serviceOptions: string[] = [
+    'Physical Therapist',
+    'Occupational Therapist',
+    'Speech Language Pathologist',
+    'Clinical Provider',
+    'Payroll Specialist',
+    'IT support contract',
+    'Janitorial Services, snow plowing and trash/recycling removal',
+    'Nurse/Medical Provider',
+]
 const ContractedServiceProviders = ({fy, data, setData}: {
     fy: FY,
-    data: any[],
-    setData: React.Dispatch<React.SetStateAction<any[]>>
+    data: ContractedService[],
+    setData: React.Dispatch<React.SetStateAction<ContractedService[]>>
 }) => {
+    const [editCommentRowId, setCommentRowId] = useState<number>()
+
     const columnHelper = createColumnHelper<ContractedService>()
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
@@ -23,27 +34,14 @@ const ContractedServiceProviders = ({fy, data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: Values) => {
+    const addRow = async (values: ContractedService) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-    type Values = LedgerEntry & {
-        service: string
-    }
-    const initialValues: Values = {service: '', actual: 0, budget: 0}
-
-    const serviceOptions: string[] = [
-        'Physical Therapist',
-        'Occupational Therapist',
-        'Speech Language Pathologist',
-        'Clinical Provider',
-        'Payroll Specialist',
-        'IT support contract',
-        'Janitorial Services, snow plowing and trash/recycling removal',
-        'Nurse/Medical Provider',
-    ]
-
+    //const user = GetUserPrincipal()
+    const user = {isStateEmployee: true}
+    const initialValues: ContractedService = {service: '', comment: '', actual: 0, budget: 0}
     const cols =
         [
             columnHelper.accessor(row => row.service, {
@@ -62,11 +60,18 @@ const ContractedServiceProviders = ({fy, data, setData}: {
             }),
             columnHelper.display({
                 id: 'delete',
-                cell: (tableProps) => (
+                cell: (tableProps) => (<>
+                    {user.isStateEmployee && editCommentRowId !== tableProps.row.index && (
+                        //only display the button if this is an admin
+                        <Button variant={'link'} className={'text-success'}
+                                hidden={editCommentRowId === tableProps.row.index}
+                                onClick={() => setCommentRowId(tableProps.row.index)}>
+                            <FontAwesomeIcon icon={faComments}/>
+                        </Button>)}
                     <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
                         <FontAwesomeIcon icon={faSquareXmark}/>
                     </Button>
-                ),
+                </>),
             })
         ]
 
@@ -126,7 +131,8 @@ const ContractedServiceProviders = ({fy, data, setData}: {
                                 </Card.Footer>
                             </Card>
                         </Form>
-                        <RateApplicationTable columns={cols} data={data}/>
+                        <RateApplicationTable<ContractedService> columns={cols} data={data}
+                                                                 commentHandlers={{editCommentRowId, setCommentRowId}}/>
                     </>
                 )}
         </Formik>

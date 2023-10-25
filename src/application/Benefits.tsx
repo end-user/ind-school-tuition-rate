@@ -10,29 +10,30 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {Benefit} from "../shared/ts-model-data.ts";
 import FY from "../shared/FY.tsx";
 
+const initOptions: string[] = [
+    'FICA',
+    'Workers\' Compensation',
+    'Unemployment',
+    'Group Health/Dental Insurance',
+    'Group Life Insurance',
+    'Disability Insurance',
+    'Staff Liability Insurance',
+    'Pension',
+    'Profits Sharing',
+    'Staff Professional Development (for all staff members)',
+    'Employee Gifts/Awards/Banquets',
+    'Other'
+]
 const Benefits = ({fy, data, setData}: {
     fy: FY,
     data: Benefit[],
     setData: React.Dispatch<React.SetStateAction<Benefit[]>>
 }) => {
-    const columnHelper = createColumnHelper<Benefit>()
     const [selectedOption, setSelectedOption] = useState("");
-    const initOptions: string[] = [
-        'FICA',
-        'Workers\' Compensation',
-        'Unemployment',
-        'Group Health/Dental Insurance',
-        'Group Life Insurance',
-        'Disability Insurance',
-        'Staff Liability Insurance',
-        'Pension',
-        'Profits Sharing',
-        'Staff Professional Development (for all staff members)',
-        'Employee Gifts/Awards/Banquets',
-        'Other'
-    ]
     const [benefitOptions, setBenefitOptions] = useState<string[]>([])
     const [editCommentRowId, setCommentRowId] = useState<number>()
+
+    const columnHelper = createColumnHelper<Benefit>()
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value: string = event.target.value
         setSelectedOption(value);
@@ -51,9 +52,6 @@ const Benefits = ({fy, data, setData}: {
         if (values.benefit === "Other") return
         setBenefitOptions(benefitOptions.filter(o => o !== values.benefit))
     };
-    const editComment = (id: number) => {
-        setCommentRowId(id)
-    }
     //const user = GetUserPrincipal()
     const user = {isStateEmployee: true}
 
@@ -83,10 +81,7 @@ const Benefits = ({fy, data, setData}: {
                     //only display the button if this is an admin
                     <Button variant={'link'} className={'text-success'}
                             hidden={editCommentRowId === tableProps.row.index}
-                            onClick={() => {
-                                console.log(`edit row ${tableProps.row.index}`)
-                                editComment(tableProps.row.index)
-                            }}>
+                            onClick={() => setCommentRowId(tableProps.row.index)}>
                         <FontAwesomeIcon icon={faComments}/>
                     </Button>)}
                 <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>

@@ -1,16 +1,15 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import SelectDropdownWithOptionGroups from "./components/SelectDropdownWithOptionGroups"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
+import {faComments, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import {Field, Formik} from "formik";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
 import {AllowableExpense} from "../shared/ts-model-data.ts";
-import type {LedgerEntry, OptionsWithGroup} from "./model/data.d.ts"
-import React from "react";
+import type {OptionsWithGroup} from "./model/data.d.ts"
+import React, {useState} from "react";
 import FY from "../shared/FY.tsx";
-
 
 const groupLabel: {
     [key: string]: string
@@ -61,15 +60,15 @@ const groupedExpenseOptions: OptionsWithGroup[] = [
     {text: 'Mortgage', optionGroup: groupLabel['operational']},
     {text: 'Property Taxes', optionGroup: groupLabel['operational']},
     {text: 'Property Liability Insurance', optionGroup: groupLabel['operational']},
-
 ];
 
 // if this were TS, could use the types <ColourOption | FlavourOption> in <Select>
-const AllowableExpenses = ({fy,data, setData}: {
-    fy:FY,
-    data: any[],
-    setData: React.Dispatch<React.SetStateAction<any[]>>
+const AllowableExpenses = ({fy, data, setData}: {
+    fy: FY,
+    data: AllowableExpense[],
+    setData: React.Dispatch<React.SetStateAction<AllowableExpense[]>>
 }) => {
+    const [editCommentRowId, setCommentRowId] = useState<number>()
     const columnHelper = createColumnHelper<AllowableExpense>()
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
@@ -78,12 +77,14 @@ const AllowableExpenses = ({fy,data, setData}: {
         tmpData.splice(id, 1)
         setData(tmpData)
     }
-    const addRow = async (values: Values) => {
+    const addRow = async (values: AllowableExpense) => {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
     };
-
+    //const user = GetUserPrincipal()
+    const user = {isStateEmployee: true}
+    const initialValues: AllowableExpense = {expense: '',  comment: '',actual: 0, budget: 0}
 
     const cols =
         [
@@ -103,17 +104,21 @@ const AllowableExpenses = ({fy,data, setData}: {
             }),
             columnHelper.display({
                 id: 'delete',
-                cell: (tableProps) => (
+                cell: (tableProps) => (<>
+                    {user.isStateEmployee && editCommentRowId !== tableProps.row.index && (
+                        //only display the button if this is an admin
+                        <Button variant={'link'} className={'text-success'}
+                                hidden={editCommentRowId === tableProps.row.index}
+                                onClick={() => setCommentRowId(tableProps.row.index)}>
+                            <FontAwesomeIcon icon={faComments}/>
+                        </Button>)}
                     <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
                         <FontAwesomeIcon icon={faSquareXmark}/>
                     </Button>
-                ),
+                </>),
             })
         ]
-    type Values = LedgerEntry & {
-        expense: string
-    }
-    const initialValues: Values = {expense: '', actual: 0, budget: 0}
+
     return (
         <Formik enableReinitialize
                 onSubmit={addRow}
@@ -163,7 +168,8 @@ const AllowableExpenses = ({fy,data, setData}: {
                                 </Card.Footer>
                             </Card>
                         </Form>
-                        <RateApplicationTable columns={cols} data={data}/>
+                        <RateApplicationTable<AllowableExpense> columns={cols} data={data}
+                                              commentHandlers={{editCommentRowId, setCommentRowId}}/>
                     </>
                 )}
         </Formik>

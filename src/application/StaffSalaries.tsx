@@ -1,8 +1,8 @@
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
 import {Field, FieldProps, Formik} from "formik";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSquareXmark} from "@fortawesome/free-solid-svg-icons";
+import {faComments, faSquareXmark} from "@fortawesome/free-solid-svg-icons";
 import RateApplicationTable from "../shared/RateApplicationTable";
 import {currencyFormatter} from "../services/formatter.js";
 import {createColumnHelper} from "@tanstack/react-table";
@@ -37,11 +37,33 @@ const validationSchema = object()
         budget: number()
     });
 
+const positionOptions=[
+"Executive Director",
+"Assistant Director",
+"Education Director",
+"Program Director",
+"Science Instructor",
+"English Instructor",
+"History/Social Studies Instructor",
+"Math Instructor",
+"Elementary Ed Instructor",
+"Administrative Assistant",
+"Clinical Coordinator",
+"Clinical Case Manager",
+"Special Education Teacher",
+"Special Education Case Manager",
+"Program Coordinator",
+"School Social Worker",
+"School to Home Coordinator",
+"Outdoor Education Instructor",
+"Community Based Learning Instructor",
+]
 const StaffSalaries = ({fy, data, setData}: {
     fy: FY,
     data: StaffSalary[],
     setData: React.Dispatch<React.SetStateAction<StaffSalary[]>>
 }) => {
+    const [editCommentRowId, setCommentRowId] = useState<number>()
     const columnHelper = createColumnHelper<StaffSalary>()
     const deleteRow = async (id: number) => {
         //todo this will be a call to the server
@@ -56,12 +78,14 @@ const StaffSalaries = ({fy, data, setData}: {
         tmpData.push(values)
         setData(tmpData)
     };
-
+    //const user = GetUserPrincipal()
+    const user = {isStateEmployee: true}
     const initialValues: StaffSalary = {
         positionTitle: '',
         status: '',
         genEdu: 100,
         speEdu: 0,
+        comment: '',
         actual: 0,
         budget: 0
     }
@@ -91,11 +115,18 @@ const StaffSalaries = ({fy, data, setData}: {
             }),
             columnHelper.display({
                 id: 'delete',
-                cell: (tableProps) => (
+                cell: (tableProps) => (<>
+                    {user.isStateEmployee && editCommentRowId !== tableProps.row.index && (
+                        //only display the button if this is an admin
+                        <Button variant={'link'} className={'text-success'}
+                                hidden={editCommentRowId === tableProps.row.index}
+                                onClick={() => setCommentRowId(tableProps.row.index)}>
+                            <FontAwesomeIcon icon={faComments}/>
+                        </Button>)}
                     <Button variant={'link'} className={'text-success'} onClick={() => deleteRow(tableProps.row.index)}>
                         <FontAwesomeIcon icon={faSquareXmark}/>
                     </Button>
-                ),
+                </>),
             })
         ]
 
@@ -105,7 +136,6 @@ const StaffSalaries = ({fy, data, setData}: {
                 onSubmit={addRow}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-
         >
             {
                 ({
@@ -130,25 +160,7 @@ const StaffSalaries = ({fy, data, setData}: {
                                                         {...field}
                                                     >
                                                         <option hidden value=''>Choose a Position/Title</option>
-                                                        <option>Executive Director</option>
-                                                        <option>Assistant Director</option>
-                                                        <option>Education Director</option>
-                                                        <option>Program Director</option>
-                                                        <option>Science Instructor</option>
-                                                        <option>English Instructor</option>
-                                                        <option>History/Social Studies Instructor</option>
-                                                        <option>Math Instructor</option>
-                                                        <option>Elementary Ed Instructor</option>
-                                                        <option>Administrative Assistant</option>
-                                                        <option>Clinical Coordinator</option>
-                                                        <option>Clinical Case Manager</option>
-                                                        <option>Special Education Teacher</option>
-                                                        <option>Special Education Case Manager</option>
-                                                        <option>Program Coordinator</option>
-                                                        <option>School Social Worker</option>
-                                                        <option>School to Home Coordinator</option>
-                                                        <option>Outdoor Education Instructor</option>
-                                                        <option>Community Based Learning Instructor</option>
+                                                        {positionOptions.map(o => <option key={o}>{o}</option>)}
                                                     </Form.Select>
                                                 )}
                                             </Field>
@@ -243,7 +255,8 @@ const StaffSalaries = ({fy, data, setData}: {
                                 </Card.Footer>
                             </Card>
                         </Form>
-                        <RateApplicationTable columns={cols} data={data}/>
+                        <RateApplicationTable<StaffSalary> columns={cols} data={data}
+                                                           commentHandlers={{editCommentRowId, setCommentRowId}}/>
                     </>
                 )
             }
