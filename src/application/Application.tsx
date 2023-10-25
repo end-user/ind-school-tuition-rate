@@ -12,7 +12,6 @@ import {
     AllowableExpense,
     Benefit,
     ContractedService,
-    NetProgramCosts,
     RateApplication,
     Revenue,
     SchoolHead,
@@ -28,12 +27,15 @@ const Application = () => {
     const [currentTab, setCurrentTab] = useState("applicantInfo");
     // todo: lookup app based on id
     // todo: axios will include credentials for lookup.
-    const rateApplication: RateApplication | undefined = mockRateApplications.find(({id}) => id === Number(appId))
-    const fy = new FY(rateApplication ? Number(rateApplication.schoolYear) : new Date().getFullYear())
+    //const rateApplication: RateApplication | undefined = mockRateApplications.find(({id}) => id === Number(appId))
+    const [rateApplication, setRateApplication] = useState<RateApplication>(
+        mockRateApplications.find(({id}) => id === Number(appId)) ||
+        {schoolHead: {...mockSchoolHead[1]}}
+    )
+    const fy = new FY(rateApplication.schoolYear ? Number(rateApplication.schoolYear) : new Date().getFullYear())
     const enrollment = rateApplication?.enrollment || 0;
     const schoolHead: SchoolHead = rateApplication?.schoolHead ? rateApplication?.schoolHead : mockSchoolHead[1];
     const assurancesConfirm = useRef(false)
-    const [netCosts, setNetCosts] = useState<NetProgramCosts>(rateApplication?.netProgramCosts || {})
     const [salaryData, setSalaryData] = useState<StaffSalary[]>(rateApplication?.staffSalaries || [])
     const [expenseData, setExpenseData] = useState<AllowableExpense[]>(rateApplication?.expenses || [])
     const [serviceData, setServiceData] = useState<ContractedService[]>(rateApplication?.contractedServices || [])
@@ -43,15 +45,16 @@ const Application = () => {
     useEffect(() => {
         console.log(`assurances is now ${assurancesConfirm.current}`)
     }, [assurancesConfirm]);
-    const submitApplication=()=>{
+    const submitApplication = () => {
         console.log("woot")
         if (!assurancesConfirm.current) {
             setCurrentTab("assurances")
-                    console.log("display error")
-                    applicationCompleted.current = true
-                }
+            console.log("display error")
+            applicationCompleted.current = true
+        }
     }
-    return (<Tab.Container defaultActiveKey={'applicantInfo'} activeKey={currentTab} onSelect={(key) => setCurrentTab(key||"")}>
+    return (<Tab.Container defaultActiveKey={'applicantInfo'} activeKey={currentTab}
+                           onSelect={(key) => setCurrentTab(key || "")}>
         <Card>
             <Card.Header>
                 <Card.Title>Tuition Rate Application for {fy.thisFull()}</Card.Title>
@@ -85,8 +88,9 @@ const Application = () => {
             <Card.Body>
                 <Tab.Content>
                     <Tab.Pane eventKey="applicantInfo">
-                        <ApplicantInfo fy={fy} enrollment={enrollment} schoolHead={schoolHead} netCosts={netCosts}
-                                       setNetCosts={setNetCosts}/>
+                        <ApplicantInfo fy={fy}
+                                       applicationHandler={{rateApplication: rateApplication, setRateApplication: setRateApplication}}
+                        />
                     </Tab.Pane>
                     <Tab.Pane eventKey="assurances">
                         <Assurances assurancesConfirm={assurancesConfirm}/>

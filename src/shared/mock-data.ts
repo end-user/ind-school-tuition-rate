@@ -21,7 +21,17 @@ export const mockSchoolHead: SchoolHead[] =
             cityStateZip: 'DORSET, VT 05251'
         }
     },
-        {id: 94, name: 'Joseph Morrison', email: 'morrison@school.edu', schoolProfile: {name: 'CENTERPOINT'}},
+        {
+            id: 94, name: 'Joseph Morrison', email: 'morrison@school.edu', schoolProfile: {
+                orgId: 'IS035',
+                name: 'HILLTOP MONTESSORI SCHOOL',
+                gradeRange: 'K-8',
+                approvedCapacity: 30,
+                address: '99 STAFFORD FARM HILL',
+                cityStateZip: 'BRATTLEBORO, VT 05301'
+
+            }
+        },
         {id: 113, name: 'Mary', email: 'B2', schoolProfile: {name: 'CENTERPOINT'}},
         {id: 118, name: 'Patricia', email: 'B3', schoolProfile: {name: 'ORCHARD VALLEY WALDORF SCHOOL'}},
         {id: 120, name: 'Elizabeth', email: 'B4', schoolProfile: {name: 'PACEM SCHOOL'}},
