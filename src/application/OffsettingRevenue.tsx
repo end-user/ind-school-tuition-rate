@@ -23,7 +23,7 @@ const initOptions: string[] = [
     'Title Funding Title IA, Title II or Title IV',
     'Payroll loan',
 ]
-const multiUse: string[] = [
+const reusableOptions: string[] = [
     'Encumbered Donation',
     'Unencumbered Private Donation',
     'Bank loan',
@@ -31,6 +31,7 @@ const multiUse: string[] = [
     'Title Funding Title IA, Title II or Title IV',
     'Payroll loan'
 ]
+const isReusable=(v:string):boolean=>reusableOptions.includes(v)
 const OffsettingRevenue = ({fy, data, setData}: {
     fy: FY,
     data: Revenue[],
@@ -50,7 +51,7 @@ const OffsettingRevenue = ({fy, data, setData}: {
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
-        if (values.revenueSource && multiUse.includes(values.revenueSource)) return
+        if (values.revenueSource && isReusable(values.revenueSource)) return
         setRevenueOptions(revenueOptions.filter(o => o !== values.revenueSource))
     };
     //const user = GetUserPrincipal()
@@ -90,9 +91,8 @@ const OffsettingRevenue = ({fy, data, setData}: {
         ]
     useEffect(() => {
         const usedOptions: (string | undefined)[] = data.map(({revenueSource}) => {
-            if (revenueSource && !multiUse.includes(revenueSource)) return revenueSource
+            if (revenueSource && !isReusable(revenueSource)) return revenueSource
         })
-        // const filteredOptions=
         setRevenueOptions(initOptions.filter(o => {
             if (!usedOptions.includes(o)) return o
         }))
