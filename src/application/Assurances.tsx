@@ -1,14 +1,26 @@
-import {Alert, Card, Form} from "react-bootstrap";
-import {Formik} from "formik";
+import {Card, Form} from "react-bootstrap";
+import {FormikProvider, useFormik} from "formik";
 import React from "react";
+import {boolean, object} from "yup";
 
-const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefObject<boolean> }) => {
-    const initialValues = {assured: assurancesConfirm.current}
-    const setAssure = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {value} = e.target
-        console.log(`new value ${value}`)
-        assurancesConfirm.current = !assurancesConfirm.current
+const validationSchema = object().shape({assured: boolean().oneOf([true], "Please read and confirm.")})
+const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefObject<boolean | undefined> }) => {
+    const initialValues = {assured: false}
+    const setAssure = async () => {
+        assurancesConfirm.current = !formik.values.assured
+        await formik.setFieldTouched('assured', true)
+        await formik.setFieldValue('assured', !formik.values.assured)
+        await formik.validateField('assured')
+        //&& formik.touched.assured && !!formik.errors.assured
     }
+    const formik = useFormik({
+        initialValues: initialValues,
+        onSubmit: v => {
+            v
+        },
+        validationSchema: validationSchema,
+        enableReinitialize: true
+    })
     return (
         <Card>
             <Card.Header>Tuition Rate Assurances</Card.Header>
@@ -48,43 +60,25 @@ const Assurances = ({assurancesConfirm}: { assurancesConfirm: React.MutableRefOb
                     by owners of the school, they are wholly separate operationally, financially and employ
                     separate staff.
                 </p>
-
-                <Formik enableReinitialize
-                        onSubmit={() => {
-                        }}
-                        initialValues={initialValues}
-                >
-                    {
-                        ({handleChange}) => (
-                            <>
-                                <Form>
-                                    <div className={'card col-5 offset-4 alert alert-primary'}>
-                                        <div className={'card-body'}>
-                                            <Form.Check type={'checkbox'}
-                                                        name={'assured'}
-                                                        value={0}
-                                                        id={'assurancesConfirm'}>
-                                                <Form.Check.Input  onChange={e=> {
-                                                    handleChange(e)
-                                                    setAssure(e)
-                                                }} type={'checkbox'}/>
-                                                <Form.Check.Label>I have read and understand these
-                                                    assurances.</Form.Check.Label>
-                                            </Form.Check>
-                                            <Alert variant={"danger"} show={assurancesConfirm.current}  className={"col-4"}>
-                                                <Alert.Heading>Incomplete</Alert.Heading>
-                                                you didn't check the
-                                                box. Please go back
-                                                to <i>Assurances</i> and confirm you've read and understand
-                                            </Alert>
-                                        </div>
-                                    </div>
-                                </Form>
-                            </>
-                        )}
-                </Formik>
-
-            </Card.Body></Card>
+                <FormikProvider value={formik}>
+                    <Form>
+                        <div className={'card col-5 offset-4 alert alert-primary'}>
+                            <div className={'card-body'}>
+                                <Form.Check id={'assured'} type={'checkbox'}>
+                                    <Form.Check.Input
+                                        isInvalid={assurancesConfirm.current === false }
+                                        onChange={setAssure}/>
+                                    <Form.Check.Label>I have read and understand these assurances.</Form.Check.Label>
+                                    <Form.Control.Feedback type={"invalid"}>
+                                        Please read <i>Assurances</i> and confirm you've read and understand
+                                    </Form.Control.Feedback>
+                                </Form.Check>
+                            </div>
+                        </div>
+                    </Form>
+                </FormikProvider>
+            </Card.Body>
+        </Card>
     );
 }
 

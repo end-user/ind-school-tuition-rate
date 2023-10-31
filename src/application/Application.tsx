@@ -35,7 +35,7 @@ const Application = () => {
     const fy = new FY(rateApplication.schoolYear ? Number(rateApplication.schoolYear) : new Date().getFullYear())
     const enrollment = rateApplication?.enrollment || 0;
     const schoolHead: SchoolHead = rateApplication?.schoolHead ? rateApplication?.schoolHead : mockSchoolHead[1];
-    const assurancesConfirm = useRef(false)
+    const assurancesConfirm = useRef<boolean|undefined>()
     const [salaryData, setSalaryData] = useState<StaffSalary[]>(rateApplication?.staffSalaries || [])
     const [expenseData, setExpenseData] = useState<AllowableExpense[]>(rateApplication?.expenses || [])
     const [serviceData, setServiceData] = useState<ContractedService[]>(rateApplication?.contractedServices || [])
@@ -44,13 +44,13 @@ const Application = () => {
     const applicationCompleted = useRef(false)
     useEffect(() => {
         console.log(`assurances is now ${assurancesConfirm.current}`)
-    }, [assurancesConfirm]);
+    }, [assurancesConfirm.current]);
     const submitApplication = () => {
-        console.log("woot")
+        console.log(`assurances is now ${assurancesConfirm.current}`)
         if (!assurancesConfirm.current) {
             setCurrentTab("assurances")
-            console.log("display error")
-            applicationCompleted.current = true
+            console.log("submit is no go; display error")
+            assurancesConfirm.current=false
         }
     }
     return (<Tab.Container defaultActiveKey={'applicantInfo'} activeKey={currentTab}

@@ -31,7 +31,7 @@ const Summary = ({fy, enrollment, school, submitApp, data}: {
     fy: FY,
     enrollment: number,
     school: SchoolProfile | undefined,
-    assurancesConfirm: React.MutableRefObject<boolean>,
+    assurancesConfirm: React.MutableRefObject<boolean|undefined>,
     applicationCompleted: React.MutableRefObject<boolean>,
     submitApp: () => void,
     data: {
@@ -42,16 +42,6 @@ const Summary = ({fy, enrollment, school, submitApp, data}: {
         revenueData: Revenue[]
     }
 }) => {
-
-    // const verifyAndSumbit = (v,help) => {
-    //     console.log(v,help)
-    //     if (!assurancesConfirm.current) {
-    //         console.log("display error")
-    //         applicationCompleted.current = true
-    //     }
-    //
-    // }
-    // deduct medicaid, unencumbered, transport only
     const summary = {
         salaries: data.salaryData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),
         benefits: data.benefitData.reduce((accumulator, currentValue) => aggregateData(accumulator, currentValue), s),

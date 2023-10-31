@@ -46,6 +46,9 @@ const Benefits = ({fy, data, setData}: {
         setData(tmpData)
     }
     const addRow = async (values: Benefit) => {
+        console.log(values)
+        // since this is a new record, the comment should be empty
+        values.comment=""
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)

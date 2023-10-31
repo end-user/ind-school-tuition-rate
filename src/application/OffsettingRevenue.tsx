@@ -48,6 +48,8 @@ const OffsettingRevenue = ({fy, data, setData}: {
         setData(tmpData)
     }
     const addRow = async (values: Revenue) => {
+        // since this is a new record, the comment should be empty
+        values.comment=""
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)

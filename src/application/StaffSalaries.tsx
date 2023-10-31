@@ -73,7 +73,8 @@ const StaffSalaries = ({fy, data, setData}: {
         setData(tmpData)
     }
     const addRow = async (values: StaffSalary) => {
-        console.log("fired submit")
+        // since this is a new record, the comment should be empty
+        values.comment=""
         const tmpData = [...data]
         tmpData.push(values)
         setData(tmpData)
