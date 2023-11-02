@@ -59,5 +59,7 @@
   },
   "_proxy": "http://localhost:8080",
   "resolutions": {},
-  "engines": {}
+  "engines": {
+    "node": ">=21.1.0"
+  }
 }
