@@ -1,6 +1,5 @@
 import {Breadcrumb, Dropdown} from 'react-bootstrap'
 import {Link, Route, Routes} from "react-router-dom"
-// import Survey from "./component/survey/Survey";
 import Application from "./application/Application"
 import VermontLogo from './shared/VermontLogo'
 import Home from './Home'

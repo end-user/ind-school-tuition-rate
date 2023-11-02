@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "school_profile")
 public class SchoolProfile {
     @Id
     @Column(name = "id", nullable = false)
@@ -29,7 +28,7 @@ public class SchoolProfile {
     private String cityStateZip;
 
     @OneToOne
-    @JoinColumn(name = "head_id")
+    @JoinColumn(name = "schoolHeadId")
     private SchoolHead schoolHead;
 
 }

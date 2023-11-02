@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "benefit")
 public class Benefit extends AbstractLedgerEntry {
     private String benefit;
     /**

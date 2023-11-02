@@ -9,7 +9,7 @@ import java.util.Currency;
 @Getter
 @Setter
 @Entity
-@Table(name = "application_entry")
+@Table(name = "ApplicationEntry")
 @Inheritance(strategy = InheritanceType.JOINED)
 abstract class AbstractLedgerEntry {
     @Id
@@ -20,7 +20,7 @@ abstract class AbstractLedgerEntry {
     private Currency budget;
 
     @ManyToOne
-    @JoinColumn(name = "rate_application_id")
+    @JoinColumn(name = "rateApplicationId")
     private RateApplication rateApplication;
 
     @Lob

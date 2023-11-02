@@ -9,7 +9,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "school_head")
 public class SchoolHead {
     @Id
     @Column(name = "id", nullable = false)
@@ -20,10 +19,10 @@ public class SchoolHead {
     private String email;
 
     @OneToOne
-    @JoinColumn(name = "school_id")
+    @JoinColumn(name = "schoolProfileId")
     private SchoolProfile schoolProfile;
 
-    @OneToMany(mappedBy = "Head", orphanRemoval = true)
+    @OneToMany(mappedBy = "schoolHead", orphanRemoval = true)
     private Set<RateApplication> rateApplications;
 
 }

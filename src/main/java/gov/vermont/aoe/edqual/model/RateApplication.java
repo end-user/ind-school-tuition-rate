@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @Entity
-@Table(name = "rate_application")
 public class RateApplication {
     @Id
     @Column(name = "id", nullable = false)
@@ -24,7 +23,7 @@ public class RateApplication {
     @Column(length = 4)
     private String schoolYear;
     @ManyToOne
-    @JoinColumn(name = "school_id")
+    @JoinColumn(name = "schoolHeadId")
     private SchoolHead schoolHead;
     /**
      * date the school head completed application
@@ -42,6 +41,7 @@ public class RateApplication {
     private Integer enrollment;
 
     @OneToOne
+    @JoinColumn(name = "netProgramCostsId")
     private NetProgramCosts netProgramCosts;
 
     @OneToMany(mappedBy = "rateApplication", orphanRemoval = true)

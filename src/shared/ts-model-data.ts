@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-10-06 15:51:03.
+// Generated using typescript-generator version 3.2.1263 on 2023-11-02 13:09:54.
 
 export interface AbstractLedgerEntry {
     id?: number;
@@ -18,12 +18,6 @@ export interface AllowableExpense extends AbstractLedgerEntry {
 export interface Benefit extends AbstractLedgerEntry {
     benefit?: string;
     description?: string;
-}
-
-export interface Comment {
-    id?: number;
-    comment?: string;
-    entry?: AbstractLedgerEntry;
 }
 
 export interface ContractedService extends AbstractLedgerEntry {
